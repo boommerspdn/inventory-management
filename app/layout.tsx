@@ -32,7 +32,7 @@ export default function RootLayout({
         >
           <SidebarProvider>
             <AppSidebar />
-            <main>{children}</main>
+            <main className="size-full px-6 py-8">{children}</main>
           </SidebarProvider>
         </ThemeProvider>
       </body>
