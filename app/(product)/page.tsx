@@ -28,7 +28,7 @@ const ProductPage = async () => {
   const data = await getData();
 
   return (
-    <div>
+    <div className="space-y-6">
       <Header
         title="รายการสินค้า"
         description="สินค้าที่มีอยู่ในคลัง สามารถเพิ่ม ลบ หรือแก้ไขสถานะได้ที่นี่"
