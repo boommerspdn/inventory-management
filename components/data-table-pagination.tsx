@@ -7,6 +7,8 @@ import {
   Trash,
 } from "lucide-react";
 
+import RemoveDialog from "./remove-dialog";
+
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -15,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -25,9 +28,14 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <Button variant={"outline"} size={"icon"}>
-        <Trash />
-      </Button>
+      <RemoveDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant={"outline"} size={"icon"}>
+            <Trash />
+          </Button>
+        </AlertDialogTrigger>
+      </RemoveDialog>
+
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} ใน{" "}
         {table.getFilteredRowModel().rows.length} แถวที่เลือก

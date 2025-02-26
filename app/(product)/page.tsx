@@ -17,7 +17,7 @@ async function getData(): Promise<Product[]> {
       price: 500,
       image: {
         title: "file",
-        url: "/file.svg",
+        url: "/evaporator.jpg",
       },
     },
     // ...
