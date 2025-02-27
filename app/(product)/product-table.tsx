@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 interface ProductTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -57,13 +58,16 @@ export function ProductTable<TData, TValue>({
 
   return (
     <>
-      <div className="grid grid-cols-12">
+      <div className="flex justify-between">
         <Input
           value={globalFilter}
           onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-          className="col-span-12 md:col-span-8 2xl:col-span-3"
+          className="w-[450px]"
           placeholder="ค้นหาสินค้า"
         />
+        <Link href={"/add-product"}>
+          <Button className="px-8">เพิ่มสินค้า</Button>
+        </Link>
       </div>
       <div className="rounded-md border">
         <Table>
