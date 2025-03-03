@@ -1,10 +1,10 @@
-import AddProductForm from "@/components/add-product-form";
+import ProductForm from "@/components/product-form";
 import Header from "@/components/header";
 import { Separator } from "@/components/ui/separator";
 
-type AddProductPageProps = {};
+type ProductPageProps = {};
 
-const AddProductPage = ({}: AddProductPageProps) => {
+const ProductPage = ({}: ProductPageProps) => {
   return (
     <div className="space-y-4">
       <Header
@@ -12,9 +12,9 @@ const AddProductPage = ({}: AddProductPageProps) => {
         description="กรอกข้อมูลของสินค้า จากนั้นกดปุ่ม เพิ่มสินค้า เพิ่มเพิ่มสินค้าไปยังรายการ"
       />
       <Separator />
-      <AddProductForm />
+      <ProductForm />
     </div>
   );
 };
 
-export default AddProductPage;
+export default ProductPage;

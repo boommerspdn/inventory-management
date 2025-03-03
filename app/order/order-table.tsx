@@ -26,15 +26,15 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
-interface ProductTableProps<TData, TValue> {
+interface OrderTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function ProductTable<TData, TValue>({
+export function OrderTable<TData, TValue>({
   columns,
   data,
-}: ProductTableProps<TData, TValue>) {
+}: OrderTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState<any>([]);
@@ -65,8 +65,8 @@ export function ProductTable<TData, TValue>({
           className="w-[450px]"
           placeholder="ค้นหาสินค้า"
         />
-        <Link href={"/product"}>
-          <Button className="px-8">เพิ่มสินค้า</Button>
+        <Link href={"/order/quotation"}>
+          <Button className="px-8">สร้างใบเสนอราคา</Button>
         </Link>
       </div>
       <div className="rounded-md border">

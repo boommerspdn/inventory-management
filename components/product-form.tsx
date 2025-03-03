@@ -37,9 +37,9 @@ const formSchema = z.object({
     }),
 });
 
-type AddProductFormProps = {};
+type ProductFormProps = {};
 
-const AddProductForm = ({}: AddProductFormProps) => {
+const ProductForm = ({}: ProductFormProps) => {
   const [imageUpload, setImageUpload] = useState<string>();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -171,4 +171,4 @@ const AddProductForm = ({}: AddProductFormProps) => {
   );
 };
 
-export default AddProductForm;
+export default ProductForm;

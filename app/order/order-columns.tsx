@@ -1,28 +1,15 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-
-import Image from "next/image";
-import { Product } from "@/lib/types";
-
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import RemoveDialog from "@/components/remove-dialog";
-import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Order } from "@/lib/types";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const productColumns: ColumnDef<Product>[] = [
+export const orderColumns: ColumnDef<Order>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -46,7 +33,7 @@ export const productColumns: ColumnDef<Product>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "number",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -54,22 +41,7 @@ export const productColumns: ColumnDef<Product>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="-ml-4"
         >
-          รหัสสินค้า
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="-ml-4"
-        >
-          ชื่อสินค้า
+          ชื่อผู้ซื้อ
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -84,7 +56,7 @@ export const productColumns: ColumnDef<Product>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="-ml-4"
         >
-          วันที่เพิ่มสินค้า
+          วันที่สั่งซื้อ
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -97,6 +69,21 @@ export const productColumns: ColumnDef<Product>[] = [
           "th-TH",
           { hour: "2-digit", minute: "2-digit" },
         )}`}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "number",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="-ml-4"
+        >
+          เลขที่
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
   },
@@ -125,7 +112,7 @@ export const productColumns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "amount",
+    accessorKey: "status",
     header: ({ column }) => {
       return (
         <Button
@@ -133,55 +120,9 @@ export const productColumns: ColumnDef<Product>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="-ml-4"
         >
-          คงเหลือ
+          สถานะ
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "image",
-    header: () => {
-      return <></>;
-    },
-    cell: ({ row }) => {
-      const image = row.original.image;
-
-      return (
-        <a href={image.url} target="_blank">
-          <Image
-            src={image.url}
-            alt={image.title}
-            width={25}
-            height={25}
-            style={{ objectFit: "contain" }}
-          />
-        </a>
-      );
-    },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const data = row.original;
-
-      return (
-        <RemoveDialog>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>แก้ไขข้อมูล</DropdownMenuItem>
-              <AlertDialogTrigger asChild>
-                <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
-              </AlertDialogTrigger>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </RemoveDialog>
       );
     },
   },

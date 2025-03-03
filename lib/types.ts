@@ -13,4 +13,11 @@ export type Product = {
   image: Image;
 };
 
-type Order = {};
+export type Order = {
+  id: string;
+  name: string;
+  date: Date;
+  number: string;
+  price: number;
+  status: "รอการยืนยัน" | "การสั่งซื้อสำเร็จ" | "ปฏิเสธการสั่งซื้อ";
+};
