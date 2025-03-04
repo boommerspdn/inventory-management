@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Order } from "@/lib/types";
+import { priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
@@ -103,12 +104,8 @@ export const orderColumns: ColumnDef<Order>[] = [
     },
     cell: ({ row }) => {
       const price = row.original.price;
-      const formatted = new Intl.NumberFormat("th-TH", {
-        style: "currency",
-        currency: "THB",
-      }).format(price);
 
-      return <div>{formatted}</div>;
+      return <div>{priceFormatter(price)}</div>;
     },
   },
   {

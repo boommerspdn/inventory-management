@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import RemoveDialog from "@/components/remove-dialog";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { priceFormatter } from "@/lib/utils";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -116,12 +117,8 @@ export const productColumns: ColumnDef<Product>[] = [
     },
     cell: ({ row }) => {
       const price = row.original.price;
-      const formatted = new Intl.NumberFormat("th-TH", {
-        style: "currency",
-        currency: "THB",
-      }).format(price);
 
-      return <div>{formatted}</div>;
+      return <div>{priceFormatter(price)}</div>;
     },
   },
   {

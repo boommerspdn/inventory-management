@@ -21,3 +21,11 @@ export type Order = {
   price: number;
   status: "รอการยืนยัน" | "การสั่งซื้อสำเร็จ" | "ปฏิเสธการสั่งซื้อ";
 };
+
+export type Cart = {
+  id: string;
+  title: string;
+  number: string;
+  amount: number;
+  price: number;
+};

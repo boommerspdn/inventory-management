@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useState } from "react";
 
 import {
@@ -25,16 +26,24 @@ import { Button } from "@/components/ui/button";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-interface OrderTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue>
+  extends React.HTMLAttributes<HTMLElement> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  buttonLink?: {
+    label: string;
+    href: string;
+  };
 }
 
-export function OrderTable<TData, TValue>({
+export function DataTable<TData, TValue>({
   columns,
   data,
-}: OrderTableProps<TData, TValue>) {
+  buttonLink,
+  className,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState<any>([]);
@@ -57,7 +66,7 @@ export function OrderTable<TData, TValue>({
   });
 
   return (
-    <>
+    <div className={cn("space-y-4", className)}>
       <div className="flex justify-between">
         <Input
           value={globalFilter}
@@ -65,9 +74,11 @@ export function OrderTable<TData, TValue>({
           className="w-[450px]"
           placeholder="ค้นหาสินค้า"
         />
-        <Link href={"/order/quotation"}>
-          <Button className="px-8">สร้างใบเสนอราคา</Button>
-        </Link>
+        {buttonLink && (
+          <Link href={buttonLink.href}>
+            <Button className="px-8">{buttonLink.label}</Button>
+          </Link>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>
@@ -120,6 +131,6 @@ export function OrderTable<TData, TValue>({
         </Table>
       </div>
       <DataTablePagination table={table} />
-    </>
+    </div>
   );
 }

@@ -1,9 +1,8 @@
 import { productColumns } from "./product-columns";
-import { ProductTable } from "./product-table";
 
-import { Product } from "@/lib/types";
 import Header from "@/components/header";
-import { Checkbox } from "@/components/ui/checkbox";
+import { DataTable } from "@/components/ui/data-table";
+import { Product } from "@/lib/types";
 
 async function getData(): Promise<Product[]> {
   // Fetch data from your API here.
@@ -33,7 +32,11 @@ const ProductPage = async () => {
         title="รายการสินค้า"
         description="สินค้าที่มีอยู่ในคลัง สามารถเพิ่ม ลบ หรือแก้ไขสถานะได้ที่นี่"
       />
-      <ProductTable columns={productColumns} data={data} />
+      <DataTable
+        columns={productColumns}
+        data={data}
+        buttonLink={{ href: "/product", label: "เพิ่มสินค้า" }}
+      />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import Header from "@/components/header";
-import { OrderTable } from "./order-table";
-import { orderColumns } from "./order-columns";
+import { DataTable } from "@/components/ui/data-table";
 import { Order } from "@/lib/types";
+import { orderColumns } from "./order-columns";
 
 async function getData(): Promise<Order[]> {
   // Fetch data from your API here.
@@ -27,7 +27,11 @@ const OrderPage = async () => {
         title="รายการสั่งซื้อ"
         description="คำสั่งซื้อทั้งหมด สามารถออกใบเสนอราคาเพื่อสร้างคำสั่งซื้อได้ที่นี่"
       />
-      <OrderTable data={data} columns={orderColumns} />
+      <DataTable
+        data={data}
+        columns={orderColumns}
+        buttonLink={{ href: "/order/quotation", label: "สร้างใบเสนอราคา" }}
+      />
     </div>
   );
 };
