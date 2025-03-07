@@ -3,7 +3,15 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { format } from "date-fns";
+import { th } from "date-fns/locale";
+import { redirect } from "next/navigation";
 
+import { useMultiFormStore } from "@/hooks/use-multi-form";
+import { cn } from "@/lib/utils";
+
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -31,14 +39,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { th } from "date-fns/locale";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
-const formSchema = z.object({
+export const formSchema = z.object({
   vendor: z.string({ required_error: "กรุณาเลือกข้อมูลผู้ออก" }),
   name: z
     .string()
@@ -66,28 +69,32 @@ const formSchema = z.object({
     .optional(),
 });
 
-type QuotationFormProps = {};
+export type FormSchema = z.infer<typeof formSchema>;
 
-const QuotationForm = ({}: QuotationFormProps) => {
-  // 1. Define your form.
+const QuotationForm = () => {
+  const { vendor, name, date, address, taxId, phone, note } =
+    useMultiFormStore();
+
+  const defaultValues = {
+    vendor: vendor || undefined,
+    name: name || "",
+    date: date ? new Date(date) : undefined,
+    address: address || "",
+    taxId: taxId || "",
+    phone: phone || "",
+    note: note || "",
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      vendor: undefined,
-      name: "",
-      date: undefined,
-      address: "",
-      taxId: "",
-      phone: "",
-      note: "",
-    },
+    defaultValues,
   });
+
+  const setData = useMultiFormStore((state) => state.setData);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(values);
+    setData(values);
     redirect("/order/cart");
   }
   return (
@@ -98,8 +105,8 @@ const QuotationForm = ({}: QuotationFormProps) => {
           name="vendor"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormLabel>ข้อมูลผู้ออก</FormLabel>
+              <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="กรุณาเลือกข้อมูลผู้ออก" />
@@ -109,6 +116,7 @@ const QuotationForm = ({}: QuotationFormProps) => {
                   <SelectItem value="championadvance">
                     Champion Advanced Co., Ltd.
                   </SelectItem>
+                  <SelectItem value="tongpoonhotel">Tongpoon Hotel</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

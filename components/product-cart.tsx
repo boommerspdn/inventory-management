@@ -1,4 +1,5 @@
 "use client";
+
 import { faker } from "@faker-js/faker";
 import { PackagePlus, ShoppingCart } from "lucide-react";
 
@@ -15,10 +16,14 @@ import {
 import { useCart } from "@/hooks/use-cart";
 import { priceFormatter } from "@/lib/utils";
 import { useProductList } from "@/hooks/use-product-list";
+import { useMultiFormStore } from "@/hooks/use-multi-form";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const ProductCart = () => {
   const cart = useCart();
   const productList = useProductList();
+  const router = useRouter();
 
   const sumsPrice = cart.items.reduce(
     (sum, item) => sum + item.price * item.amount,
@@ -38,6 +43,45 @@ const ProductCart = () => {
       );
     }
   };
+
+  const handleBack = () => {
+    router.push("/order/quotation");
+  };
+
+  const { vendor, name, date, address, taxId, phone, note } =
+    useMultiFormStore();
+
+  const handleCreateOrder = () => {
+    console.log({
+      vendor,
+      name,
+      date,
+      address,
+      taxId,
+      phone,
+      note,
+      cart: cart.items,
+    });
+  };
+
+  useEffect(() => {
+    cart.removeAll();
+
+    if (!useMultiFormStore.persist.hasHydrated) return;
+
+    if (!name || !date || !address || !taxId || !phone) {
+      router.push("/order/quotation");
+    }
+  }, [
+    useMultiFormStore.persist.hasHydrated,
+    name,
+    date,
+    address,
+    taxId,
+    phone,
+    note,
+    router,
+  ]);
 
   return (
     <Card className="col-span-3 h-fit">
@@ -73,10 +117,20 @@ const ProductCart = () => {
         )}
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant={"outline"} onClick={() => handleRemoveAll()}>
+        <Button variant={"destructive"} onClick={() => handleRemoveAll()}>
           ล้าง
         </Button>
-        <Button disabled={cart.items.length === 0}>สร้างใบเสนอราคา</Button>
+        <div className="flex gap-2">
+          <Button variant={"outline"} onClick={() => handleBack()}>
+            ย้อนกลับ
+          </Button>
+          <Button
+            disabled={cart.items.length === 0}
+            onClick={() => handleCreateOrder()}
+          >
+            สร้างใบเสนอราคา
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

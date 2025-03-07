@@ -1,22 +1,23 @@
 import { Cart } from "@/lib/types";
 
 import Header from "@/components/header";
-import { DataTable } from "@/components/ui/data-table";
-import { Separator } from "@/components/ui/separator";
-import { cartColumns } from "./cart-columns";
 import ProductCart from "@/components/product-cart";
-import { faker } from "@faker-js/faker";
 import ProductList from "@/components/product-list";
-import { useProductList } from "@/hooks/use-product-list";
+import { Separator } from "@/components/ui/separator";
+import { faker } from "@faker-js/faker";
 
 async function getData(): Promise<Cart[]> {
-  return Array.from(Array(10), (e, i) => ({
-    id: faker.string.uuid(),
-    title: faker.commerce.productName(),
-    number: faker.commerce.isbn(10),
-    amount: faker.number.int({ min: 1, max: 200 }),
-    price: faker.number.int({ min: 1000, max: 50000 }),
-  }));
+  // return Array.from(Array(10), (e, i) => ({
+  //   id: faker.string.uuid(),
+  //   title: faker.commerce.productName(),
+  //   number: faker.commerce.isbn(10),
+  //   amount: faker.number.int({ min: 1, max: 200 }),
+  //   price: faker.number.int({ min: 1000, max: 50000 }),
+  // }));
+  return [
+    { id: "1", title: "Glove", number: "GT-420", amount: 5, price: 400 },
+    { id: "2", title: "Screwdriver", number: "GT-432", amount: 12, price: 100 },
+  ];
 }
 
 const CartPage = async () => {
