@@ -2,29 +2,13 @@ import { productColumns } from "./product-columns";
 
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
+import prismadb from "@/lib/prismadb";
 import { Product } from "@/lib/types";
 
-async function getData(): Promise<Product[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "728ed52f",
-      title: "sasd",
-      number: "asd-1212",
-      amount: 12,
-      date: new Date(),
-      price: 500,
-      image: {
-        title: "file",
-        url: "/evaporator.jpg",
-      },
-    },
-    // ...
-  ];
-}
-
 const ProductPage = async () => {
-  const data = await getData();
+  const products = await prismadb.product.findMany({
+    orderBy: { date: "desc" },
+  });
 
   return (
     <div className="space-y-6">
@@ -34,7 +18,7 @@ const ProductPage = async () => {
       />
       <DataTable
         columns={productColumns}
-        data={data}
+        data={products}
         buttonLink={{ href: "/product", label: "เพิ่มสินค้า" }}
       />
     </div>

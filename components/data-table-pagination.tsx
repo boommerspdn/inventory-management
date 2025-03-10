@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Product } from "@/lib/types";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -26,9 +27,13 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
+  const arraySelectedUsersId = table
+    .getSelectedRowModel()
+    .rows.map(({ original }) => (original as Product).id);
+
   return (
     <div className="flex items-center justify-between gap-3">
-      <RemoveDialog>
+      <RemoveDialog ids={arraySelectedUsersId}>
         <AlertDialogTrigger asChild>
           <Button variant={"outline"} size={"icon"}>
             <Trash />

@@ -1,8 +1,3 @@
-export type Image = {
-  title: string;
-  url: string;
-};
-
 export type Product = {
   id: string;
   title: string;
@@ -10,7 +5,7 @@ export type Product = {
   amount: number;
   price: number;
   date: Date;
-  image: Image;
+  image: string;
 };
 
 export type Order = {

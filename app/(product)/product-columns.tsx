@@ -2,23 +2,21 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import Image from "next/image";
 import { Product } from "@/lib/types";
+import Image from "next/image";
 
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import RemoveDialog from "@/components/remove-dialog";
+import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import RemoveDialog from "@/components/remove-dialog";
-import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { priceFormatter } from "@/lib/utils";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -145,10 +143,10 @@ export const productColumns: ColumnDef<Product>[] = [
       const image = row.original.image;
 
       return (
-        <a href={image.url} target="_blank">
+        <a href={image} target="_blank">
           <Image
-            src={image.url}
-            alt={image.title}
+            src={image}
+            alt={""}
             width={25}
             height={25}
             style={{ objectFit: "contain" }}
@@ -163,7 +161,7 @@ export const productColumns: ColumnDef<Product>[] = [
       const data = row.original;
 
       return (
-        <RemoveDialog>
+        <RemoveDialog ids={[data.id]}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">

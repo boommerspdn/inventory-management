@@ -1,3 +1,6 @@
+import axios from "axios";
+import toast from "react-hot-toast";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,13 +13,30 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 type RemoveDialog = {
   children: React.ReactNode;
-  ids?: number | number[];
+  ids: string[];
 };
 
-const RemoveDialog = ({ children }: RemoveDialog) => {
+const RemoveDialog = ({ children, ids }: RemoveDialog) => {
+  const router = useRouter();
+
+  const handleDelete = async (ids: string[]) => {
+    console.log(ids);
+    try {
+      const response = await axios.delete("/api/products", {
+        data: { ids },
+        headers: { "Content-Type": "application/json" },
+      });
+
+      toast.success("ลบสินค้าสำเร็จ");
+      router.refresh();
+    } catch (error) {
+      toast.error("เกิดข้อผิดพลาด");
+    }
+  };
   return (
     <AlertDialog>
       {children}
@@ -30,7 +50,9 @@ const RemoveDialog = ({ children }: RemoveDialog) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
-          <AlertDialogAction>ลบสินค้า</AlertDialogAction>
+          <AlertDialogAction onClick={() => handleDelete(ids)}>
+            ลบสินค้า
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

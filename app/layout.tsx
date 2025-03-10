@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Anuphan } from "next/font/google";
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { ToasterProvider } from "@/providers/toast-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import "./globals.css";
@@ -30,6 +31,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ToasterProvider />
           <SidebarProvider>
             <AppSidebar />
             <main className="size-full px-6 py-8">{children}</main>

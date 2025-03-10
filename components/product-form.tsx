@@ -4,6 +4,9 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { object, z } from "zod";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import path from "path";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +20,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { ImageOff } from "lucide-react";
+import { ImageOff, LoaderCircle } from "lucide-react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   title: z
@@ -41,6 +46,9 @@ type ProductFormProps = {};
 
 const ProductForm = ({}: ProductFormProps) => {
   const [imageUpload, setImageUpload] = useState<string>();
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,10 +62,29 @@ const ProductForm = ({}: ProductFormProps) => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setLoading(true);
+      const filename = values.image[0].name;
+      const extension = path.extname(filename);
+
+      const body: z.infer<typeof formSchema> = {
+        title: values.title,
+        number: values.number,
+        amount: values.amount,
+        price: values.price,
+        image: `/public/uploads/${uuidv4()}${extension}`,
+      };
+
+      const response = await axios.post("/api/products/", body);
+
+      toast.success("เพิ่มสินค้าสำเร็จ");
+    } catch (error) {
+      toast.error("เกิดข้อผิดพลาด");
+    } finally {
+      setLoading(false);
+      router.push("/");
+    }
   }
   return (
     <Form {...form}>
@@ -163,8 +190,8 @@ const ProductForm = ({}: ProductFormProps) => {
           )}
         />
 
-        <Button type="submit" className="col-start-1">
-          เพิ่มสินค้า
+        <Button type="submit" className="col-start-1" disabled={loading}>
+          {loading ? <LoaderCircle className="animate-spin" /> : "เพิ่มสินค้า"}
         </Button>
       </form>
     </Form>
