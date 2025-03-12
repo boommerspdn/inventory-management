@@ -45,7 +45,7 @@ const ProductCart = () => {
   };
 
   const handleBack = () => {
-    router.push("/order/quotation");
+    router.replace("/order/quotation");
   };
 
   const { vendor, name, date, address, taxId, phone, note } =
@@ -65,23 +65,14 @@ const ProductCart = () => {
   };
 
   useEffect(() => {
-    cart.removeAll();
+    // cart.removeAll();
 
-    if (!useMultiFormStore.persist.hasHydrated) return;
+    // if (!useMultiFormStore.persist.hasHydrated) return;
 
     if (!name || !date || !address || !taxId || !phone) {
       router.push("/order/quotation");
     }
-  }, [
-    useMultiFormStore.persist.hasHydrated,
-    name,
-    date,
-    address,
-    taxId,
-    phone,
-    note,
-    router,
-  ]);
+  }, [name, date, address, taxId, phone, note, router]);
 
   return (
     <Card className="col-span-3 h-fit">

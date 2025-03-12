@@ -6,14 +6,7 @@ type MultiStepForm = Partial<FormSchema> & {
   setData: (data: Partial<FormSchema>) => void; // Allow cart in data
 };
 
-export const useMultiFormStore = create<MultiStepForm>()(
-  persist(
-    (set) => ({
-      setData: (data) => set((state) => ({ ...state, ...data })), // Merge existing state with new data
-    }),
-    {
-      name: "form-storage",
-      storage: createJSONStorage(() => localStorage),
-    },
-  ),
-);
+export const useMultiFormStore = create<MultiStepForm>()((set) => ({
+  setData: (data) => set(data),
+  // setData: (data) => set((state) => ({ ...state, ...data })), // Merge existing state with new data
+}));

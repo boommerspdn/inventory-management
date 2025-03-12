@@ -14,10 +14,10 @@ const ProductList = ({ data }: ProductListProps) => {
   const { products, setProducts } = useProductList();
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (products.length === 0 && data.length > 0) {
       setProducts(data);
     }
-  }, []);
+  }, [products, data, setProducts]);
 
   return (
     <div className="col-span-9">
