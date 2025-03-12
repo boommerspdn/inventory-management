@@ -21,7 +21,7 @@ const ProductList = ({ data }: ProductListProps) => {
 
   return (
     <div className="col-span-9">
-      <DataTable data={products} columns={cartColumns} />
+      <DataTable data={products} columns={cartColumns} disableDelete={true} />
     </div>
   );
 };

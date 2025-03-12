@@ -1,22 +1,20 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { th } from "date-fns/locale";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { useMultiFormStore } from "@/hooks/use-multi-form";
 import { cn } from "@/lib/utils";
 
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,22 +22,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { useEffect } from "react";
+import { CalendarIcon } from "lucide-react";
 
 export const formSchema = z.object({
   vendor: z.string({ required_error: "กรุณาเลือกข้อมูลผู้ออก" }),
@@ -75,6 +71,8 @@ const QuotationForm = () => {
   const { vendor, name, date, address, taxId, phone, note } =
     useMultiFormStore();
 
+  const router = useRouter();
+
   const defaultValues = {
     vendor: vendor || undefined,
     name: name || "",
@@ -95,7 +93,7 @@ const QuotationForm = () => {
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     setData(values);
-    redirect("/order/cart");
+    router.push("/order/cart");
   }
   return (
     <Form {...form}>
@@ -240,7 +238,7 @@ const QuotationForm = () => {
             )}
           />
         </div>
-        <Button type="submit" className="col-start-1 col-span-1">
+        <Button type="submit" className="px-12">
           ต่อไป
         </Button>
       </form>

@@ -19,36 +19,47 @@ import {
 } from "@/components/ui/select";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Product } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
+  disableDelete?: Boolean;
 }
 
 export function DataTablePagination<TData>({
   table,
+  disableDelete,
 }: DataTablePaginationProps<TData>) {
   const arraySelectedUsersId = table
     .getSelectedRowModel()
     .rows.map(({ original }) => (original as Product).id);
 
   return (
-    <div className="flex items-center justify-between gap-3">
-      <RemoveDialog ids={arraySelectedUsersId}>
-        <AlertDialogTrigger asChild>
-          <Button
-            variant={"outline"}
-            size={"icon"}
-            disabled={arraySelectedUsersId.length == 0}
-          >
-            <Trash />
-          </Button>
-        </AlertDialogTrigger>
-      </RemoveDialog>
-
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} ใน{" "}
-        {table.getFilteredRowModel().rows.length} แถวที่เลือก
-      </div>
+    <div
+      className={cn(
+        "flex items-center justify-between gap-3",
+        disableDelete && "justify-end",
+      )}
+    >
+      {!disableDelete && (
+        <>
+          <RemoveDialog ids={arraySelectedUsersId}>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant={"outline"}
+                size={"icon"}
+                disabled={arraySelectedUsersId.length == 0}
+              >
+                <Trash />
+              </Button>
+            </AlertDialogTrigger>
+          </RemoveDialog>
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} ใน{" "}
+            {table.getFilteredRowModel().rows.length} แถวที่เลือก
+          </div>
+        </>
+      )}
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">แถวต่อหน้า</p>
