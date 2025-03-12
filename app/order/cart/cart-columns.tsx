@@ -99,7 +99,7 @@ export const cartColumns: ColumnDef<Cart>[] = [
       const addToCart = (cartItem: Cart) => {
         const valueToAdd = parseInt(value);
 
-        if (value !== "" && valueToAdd <= cartItem.amount) {
+        if (value !== "" && value !== "0" && valueToAdd <= cartItem.amount) {
           cart.addItem({
             id: cartItem.id,
             title: cartItem.title,
@@ -126,7 +126,9 @@ export const cartColumns: ColumnDef<Cart>[] = [
           <Button
             className="rounded-s-none size-8"
             onClick={() => addToCart(data)}
-            disabled={value == "" || parseInt(value) > data.amount}
+            disabled={
+              value == "" || value == "0" || parseInt(value) > data.amount
+            }
           >
             <PackagePlus />
           </Button>
