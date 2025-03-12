@@ -23,7 +23,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(product);
   } catch (error) {
-    console.log("[PRODUCTS]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
@@ -33,8 +32,6 @@ export async function DELETE(req: Request) {
     const body = await req.json();
 
     const { ids } = body;
-
-    console.log("DELETE" + ids);
 
     if (!Array.isArray(ids)) {
       return new NextResponse("Id(s) must be an array", { status: 400 });
@@ -48,7 +45,6 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json(product);
   } catch (error) {
-    console.log("[PRODUCTS]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

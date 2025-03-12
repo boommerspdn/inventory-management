@@ -144,13 +144,7 @@ export const productColumns: ColumnDef<Product>[] = [
 
       return (
         <a href={image} target="_blank">
-          <Image
-            src={image}
-            alt={""}
-            width={25}
-            height={25}
-            style={{ objectFit: "contain" }}
-          />
+          <img src={image} alt={""} className="size-7 object-contain" />
         </a>
       );
     },

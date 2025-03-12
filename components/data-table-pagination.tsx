@@ -35,7 +35,11 @@ export function DataTablePagination<TData>({
     <div className="flex items-center justify-between gap-3">
       <RemoveDialog ids={arraySelectedUsersId}>
         <AlertDialogTrigger asChild>
-          <Button variant={"outline"} size={"icon"}>
+          <Button
+            variant={"outline"}
+            size={"icon"}
+            disabled={arraySelectedUsersId.length == 0}
+          >
             <Trash />
           </Button>
         </AlertDialogTrigger>

@@ -52,16 +52,16 @@ const ProductCart = () => {
     useMultiFormStore();
 
   const handleCreateOrder = () => {
-    console.log({
-      vendor,
-      name,
-      date,
-      address,
-      taxId,
-      phone,
-      note,
-      cart: cart.items,
-    });
+    // console.log({
+    //   vendor,
+    //   name,
+    //   date,
+    //   address,
+    //   taxId,
+    //   phone,
+    //   note,
+    //   cart: cart.items,
+    // });
   };
 
   useEffect(() => {

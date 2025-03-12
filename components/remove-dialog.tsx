@@ -24,8 +24,11 @@ const RemoveDialog = ({ children, ids }: RemoveDialog) => {
   const router = useRouter();
 
   const handleDelete = async (ids: string[]) => {
-    console.log(ids);
     try {
+      if (ids.length === 0) {
+        throw new Error("No IDs provided");
+      }
+
       const response = await axios.delete("/api/products", {
         data: { ids },
         headers: { "Content-Type": "application/json" },

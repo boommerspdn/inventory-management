@@ -67,16 +67,25 @@ const ProductForm = ({}: ProductFormProps) => {
       setLoading(true);
       const filename = values.image[0].name;
       const extension = path.extname(filename);
+      const newFileName = `${uuidv4()}${extension}`;
 
       const body: z.infer<typeof formSchema> = {
         title: values.title,
         number: values.number,
         amount: values.amount,
         price: values.price,
-        image: `/public/uploads/${uuidv4()}${extension}`,
+        image: `/uploads/${newFileName}`,
       };
 
       const response = await axios.post("/api/products/", body);
+
+      const formData = new FormData();
+      formData.append("file", values.image[0]);
+      formData.append("fileName", newFileName);
+
+      const uploadResponse = await axios.post("/api/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {
