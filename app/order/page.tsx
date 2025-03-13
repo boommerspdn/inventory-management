@@ -2,24 +2,22 @@ import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 import { Order } from "@/lib/types";
 import { orderColumns } from "./order-columns";
-
-async function getData(): Promise<Order[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "728ed52f",
-      name: "sasd",
-      number: "asd-1212",
-      date: new Date(),
-      price: 500,
-      status: "รอการยืนยัน",
-    },
-    // ...
-  ];
-}
+import prismadb from "@/lib/prismadb";
 
 const OrderPage = async () => {
-  const data = await getData();
+  const orders = await prismadb.order.findMany({
+    select: {
+      id: true,
+      name: true,
+      date: true,
+      number: true,
+      price: true,
+      status: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  console.log(orders);
 
   return (
     <div className="space-y-6">
@@ -28,7 +26,7 @@ const OrderPage = async () => {
         description="คำสั่งซื้อทั้งหมด สามารถออกใบเสนอราคาเพื่อสร้างคำสั่งซื้อได้ที่นี่"
       />
       <DataTable
-        data={data}
+        data={orders}
         columns={orderColumns}
         buttonLink={{ href: "/order/quotation", label: "สร้างใบเสนอราคา" }}
       />

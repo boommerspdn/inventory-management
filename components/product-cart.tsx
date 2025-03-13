@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useCart } from "@/hooks/use-cart";
-import { priceFormatter } from "@/lib/utils";
+import { handleRemoveAll, priceFormatter } from "@/lib/utils";
 import { useProductList } from "@/hooks/use-product-list";
 import { useMultiFormStore } from "@/hooks/use-multi-form";
 import { useEffect } from "react";
@@ -30,19 +30,19 @@ const ProductCart = () => {
     0,
   );
 
-  const handleRemoveAll = () => {
-    const itemToRemove: { id: string; value: number }[] = cart.items.map(
-      (item) => ({ id: item.id, value: item.amount }),
-    );
-    cart.removeAll();
+  // const handleRemoveAll = () => {
+  //   const itemToRemove: { id: string; value: number }[] = cart.items.map(
+  //     (item) => ({ id: item.id, value: item.amount }),
+  //   );
+  //   cart.removeAll();
 
-    for (let index = 0; index < itemToRemove.length; index++) {
-      productList.increaseAmount(
-        itemToRemove[index].id,
-        itemToRemove[index].value,
-      );
-    }
-  };
+  //   for (let index = 0; index < itemToRemove.length; index++) {
+  //     productList.increaseAmount(
+  //       itemToRemove[index].id,
+  //       itemToRemove[index].value,
+  //     );
+  //   }
+  // };
 
   const handleBack = () => {
     router.replace("/order/quotation");
@@ -65,7 +65,7 @@ const ProductCart = () => {
   };
 
   useEffect(() => {
-    // cart.removeAll();
+    cart.removeAll();
 
     // if (!useMultiFormStore.persist.hasHydrated) return;
 
@@ -108,7 +108,10 @@ const ProductCart = () => {
         )}
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant={"destructive"} onClick={() => handleRemoveAll()}>
+        <Button
+          variant={"destructive"}
+          onClick={() => handleRemoveAll(cart, productList)}
+        >
           ล้าง
         </Button>
         <div className="flex gap-2">

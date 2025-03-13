@@ -1,7 +1,7 @@
 import { Cart } from "@/lib/types";
 import { create } from "zustand";
 
-interface CartState {
+export interface CartState {
   items: Cart[];
   addItem: (item: Cart) => void;
   removeItem: (itemId: string) => void;

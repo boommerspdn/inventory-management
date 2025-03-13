@@ -23,6 +23,9 @@ import Image from "next/image";
 import { ImageOff, LoaderCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useProductList } from "@/hooks/use-product-list";
+import { useCart } from "@/hooks/use-cart";
+import { handleRemoveAll } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z

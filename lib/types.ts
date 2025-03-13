@@ -14,7 +14,7 @@ export type Order = {
   date: Date;
   number: string;
   price: number;
-  status: "รอการยืนยัน" | "การสั่งซื้อสำเร็จ" | "ปฏิเสธการสั่งซื้อ";
+  status: string;
 };
 
 export type Cart = {

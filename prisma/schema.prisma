@@ -14,11 +14,38 @@ datasource db {
 }
 
 model Product {
-  id     String   @id @default(uuid())
-  title  String
-  number String
-  amount Int
-  price  Int
-  date   DateTime @default(now())
-  image  String
+  id        String   @id @default(uuid())
+  title     String
+  number    String
+  amount    Int
+  price     Int
+  date      DateTime @default(now())
+  image     String
+  createdAt DateTime @default(now())
+  carts     Cart[]
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  name      String
+  date      DateTime
+  number    String
+  price     Int
+  address   String
+  taxId     String
+  phone     String
+  note      String
+  status    String
+  createdAt DateTime @default(now())
+  carts     Cart[]
+}
+
+model Cart {
+  id        String   @id @default(uuid())
+  productId String
+  orderId   String
+  amount    Int
+  createdAt DateTime @default(now())
+  products  Product  @relation(fields: [productId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
 }
