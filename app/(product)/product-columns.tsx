@@ -155,7 +155,7 @@ export const productColumns: ColumnDef<Product>[] = [
       const data = row.original;
 
       return (
-        <RemoveDialog ids={[data.id]}>
+        <RemoveDialog ids={[data.id]} api="products">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">

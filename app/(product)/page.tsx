@@ -20,6 +20,7 @@ const ProductPage = async () => {
         columns={productColumns}
         data={products}
         buttonLink={{ href: "/product", label: "เพิ่มสินค้า" }}
+        api="products"
       />
     </div>
   );

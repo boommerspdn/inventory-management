@@ -37,6 +37,7 @@ interface DataTableProps<TData, TValue>
     href: string;
   };
   disableDelete?: Boolean;
+  api: "products" | "orders";
 }
 
 export function DataTable<TData, TValue>({
@@ -45,6 +46,7 @@ export function DataTable<TData, TValue>({
   buttonLink,
   className,
   disableDelete = false,
+  api,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -132,7 +134,11 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} disableDelete={disableDelete} />
+      <DataTablePagination
+        table={table}
+        disableDelete={disableDelete}
+        api={api}
+      />
     </div>
   );
 }

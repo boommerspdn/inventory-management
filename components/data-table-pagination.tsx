@@ -24,11 +24,13 @@ import { cn } from "@/lib/utils";
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   disableDelete?: Boolean;
+  api: "products" | "orders";
 }
 
 export function DataTablePagination<TData>({
   table,
   disableDelete,
+  api,
 }: DataTablePaginationProps<TData>) {
   const arraySelectedUsersId = table
     .getSelectedRowModel()
@@ -43,7 +45,7 @@ export function DataTablePagination<TData>({
     >
       {!disableDelete && (
         <>
-          <RemoveDialog ids={arraySelectedUsersId}>
+          <RemoveDialog ids={arraySelectedUsersId} api={api}>
             <AlertDialogTrigger asChild>
               <Button
                 variant={"outline"}

@@ -18,9 +18,10 @@ import { useRouter } from "next/navigation";
 type RemoveDialog = {
   children: React.ReactNode;
   ids: string[];
+  api: "products" | "orders";
 };
 
-const RemoveDialog = ({ children, ids }: RemoveDialog) => {
+const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
   const router = useRouter();
 
   const handleDelete = async (ids: string[]) => {
@@ -29,7 +30,7 @@ const RemoveDialog = ({ children, ids }: RemoveDialog) => {
         throw new Error("No IDs provided");
       }
 
-      const response = await axios.delete("/api/products", {
+      const response = await axios.delete(`/api/${api}/`, {
         data: { ids },
         headers: { "Content-Type": "application/json" },
       });

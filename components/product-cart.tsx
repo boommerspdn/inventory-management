@@ -19,6 +19,8 @@ import { useProductList } from "@/hooks/use-product-list";
 import { useMultiFormStore } from "@/hooks/use-multi-form";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ProductCart = () => {
   const cart = useCart();
@@ -30,20 +32,6 @@ const ProductCart = () => {
     0,
   );
 
-  // const handleRemoveAll = () => {
-  //   const itemToRemove: { id: string; value: number }[] = cart.items.map(
-  //     (item) => ({ id: item.id, value: item.amount }),
-  //   );
-  //   cart.removeAll();
-
-  //   for (let index = 0; index < itemToRemove.length; index++) {
-  //     productList.increaseAmount(
-  //       itemToRemove[index].id,
-  //       itemToRemove[index].value,
-  //     );
-  //   }
-  // };
-
   const handleBack = () => {
     router.replace("/order/quotation");
   };
@@ -51,23 +39,32 @@ const ProductCart = () => {
   const { vendor, name, date, address, taxId, phone, note } =
     useMultiFormStore();
 
-  const handleCreateOrder = () => {
-    // console.log({
-    //   vendor,
-    //   name,
-    //   date,
-    //   address,
-    //   taxId,
-    //   phone,
-    //   note,
-    //   cart: cart.items,
-    // });
+  const handleCreateOrder = async () => {
+    try {
+      const body = {
+        vendor,
+        name,
+        date,
+        address,
+        taxId,
+        phone,
+        note,
+        price: sumsPrice,
+        cart: cart.items,
+      };
+      const response = await axios.post("/api/orders/", body);
+
+      toast.success("เพิ่มสินค้าสำเร็จ");
+    } catch (error) {
+      toast.error("เกิดข้อผิดพลาด");
+    } finally {
+      useMultiFormStore.getState().reset();
+      router.push("/order");
+    }
   };
 
   useEffect(() => {
     cart.removeAll();
-
-    // if (!useMultiFormStore.persist.hasHydrated) return;
 
     if (!name || !date || !address || !taxId || !phone) {
       router.push("/order/quotation");

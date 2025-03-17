@@ -17,8 +17,6 @@ const OrderPage = async () => {
     orderBy: { createdAt: "desc" },
   });
 
-  console.log(orders);
-
   return (
     <div className="space-y-6">
       <Header
@@ -29,6 +27,7 @@ const OrderPage = async () => {
         data={orders}
         columns={orderColumns}
         buttonLink={{ href: "/order/quotation", label: "สร้างใบเสนอราคา" }}
+        api="orders"
       />
     </div>
   );

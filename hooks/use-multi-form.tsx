@@ -4,9 +4,10 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 type MultiStepForm = Partial<FormSchema> & {
   setData: (data: Partial<FormSchema>) => void; // Allow cart in data
+  reset: () => void;
 };
 
 export const useMultiFormStore = create<MultiStepForm>()((set) => ({
   setData: (data) => set(data),
-  // setData: (data) => set((state) => ({ ...state, ...data })), // Merge existing state with new data
+  reset: () => set({}),
 }));

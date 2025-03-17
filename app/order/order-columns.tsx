@@ -1,11 +1,19 @@
 "use client";
 
+import RemoveDialog from "@/components/remove-dialog";
+import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Order } from "@/lib/types";
 import { priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -65,12 +73,7 @@ export const orderColumns: ColumnDef<Order>[] = [
     cell: ({ row }) => {
       const date = row.original.date;
 
-      return (
-        <div>{`${date.toLocaleDateString("th-TH")} ${date.toLocaleTimeString(
-          "th-TH",
-          { hour: "2-digit", minute: "2-digit" },
-        )}`}</div>
-      );
+      return <div>{`${date.toLocaleDateString("th-TH")}`}</div>;
     },
   },
   {
@@ -120,6 +123,31 @@ export const orderColumns: ColumnDef<Order>[] = [
           สถานะ
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return (
+        <RemoveDialog ids={[data.id]} api="orders">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>แก้ไขข้อมูล</DropdownMenuItem>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
+              </AlertDialogTrigger>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </RemoveDialog>
       );
     },
   },
