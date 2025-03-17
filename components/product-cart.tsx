@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import { PackagePlus, ShoppingCart } from "lucide-react";
 
@@ -17,7 +18,6 @@ import { useCart } from "@/hooks/use-cart";
 import { handleRemoveAll, priceFormatter } from "@/lib/utils";
 import { useProductList } from "@/hooks/use-product-list";
 import { useMultiFormStore } from "@/hooks/use-multi-form";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -26,6 +26,8 @@ const ProductCart = () => {
   const cart = useCart();
   const productList = useProductList();
   const router = useRouter();
+
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const sumsPrice = cart.items.reduce(
     (sum, item) => sum + item.price * item.amount,
@@ -36,8 +38,21 @@ const ProductCart = () => {
     router.replace("/order/quotation");
   };
 
-  const { vendor, name, date, address, taxId, phone, note } =
+  const { vendor, name, date, address, taxId, phone, note, reset } =
     useMultiFormStore();
+
+  useEffect(() => {
+    cart.removeAll();
+
+    if (
+      (!name || !date || !address || !taxId || !phone) &&
+      isRedirecting == false
+    ) {
+      router.push("/order/quotation");
+    } else if (isRedirecting == true) {
+      router.push("/order");
+    }
+  }, [name, date, address, taxId, phone, note, isRedirecting, router]);
 
   const handleCreateOrder = async () => {
     try {
@@ -53,23 +68,14 @@ const ProductCart = () => {
         cart: cart.items,
       };
       const response = await axios.post("/api/orders/", body);
-
+      setIsRedirecting(true);
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด");
     } finally {
-      useMultiFormStore.getState().reset();
-      router.push("/order");
+      reset();
     }
   };
-
-  useEffect(() => {
-    cart.removeAll();
-
-    if (!name || !date || !address || !taxId || !phone) {
-      router.push("/order/quotation");
-    }
-  }, [name, date, address, taxId, phone, note, router]);
 
   return (
     <Card className="col-span-3 h-fit">

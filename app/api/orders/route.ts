@@ -39,6 +39,7 @@ export async function POST(req: Request) {
                   },
                 });
 
+                // Return for CreateMany
                 return {
                   productId: item.id,
                   amount: item.amount,

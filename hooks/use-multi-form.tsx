@@ -7,7 +7,17 @@ type MultiStepForm = Partial<FormSchema> & {
   reset: () => void;
 };
 
+const initialState = {
+  vendor: undefined,
+  name: "",
+  date: undefined,
+  address: "",
+  taxId: "",
+  phone: "",
+  note: "",
+};
+
 export const useMultiFormStore = create<MultiStepForm>()((set) => ({
   setData: (data) => set(data),
-  reset: () => set({}),
+  reset: () => set(initialState),
 }));
