@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Home, Inbox, List, ShoppingCart } from "lucide-react";
+import { Home, Inbox, List, Settings, ShoppingCart } from "lucide-react";
 
 import {
   Sidebar,
@@ -25,6 +25,11 @@ const items = [
     title: "รายการสั่งซื้อ",
     url: "/order",
     icon: ShoppingCart,
+  },
+  {
+    title: "ตั้งค่า",
+    url: "/setting",
+    icon: Settings,
   },
 ];
 

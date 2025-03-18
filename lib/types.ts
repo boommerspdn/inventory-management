@@ -24,3 +24,5 @@ export type Cart = {
   amount: number;
   price: number;
 };
+
+export type QuotationNumber = { id: string; initial: string };
