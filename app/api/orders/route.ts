@@ -13,6 +13,7 @@ export async function POST(req: Request) {
       const quotation = await prismadb.quotationSetting.findUnique({
         where: { id: "global" },
       });
+      const defaultInitial = "XXXX";
 
       // Get the current and Buddhist year
       const currentYear = new Date(date).getFullYear();
@@ -23,9 +24,16 @@ export async function POST(req: Request) {
       const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59, 999); // Dec 31
 
       // Fetch the last order of the year
-      const lastOrder = await prismadb.order.findFirst({
-        where: { date: { gte: startOfYear, lte: endOfYear } },
+      const lastOrder = await prismadb.order.findMany({
+        where: {
+          date: { gte: startOfYear, lte: endOfYear },
+          number: {
+            startsWith: quotation ? quotation.initial : defaultInitial,
+          },
+        },
         select: { id: true, number: true },
+        orderBy: { date: "desc" },
+        take: 1,
       });
 
       // Helper function to format and pad order number
@@ -33,15 +41,9 @@ export async function POST(req: Request) {
         number.toString().padStart(5, "0");
 
       // Default order number (1) and initial value
-      const defaultInitial = "XXXX";
-      const orderInitial = lastOrder ? lastOrder.number.split("-")[0] : null;
-      const isValidOrder =
-        (lastOrder && !quotation) ||
-        (lastOrder && quotation && quotation.initial === orderInitial);
-
       // Calculate the new order number
-      const orderNumber = isValidOrder
-        ? parseInt(lastOrder.number.slice(-5)) + 1
+      const orderNumber = lastOrder[0]
+        ? parseInt(lastOrder[0].number.slice(-5)) + 1
         : 1;
 
       // Return the formatted order number
