@@ -8,6 +8,49 @@ export async function POST(req: Request) {
 
     const { name, date, price, address, taxId, phone, note, cart } = body;
 
+    const generateOrderNumber = async () => {
+      // Fetch quotation setting
+      const quotation = await prismadb.quotationSetting.findUnique({
+        where: { id: "global" },
+      });
+
+      // Get the current and Buddhist year
+      const currentYear = new Date(date).getFullYear();
+      const bhuddistYear = currentYear + 543;
+
+      // Define start and end of the year for filtering orders
+      const startOfYear = new Date(currentYear, 0, 1); // Jan 1
+      const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59, 999); // Dec 31
+
+      // Fetch the last order of the year
+      const lastOrder = await prismadb.order.findFirst({
+        where: { date: { gte: startOfYear, lte: endOfYear } },
+        select: { id: true, number: true },
+      });
+
+      // Helper function to format and pad order number
+      const formatOrderNumber = (number: number) =>
+        number.toString().padStart(5, "0");
+
+      // Default order number (1) and initial value
+      const defaultInitial = "XXXX";
+      const orderInitial = lastOrder ? lastOrder.number.split("-")[0] : null;
+      const isValidOrder =
+        (lastOrder && !quotation) ||
+        (lastOrder && quotation && quotation.initial === orderInitial);
+
+      // Calculate the new order number
+      const orderNumber = isValidOrder
+        ? parseInt(lastOrder.number.slice(-5)) + 1
+        : 1;
+
+      // Return the formatted order number
+      const paddedOrderNumber = formatOrderNumber(orderNumber);
+      return `${
+        quotation ? quotation.initial : defaultInitial
+      }-${bhuddistYear}-${paddedOrderNumber}`;
+    };
+
     const order = await prismadb.order.create({
       data: {
         name,
@@ -17,7 +60,7 @@ export async function POST(req: Request) {
         taxId,
         phone,
         note: note ? note : undefined,
-        number: "sf",
+        number: await generateOrderNumber(),
         status: "รอการยืนยัน",
         carts: {
           createMany: {
