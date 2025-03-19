@@ -1,31 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { object, z } from "zod";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import path from "path";
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
+
 import { ImageOff, LoaderCircle } from "lucide-react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { useProductList } from "@/hooks/use-product-list";
-import { useCart } from "@/hooks/use-cart";
-import { handleRemoveAll } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z
@@ -45,9 +41,7 @@ const formSchema = z.object({
     }),
 });
 
-type ProductFormProps = {};
-
-const ProductForm = ({}: ProductFormProps) => {
+const ProductForm = () => {
   const [imageUpload, setImageUpload] = useState<string>();
   const [loading, setLoading] = useState(false);
 

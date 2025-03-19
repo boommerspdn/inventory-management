@@ -3,7 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { QuotationSetting } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,12 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import { Prisma } from "@prisma/client";
-import { QuotationNumber } from "@/lib/types";
 
 const FormSchema = z.object({
   initial: z.string().min(2, {
@@ -29,7 +27,7 @@ const FormSchema = z.object({
 });
 
 type QuotationNumberSettingProps = {
-  data: QuotationNumber | null;
+  data: QuotationSetting | null;
 };
 
 const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
@@ -65,7 +63,7 @@ const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
             name="initial"
             render={({ field }) => (
               <FormItem className="col-span-3">
-                <FormLabel>ขึ้นต้น</FormLabel>
+                <FormLabel>ขึ้นต้น (รหัสใบกำกับภาษี)</FormLabel>
                 <FormControl>
                   <Input placeholder="EXMP" {...field} />
                 </FormControl>

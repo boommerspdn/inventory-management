@@ -54,3 +54,12 @@ model QuotationSetting {
   id      String @id
   initial String
 }
+
+model Vendor {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  taxId     String
+  phone     String
+  createdAt DateTime @default(now())
+}

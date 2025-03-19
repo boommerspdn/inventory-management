@@ -1,8 +1,8 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { SunMoon } from "lucide-react";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
+import { SunMoon } from "lucide-react";
 
 const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();

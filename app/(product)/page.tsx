@@ -1,9 +1,7 @@
+import prismadb from "@/lib/prismadb";
 import { productColumns } from "./product-columns";
-
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
-import prismadb from "@/lib/prismadb";
-import { Product } from "@/lib/types";
 
 const ProductPage = async () => {
   const products = await prismadb.product.findMany({
@@ -15,6 +13,7 @@ const ProductPage = async () => {
       <Header
         title="รายการสินค้า"
         description="สินค้าที่มีอยู่ในคลัง สามารถเพิ่ม ลบ หรือแก้ไขสถานะได้ที่นี่"
+        length={products.length}
       />
       <DataTable
         columns={productColumns}

@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { Cart } from "@/lib/types";
+import { CartProduct } from "@/app/order/cart/page";
 
 export interface ProductListState {
-  products: Cart[];
-  setProducts: (products: Cart[]) => void;
+  products: CartProduct[];
+  setProducts: (products: CartProduct[]) => void;
   decreaseAmount: (id: string, value: number) => void;
   increaseAmount: (id: string, value: number) => void;
 }

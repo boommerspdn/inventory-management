@@ -10,15 +10,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Order } from "@/lib/types";
 import { priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { OrderTable } from "./page";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-
-export const orderColumns: ColumnDef<Order>[] = [
+export const orderColumns: ColumnDef<OrderTable>[] = [
   {
     id: "select",
     header: ({ table }) => (

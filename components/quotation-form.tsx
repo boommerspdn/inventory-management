@@ -6,10 +6,8 @@ import { th } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { useMultiFormStore } from "@/hooks/use-multi-form";
 import { cn } from "@/lib/utils";
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -36,6 +34,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon } from "lucide-react";
+import Link from "next/link";
 
 export const formSchema = z.object({
   vendor: z.string({ required_error: "กรุณาเลือกข้อมูลผู้ออก" }),
@@ -44,7 +43,7 @@ export const formSchema = z.object({
     .min(1, { message: "ต้องมีตัวอักษรมากกว่า 1 ตัวอักษร" })
     .max(50, { message: "ต้องมีตัวอักษรไม่มากกว่า 50 ตัวอักษร" }),
   date: z.date({
-    required_error: "กรุณาเลือกวันที่ออกใบเสนอราคา",
+    required_error: "กรุณาเลือกวันที่ออกใบกำกับภาษี",
   }),
   address: z
     .string()
@@ -115,6 +114,13 @@ const QuotationForm = () => {
                     Champion Advanced Co., Ltd.
                   </SelectItem>
                   <SelectItem value="tongpoonhotel">Tongpoon Hotel</SelectItem>
+                  <Separator className="my-2" />
+                  <Link
+                    href="/order/quotation/vendor"
+                    className="ml-8 pr-2 text-sm text-muted-foreground hover:text-foreground underline transition-colors"
+                  >
+                    สร้าง/แก้ไข ผู้ออกใบกำกับภาษี
+                  </Link>
                 </SelectContent>
               </Select>
               <FormMessage />

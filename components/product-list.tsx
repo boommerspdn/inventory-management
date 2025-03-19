@@ -1,14 +1,12 @@
 "use client";
-
-import { cartColumns } from "@/app/order/cart/cart-columns";
-import { DataTable } from "@/components/ui/data-table";
-import { Cart } from "@/lib/types";
-import { useProductList } from "@/hooks/use-product-list";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useProductList } from "@/hooks/use-product-list";
+import { cartColumns } from "@/app/order/cart/cart-columns";
+import { CartProduct } from "@/app/order/cart/page";
+import { DataTable } from "@/components/ui/data-table";
 
 type ProductListProps = {
-  data: Cart[];
+  data: CartProduct[];
 };
 
 const ProductList = ({ data }: ProductListProps) => {

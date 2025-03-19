@@ -1,8 +1,13 @@
 "use client";
 
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { faker } from "@faker-js/faker";
-import { PackagePlus, ShoppingCart } from "lucide-react";
+import toast from "react-hot-toast";
+import { useCart } from "@/hooks/use-cart";
+import { useMultiFormStore } from "@/hooks/use-multi-form";
+import { useProductList } from "@/hooks/use-product-list";
+import { handleRemoveAll, priceFormatter } from "@/lib/utils";
 
 import CartItem from "@/components/cart-item";
 import { Button } from "@/components/ui/button";
@@ -14,13 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useCart } from "@/hooks/use-cart";
-import { handleRemoveAll, priceFormatter } from "@/lib/utils";
-import { useProductList } from "@/hooks/use-product-list";
-import { useMultiFormStore } from "@/hooks/use-multi-form";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { PackagePlus, ShoppingCart } from "lucide-react";
 
 const ProductCart = () => {
   const cart = useCart();
@@ -125,7 +124,7 @@ const ProductCart = () => {
             disabled={cart.items.length === 0}
             onClick={() => handleCreateOrder()}
           >
-            สร้างใบเสนอราคา
+            สร้างใบกำกับภาษี
           </Button>
         </div>
       </CardFooter>

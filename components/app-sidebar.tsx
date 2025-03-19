@@ -1,7 +1,5 @@
 import Link from "next/link";
-
-import { Home, Inbox, List, Settings, ShoppingCart } from "lucide-react";
-
+import ThemeSwitcher from "./theme-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import ThemeSwitcher from "./theme-switcher";
+import { List, Settings, ShoppingCart } from "lucide-react";
 
 // Menu items.
 const items = [

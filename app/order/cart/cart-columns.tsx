@@ -1,19 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useCart } from "@/hooks/use-cart";
 import { useProductList } from "@/hooks/use-product-list";
-import { Cart } from "@/lib/types";
 import { priceFormatter } from "@/lib/utils";
-import { ColumnDef } from "@tanstack/react-table";
+import { CartProduct } from "./page";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ArrowUpDown, PackagePlus } from "lucide-react";
-import { useState } from "react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const cartColumns: ColumnDef<Cart>[] = [
+export const cartColumns: ColumnDef<CartProduct>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -96,7 +96,7 @@ export const cartColumns: ColumnDef<Cart>[] = [
         }
       };
 
-      const addToCart = (cartItem: Cart) => {
+      const addToCart = (cartItem: CartProduct) => {
         const valueToAdd = parseInt(value);
 
         if (value !== "" && value !== "0" && valueToAdd <= cartItem.amount) {

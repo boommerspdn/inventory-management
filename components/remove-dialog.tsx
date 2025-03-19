@@ -1,6 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,15 +10,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { DropdownMenuItem } from "./ui/dropdown-menu";
-import { useRouter } from "next/navigation";
 
 type RemoveDialog = {
   children: React.ReactNode;
   ids: string[];
-  api: "products" | "orders";
+  api: "products" | "orders" | "vendor";
 };
 
 const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {

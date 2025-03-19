@@ -2,9 +2,7 @@ import ProductForm from "@/components/product-form";
 import Header from "@/components/header";
 import { Separator } from "@/components/ui/separator";
 
-type ProductPageProps = {};
-
-const ProductPage = ({}: ProductPageProps) => {
+const ProductPage = () => {
   return (
     <div className="space-y-4">
       <Header

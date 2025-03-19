@@ -37,7 +37,7 @@ interface DataTableProps<TData, TValue>
     href: string;
   };
   disableDelete?: Boolean;
-  api: "products" | "orders";
+  api: "products" | "orders" | "vendor";
 }
 
 export function DataTable<TData, TValue>({

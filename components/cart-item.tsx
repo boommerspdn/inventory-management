@@ -1,11 +1,10 @@
 "use client";
 
-import { cn, priceFormatter } from "@/lib/utils";
-import { Trash } from "lucide-react";
 import { HTMLAttributes } from "react";
-import { Button } from "./ui/button";
 import { useCart } from "@/hooks/use-cart";
 import { useProductList } from "@/hooks/use-product-list";
+import { cn, priceFormatter } from "@/lib/utils";
+import { Trash } from "lucide-react";
 
 type CartItemProps = {
   itemId: string;

@@ -1,10 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
-import { Product } from "@/lib/types";
-import Image from "next/image";
-
+import { Product } from "@prisma/client";
+import { priceFormatter } from "@/lib/utils";
 import RemoveDialog from "@/components/remove-dialog";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -15,7 +13,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { priceFormatter } from "@/lib/utils";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 // This type is used to define the shape of our data.

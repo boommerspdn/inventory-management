@@ -6,9 +6,8 @@ import {
   ChevronsRight,
   Trash,
 } from "lucide-react";
-
+import { cn } from "@/lib/utils";
 import RemoveDialog from "./remove-dialog";
-
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -18,13 +17,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Product } from "@/lib/types";
-import { cn } from "@/lib/utils";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   disableDelete?: Boolean;
-  api: "products" | "orders";
+  api: "products" | "orders" | "vendor";
 }
 
 export function DataTablePagination<TData>({
@@ -34,7 +31,7 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   const arraySelectedUsersId = table
     .getSelectedRowModel()
-    .rows.map(({ original }) => (original as Product).id);
+    .rows.map(({ original }) => (original as { id: string }).id);
 
   return (
     <div

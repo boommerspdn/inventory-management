@@ -1,6 +1,6 @@
-import prismadb from "@/lib/prismadb";
-import { Cart } from "@/lib/types";
 import { NextResponse } from "next/server";
+import prismadb from "@/lib/prismadb";
+import { CartProduct } from "@/app/order/cart/page";
 
 export async function POST(req: Request) {
   try {
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
         carts: {
           createMany: {
             data: await Promise.all(
-              cart.map(async (item: Cart) => {
+              cart.map(async (item: CartProduct) => {
                 // Fetch old amount first
                 const product = await prismadb.product.findUnique({
                   where: { id: item.id },
