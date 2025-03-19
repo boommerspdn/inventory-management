@@ -35,6 +35,11 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
+import { VendorSelectBox } from "@/app/order/quotation/page";
+
+type QuotationFormProps = {
+  vendors: VendorSelectBox[];
+};
 
 export const formSchema = z.object({
   vendor: z.string({ required_error: "กรุณาเลือกข้อมูลผู้ออก" }),
@@ -66,7 +71,7 @@ export const formSchema = z.object({
 
 export type FormSchema = z.infer<typeof formSchema>;
 
-const QuotationForm = () => {
+const QuotationForm = ({ vendors }: QuotationFormProps) => {
   const { vendor, name, date, address, taxId, phone, note } =
     useMultiFormStore();
 
@@ -110,10 +115,12 @@ const QuotationForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="championadvance">
-                    Champion Advanced Co., Ltd.
-                  </SelectItem>
-                  <SelectItem value="tongpoonhotel">Tongpoon Hotel</SelectItem>
+                  {vendors.map((vendor) => (
+                    <SelectItem value={vendor.id} key={vendor.id}>
+                      {vendor.name}
+                    </SelectItem>
+                  ))}
+
                   <Separator className="my-2" />
                   <Link
                     href="/order/quotation/vendor"

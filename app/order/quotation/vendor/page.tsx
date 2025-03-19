@@ -4,7 +4,9 @@ import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 
 const VendorPage = async () => {
-  const vendors = await prismadb.vendor.findMany();
+  const vendors = await prismadb.vendor.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div className="space-y-6">

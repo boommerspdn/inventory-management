@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import prismadb from "@/lib/prismadb";
 import { Prisma } from "@prisma/client";
 
-const selectProduct = {
+const select = {
   id: true,
   title: true,
   amount: true,
@@ -14,13 +14,13 @@ const selectProduct = {
 };
 
 export type CartProduct = Prisma.ProductGetPayload<{
-  select: typeof selectProduct;
+  select: typeof select;
 }>;
 
 const CartPage = async () => {
   const products = await prismadb.product.findMany({
     orderBy: { date: "desc" },
-    select: selectProduct,
+    select,
   });
 
   return (

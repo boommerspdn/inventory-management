@@ -4,7 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { orderColumns } from "./order-columns";
 import prismadb from "@/lib/prismadb";
 
-const orderSelect = {
+const select = {
   id: true,
   name: true,
   date: true,
@@ -14,19 +14,12 @@ const orderSelect = {
 };
 
 export type OrderTable = Prisma.OrderGetPayload<{
-  select: typeof orderSelect;
+  select: typeof select;
 }>;
 
 const OrderPage = async () => {
   const orders = await prismadb.order.findMany({
-    select: {
-      id: true,
-      name: true,
-      date: true,
-      number: true,
-      price: true,
-      status: true,
-    },
+    select,
     orderBy: { createdAt: "desc" },
   });
 
