@@ -4,7 +4,7 @@ import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 
 const VendorPage = async () => {
-  const vendor = await prismadb.vendor.findMany();
+  const vendors = await prismadb.vendor.findMany();
 
   return (
     <div className="space-y-6">
@@ -13,7 +13,7 @@ const VendorPage = async () => {
         description="สร้าง/แก้ไข หรือลบข้อมูลผู้ออกใบกำกับภาษีได้ที่นี่"
       />
       <DataTable
-        data={vendor}
+        data={vendors}
         columns={vendorColumns}
         api="vendor"
         buttonLink={{

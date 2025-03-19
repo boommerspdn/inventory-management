@@ -12,6 +12,7 @@ import {
 import { Vendor } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const vendorColumns: ColumnDef<Vendor>[] = [
   {
@@ -20,7 +21,7 @@ export const vendorColumns: ColumnDef<Vendor>[] = [
   },
   {
     accessorKey: "address",
-    header: "ที้อยู่ผู้ออก",
+    header: "ที่อยู่ผู้ออก",
   },
   {
     accessorKey: "taxId",
@@ -34,6 +35,7 @@ export const vendorColumns: ColumnDef<Vendor>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const router = useRouter();
 
       return (
         <RemoveDialog ids={[data.id]} api="vendor">
@@ -45,7 +47,13 @@ export const vendorColumns: ColumnDef<Vendor>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>แก้ไขข้อมูล</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  router.push(`/order/quotation/vendor/${data.id}`)
+                }
+              >
+                แก้ไขข้อมูล
+              </DropdownMenuItem>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
               </AlertDialogTrigger>

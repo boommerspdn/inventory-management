@@ -244,9 +244,9 @@ const QuotationForm = () => {
             )}
           />
         </div>
-        <Button type="submit" className="px-12">
-          ต่อไป
-        </Button>
+        <div className="col-start-1 col-span-full">
+          <Button type="submit">ต่อไป</Button>
+        </div>
       </form>
     </Form>
   );
