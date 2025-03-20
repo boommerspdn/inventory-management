@@ -32,7 +32,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ToasterProvider />
-          <SidebarProvider>
+          <SidebarProvider className="h-full">
             <AppSidebar />
             <main className="size-full px-6 py-8">{children}</main>
           </SidebarProvider>

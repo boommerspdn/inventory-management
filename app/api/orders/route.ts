@@ -6,7 +6,8 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { name, date, price, address, taxId, phone, note, cart } = body;
+    const { vendor, name, date, price, address, taxId, phone, note, cart } =
+      body;
 
     const generateOrderNumber = async () => {
       // Fetch quotation setting
@@ -56,6 +57,7 @@ export async function POST(req: Request) {
     const order = await prismadb.order.create({
       data: {
         name,
+        vendorId: vendor,
         date,
         price,
         address,

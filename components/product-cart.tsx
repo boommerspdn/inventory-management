@@ -44,7 +44,7 @@ const ProductCart = () => {
     cart.removeAll();
 
     if (
-      (!name || !date || !address || !taxId || !phone) &&
+      (!vendor || !name || !date || !address || !taxId || !phone) &&
       isRedirecting == false
     ) {
       router.push("/order/quotation");

@@ -9,7 +9,7 @@ const Header = ({ title, description, length }: HeaderProps) => {
     <div className="flex flex-col gap-y-2.5">
       <h2 className="text-2xl font-semibold leading-none tracking-tight">
         {title}
-        {length && <> ({length})</>}
+        {length !== undefined && <span>&nbsp;&#40;{length}&#41;</span>}
       </h2>
       <p className="text-sm text-muted-foreground">{description}</p>
     </div>

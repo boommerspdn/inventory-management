@@ -27,6 +27,7 @@ model Product {
 
 model Order {
   id        String   @id @default(uuid())
+  vendorId  String
   name      String
   date      DateTime
   number    String
@@ -38,6 +39,7 @@ model Order {
   status    String
   createdAt DateTime @default(now())
   carts     Cart[]
+  vendor    Vendor   @relation(fields: [vendorId], references: [id])
 }
 
 model Cart {
@@ -62,4 +64,5 @@ model Vendor {
   taxId     String
   phone     String
   createdAt DateTime @default(now())
+  order     Order[]
 }

@@ -70,7 +70,8 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
       console.log(error);
     } finally {
       setLoading(false);
-      router.push("/order/quotation/vendor");
+      router.refresh();
+      router.push("/order/quotation");
     }
   };
 
