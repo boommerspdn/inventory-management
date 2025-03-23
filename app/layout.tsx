@@ -34,7 +34,7 @@ export default function RootLayout({
           <ToasterProvider />
           <SidebarProvider className="h-full">
             <AppSidebar />
-            <main className="size-full px-6 py-8">{children}</main>
+            <main className="size-full">{children}</main>
           </SidebarProvider>
         </ThemeProvider>
       </body>
