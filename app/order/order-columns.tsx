@@ -105,7 +105,7 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
     cell: ({ row }) => {
       const price = row.original.price;
 
-      return <div>{priceFormatter(price)}</div>;
+      return <div>{priceFormatter(price)}฿</div>;
     },
   },
   {

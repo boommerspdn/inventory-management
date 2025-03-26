@@ -19,7 +19,7 @@ const InvoicePage = async ({
   params: Promise<{ orderId: string }>;
 }) => {
   const invoice = await prismadb.order.findUnique({
-    where: { id: "511cbf06-3445-4050-a69e-9bb4d5387213" },
+    where: { id: "2ee76dfa-1c6b-43df-8643-5c55276099f6" },
     include,
   });
 

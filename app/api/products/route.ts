@@ -11,12 +11,14 @@ export async function POST(req: Request) {
       return new NextResponse("Missing body", { status: 400 });
     }
 
+    const covertedPrice = Math.round(price * 100);
+
     const product = await prismadb.product.create({
       data: {
         title,
         number,
         amount,
-        price,
+        price: covertedPrice,
         image,
       },
     });

@@ -8,12 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const priceFormatter = (price: number) => {
-  const formatted = new Intl.NumberFormat("th-TH", {
-    style: "currency",
-    currency: "THB",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(price);
+  const formatted = (price / 100).toFixed(2);
 
   return formatted;
 };

@@ -104,7 +104,9 @@ const ProductCart = () => {
             ))}
             <div className="flex justify-between text-sm py-2">
               <span>ราคารวม</span>
-              <span className="font-semibold">{priceFormatter(sumsPrice)}</span>
+              <span className="font-semibold">
+                {priceFormatter(sumsPrice)}฿
+              </span>
             </div>
           </>
         )}

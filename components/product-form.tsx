@@ -62,6 +62,7 @@ const ProductForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
+      console.log(values);
       const filename = values.image[0].name;
       const extension = path.extname(filename);
       const newFileName = `${uuidv4()}${extension}`;
@@ -118,7 +119,7 @@ const ProductForm = () => {
             <FormItem className="col-start-1 col-span-3">
               <FormLabel>รหัสสินค้า</FormLabel>
               <FormControl>
-                <Input placeholder="กรอกรหัสสินค้า" min={0} {...field} />
+                <Input placeholder="กรอกรหัสสินค้า" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -135,6 +136,7 @@ const ProductForm = () => {
                   placeholder="กรอกราคาสินค้า"
                   type="number"
                   min={0}
+                  step={"any"}
                   {...field}
                 />
               </FormControl>

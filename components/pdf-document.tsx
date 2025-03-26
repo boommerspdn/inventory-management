@@ -15,6 +15,7 @@ import dynamic from "next/dynamic";
 import { Prisma } from "@prisma/client";
 import { Invoice } from "@/app/invoice/[orderId]/page";
 import { Loader2 } from "lucide-react";
+import { priceFormatter } from "@/lib/utils";
 
 Font.register({
   family: "Sarabun",
@@ -197,10 +198,10 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
   const pricesValue: { title: string; value: string }[] = [
     {
       title: "ราคารวมทั้งสิ้น ",
-      value: sumPrice?.toString() || "",
+      value: priceFormatter(sumPrice || 0),
     },
-    { title: "จำนวนภาษีมูลค่าเพิ่ม 7% ", value: taxPrice.toString() },
-    { title: "จำนวนเงินทั้งสิ้น ", value: totalPrice.toString() },
+    { title: "จำนวนภาษีมูลค่าเพิ่ม 7% ", value: priceFormatter(taxPrice) },
+    { title: "จำนวนเงินทั้งสิ้น ", value: priceFormatter(totalPrice) },
   ];
   return (
     <PDFViewer className="size-full">
@@ -289,12 +290,18 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                       {cart?.amount || ""}
                     </Text>
                     <Text style={[styles.cell, styles.centerText]}>
-                      {cart?.products?.price || ""}
+                      {cart?.products
+                        ? priceFormatter(cart.products.price)
+                        : ""}
                     </Text>
                     <Text
                       style={[styles.cell, styles.rightText, styles.priceCell]}
                     >
-                      {cart ? cart.amount * (cart.products?.price || 0) : ""}
+                      {cart
+                        ? priceFormatter(
+                            cart.amount * (cart.products?.price || 0),
+                          )
+                        : ""}
                     </Text>
                   </View>
                 );

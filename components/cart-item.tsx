@@ -45,7 +45,7 @@ const CartItem = ({
           <span>ลบสินค้า</span>
         </div>
       </div>
-      <div className="font-semibold">{priceFormatter(price)}</div>
+      <div className="font-semibold">{priceFormatter(price)}฿</div>
     </div>
   );
 };
