@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anuphan } from "next/font/google";
+import { Anuphan, Sarabun } from "next/font/google";
 
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
