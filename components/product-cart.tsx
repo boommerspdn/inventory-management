@@ -69,6 +69,7 @@ const ProductCart = () => {
       const response = await axios.post("/api/orders/", body);
       setIsRedirecting(true);
       toast.success("เพิ่มสินค้าสำเร็จ");
+      window.open(`/invoice/${response.data.id}`, "_blank");
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด");
     } finally {
