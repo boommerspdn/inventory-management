@@ -38,3 +38,34 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const body = await req.json();
+
+    const { fileName } = body;
+
+    if (!fileName) {
+      return new NextResponse("Missing fileName", { status: 400 });
+    }
+
+    const filePath = path.join(process.cwd(), "public", fileName);
+
+    console.log(filePath);
+    // Check if file exists
+    await fs.access(filePath); // Throws an error if file does not exist
+
+    // Delete the file
+    await fs.unlink(filePath);
+
+    return NextResponse.json({
+      message: "File deleted successfully",
+    });
+  } catch (error) {
+    console.error("delete error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
+  }
+}

@@ -30,6 +30,38 @@ export async function POST(req: Request) {
   }
 }
 
+export async function PATCH(req: Request) {
+  try {
+    const body = await req.json();
+
+    const { id, title, number, amount, price, image } = body;
+
+    if (!id || !title || !number || !amount || !price || !image) {
+      return new NextResponse("Missing body", { status: 400 });
+    }
+
+    const covertedPrice = Math.round(price * 100);
+
+    const product = await prismadb.product.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        number,
+        amount,
+        price: covertedPrice,
+        image,
+      },
+    });
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.log(error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
 export async function DELETE(req: Request) {
   try {
     const body = await req.json();

@@ -22,7 +22,7 @@ const ProductPage = async () => {
       <DataTable
         columns={productColumns}
         data={products}
-        buttonLink={{ href: "/product", label: "เพิ่มสินค้า" }}
+        buttonLink={{ href: "/product/new", label: "เพิ่มสินค้า" }}
         api="products"
       />
     </div>

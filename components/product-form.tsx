@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import path from "path";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
@@ -22,6 +22,12 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { ImageOff, LoaderCircle } from "lucide-react";
+import { Product } from "@prisma/client";
+import { priceFormatter } from "@/lib/utils";
+
+type ProductFormProps = {
+  initialData?: Product | null;
+};
 
 const formSchema = z.object({
   title: z
@@ -41,52 +47,95 @@ const formSchema = z.object({
     }),
 });
 
-const ProductForm = () => {
-  const [imageUpload, setImageUpload] = useState<string>();
+const ProductForm = ({ initialData }: ProductFormProps) => {
+  const [imageUpload, setImageUpload] = useState<string | undefined>(
+    initialData?.image,
+  );
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
+  const convertedPrice = initialData
+    ? parseFloat(priceFormatter(initialData.price))
+    : 0;
+  const buttonLabel = initialData ? "บันทึกรายการ" : "เพิ่มสินค้า";
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      number: "",
-      amount: 0,
-      price: 0,
-      image: null,
+      title: initialData?.title || "",
+      number: initialData?.number || "",
+      amount: initialData?.amount || 0,
+      price: convertedPrice,
+      image: initialData?.image || null,
     },
   });
+
+  useEffect(() => {
+    if (initialData?.image) {
+      // Manually create a mock `File` object from the image path
+      const file = new File([""], initialData.image, { type: "image/jpeg" }); // Adjust type as needed
+
+      // Use DataTransfer to create a FileList
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+
+      // Set the file in React Hook Form
+      form.setValue("image", dataTransfer.files);
+    }
+  }, [initialData, form.setValue]);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      console.log(values);
       const filename = values.image[0].name;
       const extension = path.extname(filename);
       const newFileName = `${uuidv4()}${extension}`;
 
-      const body: z.infer<typeof formSchema> = {
-        title: values.title,
-        number: values.number,
-        amount: values.amount,
-        price: values.price,
-        image: `/uploads/${newFileName}`,
-      };
+      if (initialData) {
+        const body = {
+          id: initialData.id,
+          title: values.title,
+          number: values.number,
+          amount: values.amount,
+          price: values.price,
+          image:
+            initialData.image === filename
+              ? initialData.image
+              : `/uploads/${newFileName}`,
+        };
+        const response = await axios.patch("/api/products/", body);
+      } else {
+        const body: z.infer<typeof formSchema> = {
+          title: values.title,
+          number: values.number,
+          amount: values.amount,
+          price: values.price,
+          image: `/uploads/${newFileName}`,
+        };
+        const response = await axios.post("/api/products/", body);
+      }
 
-      const response = await axios.post("/api/products/", body);
+      if (!initialData || initialData.image !== filename) {
+        const formData = new FormData();
+        formData.append("file", values.image[0]);
+        formData.append("fileName", newFileName);
 
-      const formData = new FormData();
-      formData.append("file", values.image[0]);
-      formData.append("fileName", newFileName);
+        const uploadResponse = await axios.post("/api/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
-      const uploadResponse = await axios.post("/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
+        if (initialData?.image !== filename) {
+          const response = await axios.delete("/api/upload/", {
+            data: { fileName: initialData?.image },
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      }
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {
+      console.log(error);
       toast.error("เกิดข้อผิดพลาด");
     } finally {
       setLoading(false);
@@ -168,6 +217,8 @@ const ProductForm = () => {
                   <Image
                     src={imageUpload}
                     alt={imageUpload}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    priority={initialData ? true : false}
                     fill
                     style={{
                       objectFit: "contain",
@@ -197,9 +248,8 @@ const ProductForm = () => {
             </FormItem>
           )}
         />
-
         <Button type="submit" className="col-start-1" disabled={loading}>
-          {loading ? <LoaderCircle className="animate-spin" /> : "เพิ่มสินค้า"}
+          {loading ? <LoaderCircle className="animate-spin" /> : buttonLabel}
         </Button>
       </form>
     </Form>

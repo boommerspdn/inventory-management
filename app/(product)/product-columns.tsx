@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -150,6 +151,7 @@ export const productColumns: ColumnDef<Product>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const router = useRouter();
 
       return (
         <RemoveDialog ids={[data.id]} api="products">
@@ -161,7 +163,11 @@ export const productColumns: ColumnDef<Product>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>แก้ไขข้อมูล</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push(`/product/${data.id}`)}
+              >
+                แก้ไขข้อมูล
+              </DropdownMenuItem>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
               </AlertDialogTrigger>
