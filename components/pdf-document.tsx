@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     height: "35px",
     gap: "5px",
   },
+  fontSmall: { fontSize: 9 },
 });
 
 type PDFDocumentProps = {
@@ -189,7 +190,7 @@ type PDFDocumentProps = {
 
 const PDFDocument = ({ data }: PDFDocumentProps) => {
   const sumPrice = data?.carts.reduce(
-    (sum, item) => sum + (item.products?.price || 0),
+    (sum, item) => sum + (item.products?.price || 0) * (item.amount || 0),
     0,
   );
   const taxPrice = (sumPrice || 0) * 0.07;
@@ -212,7 +213,7 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
             <Text>{data?.vendor.address} </Text>
             <View style={styles.vendorTaxPhone}>
               <Text>โทร. {data?.vendor.phone}</Text>
-              <Text>เลขประจำตัวผู้เสียภาษี {data?.vendor.taxId}</Text>
+              <Text>เลขประจำตัวผู้เสียภาษี {data?.vendor.taxId} </Text>
             </View>
           </View>
           <View style={styles.title}>
@@ -222,25 +223,29 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
           <View style={styles.taxDate}>
             <View style={styles.between}>
               <Text style={styles.betweenTitle}>เลขที่</Text>
-              <Text>{data?.number}</Text>
+              <Text>{data?.number} </Text>
             </View>
             <View style={styles.between}>
-              <Text style={styles.betweenTitle}>วันที่</Text>
-              <Text>{data?.date.toLocaleDateString("th-TH")}</Text>
+              <Text style={styles.betweenTitle}>วันที่ </Text>
+              <Text>{data?.date.toLocaleDateString("th-TH")} </Text>
             </View>
           </View>
           <View style={styles.buyerInfo}>
             <View style={styles.buyerInfoItem}>
-              <Text style={styles.buyerTitle}>นามผู้ซื้อ</Text>
-              <Text>{data?.name}</Text>
+              <Text style={styles.buyerTitle}>นามผู้ซื้อ </Text>
+              <Text>{data?.name} </Text>
             </View>
             <View style={styles.buyerInfoItem}>
-              <Text style={styles.buyerTitle}>ที่อยู่ผู้ซื้อ</Text>
-              <Text>{data?.address}</Text>
+              <Text style={styles.buyerTitle}>ที่อยู่ผู้ซื้อ </Text>
+              <Text
+                style={(data?.address.length || 0) > 80 ? styles.fontSmall : {}}
+              >
+                {data?.address}{" "}
+              </Text>
             </View>
             <View style={styles.buyerInfoItem}>
-              <Text style={styles.TaxTitle}>เลขที่ผู้เสียภาษีผู้ซื้อ</Text>
-              <Text>{data?.taxId}</Text>
+              <Text style={styles.TaxTitle}>เลขที่ผู้เสียภาษีผู้ซื้อ </Text>
+              <Text>{data?.taxId} </Text>
             </View>
           </View>
           {/* table */}
@@ -281,18 +286,26 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                     key={cart?.id || index}
                   >
                     <Text style={[styles.cell, styles.centerText]}>
-                      {cart ? index + 1 : ""}
+                      {cart ? index + 1 : ""}{" "}
                     </Text>
                     <Text style={[styles.cell, styles.nameCell]}>
-                      {cart?.products?.title || ""}
+                      {cart?.products?.title || ""}{" "}
                     </Text>
                     <Text style={[styles.cell, styles.centerText]}>
-                      {cart?.amount || ""}
+                      {cart?.amount || ""}{" "}
                     </Text>
-                    <Text style={[styles.cell, styles.centerText]}>
+                    <Text
+                      style={[
+                        styles.cell,
+                        styles.centerText,
+                        (cart?.products?.price.toString().length ?? 0) > 6
+                          ? styles.fontSmall
+                          : {},
+                      ]}
+                    >
                       {cart?.products
                         ? priceFormatter(cart.products.price)
-                        : ""}
+                        : ""}{" "}
                     </Text>
                     <Text
                       style={[styles.cell, styles.rightText, styles.priceCell]}
@@ -301,7 +314,7 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                         ? priceFormatter(
                             cart.amount * (cart.products?.price || 0),
                           )
-                        : ""}
+                        : ""}{" "}
                     </Text>
                   </View>
                 );
@@ -331,7 +344,7 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                     ]}
                   />
                   <Text style={[styles.cell, styles.leftText, { flex: 3 }]}>
-                    {priceValue.title}
+                    {priceValue.title}{" "}
                   </Text>
                   <Text
                     style={[
@@ -341,7 +354,7 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                       styles.rightText,
                     ]}
                   >
-                    {priceValue.value}
+                    {priceValue.value}{" "}
                   </Text>
                 </View>
               </View>

@@ -106,6 +106,13 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
               : `/uploads/${newFileName}`,
         };
         const response = await axios.patch("/api/products/", body);
+
+        if (initialData?.image !== filename) {
+          const response = await axios.delete("/api/upload/", {
+            data: { fileName: initialData?.image },
+            headers: { "Content-Type": "application/json" },
+          });
+        }
       } else {
         const body: z.infer<typeof formSchema> = {
           title: values.title,
@@ -125,14 +132,8 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
         const uploadResponse = await axios.post("/api/upload", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-
-        if (initialData?.image !== filename) {
-          const response = await axios.delete("/api/upload/", {
-            data: { fileName: initialData?.image },
-            headers: { "Content-Type": "application/json" },
-          });
-        }
       }
+
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {
       console.log(error);
