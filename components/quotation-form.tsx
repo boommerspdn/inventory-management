@@ -35,10 +35,13 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
-import { VendorSelectBox } from "@/app/order/quotation/page";
+import { VendorSelectBox } from "@/app/order/quotation/[orderId]/page";
+import { useEffect } from "react";
+import { Order } from "@prisma/client";
 
 type QuotationFormProps = {
   vendors: VendorSelectBox[];
+  initialData?: Order | null;
 };
 
 export const formSchema = z.object({
@@ -71,20 +74,20 @@ export const formSchema = z.object({
 
 export type FormSchema = z.infer<typeof formSchema>;
 
-const QuotationForm = ({ vendors }: QuotationFormProps) => {
+const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
   const { vendor, name, date, address, taxId, phone, note } =
     useMultiFormStore();
-
+  const setData = useMultiFormStore((state) => state.setData);
   const router = useRouter();
 
   const defaultValues = {
-    vendor: vendor || undefined,
-    name: name || "",
-    date: date ? new Date(date) : undefined,
-    address: address || "",
-    taxId: taxId || "",
-    phone: phone || "",
-    note: note || "",
+    vendor: initialData?.vendorId || undefined,
+    name: initialData?.name || "",
+    date: initialData?.date ? new Date(initialData.date) : undefined,
+    address: initialData?.address || "",
+    taxId: initialData?.taxId || "",
+    phone: initialData?.phone || "",
+    note: initialData?.note || "",
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -92,12 +95,14 @@ const QuotationForm = ({ vendors }: QuotationFormProps) => {
     defaultValues,
   });
 
-  const setData = useMultiFormStore((state) => state.setData);
-
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     setData(values);
-    router.push("/order/cart");
+    if (initialData) {
+      router.push(`/order/cart/${initialData.id}`);
+    } else {
+      router.push("/order/cart/new");
+    }
   }
   return (
     <Form {...form}>

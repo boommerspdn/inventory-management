@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     height: "100%",
     fontFamily: "Sarabun",
     fontWeight: 300,
-    fontSize: 11,
+    fontSize: 10,
     gap: 12,
   },
   vendorInfo: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   vendorName: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "400",
   },
   title: {
@@ -238,7 +238,9 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
             <View style={styles.buyerInfoItem}>
               <Text style={styles.buyerTitle}>ที่อยู่ผู้ซื้อ </Text>
               <Text
-                style={(data?.address.length || 0) > 80 ? styles.fontSmall : {}}
+                style={
+                  (data?.address.length || 0) > 104 ? styles.fontSmall : {}
+                }
               >
                 {data?.address}{" "}
               </Text>
@@ -288,7 +290,15 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                     <Text style={[styles.cell, styles.centerText]}>
                       {cart ? index + 1 : ""}{" "}
                     </Text>
-                    <Text style={[styles.cell, styles.nameCell]}>
+                    <Text
+                      style={[
+                        styles.cell,
+                        styles.nameCell,
+                        (cart?.products?.title.length || 0) > 40
+                          ? styles.fontSmall
+                          : {},
+                      ]}
+                    >
                       {cart?.products?.title || ""}{" "}
                     </Text>
                     <Text style={[styles.cell, styles.centerText]}>
@@ -391,7 +401,7 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
               >
                 <Text style={styles.signPlaceholder}>ผู้มีอำนาจอนุมัติ </Text>
                 <Text style={{ marginLeft: -30, marginTop: 10 }}>
-                  วันที่ {"  "}..................... /.....................
+                  วันที่ {"    "}..................... /.....................
                   /.....................
                 </Text>
               </View>

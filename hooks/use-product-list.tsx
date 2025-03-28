@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { CartProduct } from "@/app/order/cart/page";
+import { CartProduct } from "@/app/order/cart/[orderId]/page";
 
 export interface ProductListState {
   products: CartProduct[];

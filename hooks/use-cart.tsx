@@ -1,4 +1,4 @@
-import { CartProduct } from "@/app/order/cart/page";
+import { CartProduct } from "@/app/order/cart/[orderId]/page";
 import { create } from "zustand";
 
 export interface CartState {

@@ -33,7 +33,7 @@ const formSchema = z.object({
   title: z
     .string()
     .min(1, { message: "ชื่อสินค้าต้องมีมากกว่า 1 ตัวอักษร" })
-    .max(50),
+    .max(50, { message: "ชื่อสินค้าต้องไม่มากกว่า 50 ตัวอักษร" }),
   number: z
     .string()
     .min(1, { message: "รหัสสินค้าต้องมีมากกว่า 1 ตัวอักษร" })

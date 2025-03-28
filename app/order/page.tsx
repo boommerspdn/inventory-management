@@ -33,7 +33,7 @@ const OrderPage = async () => {
       <DataTable
         data={orders}
         columns={orderColumns}
-        buttonLink={{ href: "/order/quotation", label: "สร้างใบกำกับภาษี" }}
+        buttonLink={{ href: "/order/quotation/new", label: "สร้างใบกำกับภาษี" }}
         api="orders"
       />
     </div>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
-import { CartProduct } from "@/app/order/cart/page";
+import { CartProduct } from "@/app/order/cart/[orderId]/page";
 
 export async function POST(req: Request) {
   try {
@@ -97,6 +97,100 @@ export async function POST(req: Request) {
         },
       },
     });
+
+    return NextResponse.json(order);
+  } catch (error) {
+    console.log(error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const body = await req.json();
+
+    const {
+      id,
+      vendor,
+      name,
+      date,
+      address,
+      taxId,
+      phone,
+      note,
+      price,
+      addedItems,
+      removedItems,
+      stockUpdates,
+    } = body;
+
+    if (
+      !id ||
+      !vendor ||
+      !name ||
+      !date ||
+      !address ||
+      !taxId ||
+      !phone ||
+      !price
+    ) {
+      return new NextResponse("Missing body", { status: 400 });
+    }
+
+    const order = await prismadb.order.update({
+      where: { id },
+      data: {
+        vendorId: vendor,
+        name,
+        date,
+        address,
+        taxId,
+        phone,
+        note,
+        price,
+      },
+    });
+
+    if (addedItems.length > 0) {
+      const createCart = await prismadb.cart.createMany({
+        data: addedItems.map((item: CartProduct) => ({
+          productId: item.id,
+          amount: item.amount,
+          orderId: id,
+        })),
+      });
+    }
+
+    if (removedItems.length > 0) {
+      const removeCart = await prismadb.cart.deleteMany({
+        where: { id: { in: removedItems } },
+      });
+    }
+
+    if (stockUpdates.length > 0) {
+      const updateCart = stockUpdates.map(
+        async (item: {
+          id: string;
+          newAmount: number;
+          stockChange: number;
+        }) => {
+          await prismadb.cart.updateMany({
+            where: { orderId: id, productId: item.id },
+            data: {
+              amount: item.newAmount,
+            },
+          });
+
+          await prismadb.product.update({
+            where: { id: item.id },
+            data: { amount: { increment: item.stockChange } },
+          });
+        },
+      );
+      Promise.all(updateCart);
+    }
+
+    console.log("stockupdate", stockUpdates);
 
     return NextResponse.json(order);
   } catch (error) {

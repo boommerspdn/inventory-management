@@ -14,6 +14,7 @@ import { priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { OrderTable } from "./page";
+import { useRouter } from "next/navigation";
 
 export const orderColumns: ColumnDef<OrderTable>[] = [
   {
@@ -127,6 +128,7 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const router = useRouter();
 
       return (
         <RemoveDialog ids={[data.id]} api="orders">
@@ -138,7 +140,11 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>แก้ไขข้อมูล</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push(`/order/quotation/${data.id}`)}
+              >
+                แก้ไขข้อมูล
+              </DropdownMenuItem>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
               </AlertDialogTrigger>

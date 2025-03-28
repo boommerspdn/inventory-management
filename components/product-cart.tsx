@@ -20,8 +20,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PackagePlus, ShoppingCart } from "lucide-react";
+import { Order } from "@prisma/client";
+import { CartProduct, initialCart } from "@/app/order/cart/[orderId]/page";
 
-const ProductCart = () => {
+type ProductCartProps = {
+  initialData?: initialCart[];
+};
+
+const ProductCart = ({ initialData }: ProductCartProps) => {
   const cart = useCart();
   const productList = useProductList();
   const router = useRouter();
@@ -34,42 +40,125 @@ const ProductCart = () => {
   );
 
   const handleBack = () => {
-    router.replace("/order/quotation");
+    router.back();
   };
 
   const { vendor, name, date, address, taxId, phone, note, reset } =
     useMultiFormStore();
 
   useEffect(() => {
-    cart.removeAll();
+    if (initialData && initialData.length !== 0) {
+      const initialCartItems: CartProduct[] = initialData.map((cartItem) => ({
+        id: cartItem.productId || "",
+        title: cartItem.products?.title || "",
+        amount: cartItem.amount || 0,
+        number: cartItem.products?.number || "",
+        price: cartItem.products?.price || 0,
+      }));
+      cart.items = initialCartItems;
+    } else {
+      cart.removeAll();
+    }
+  }, [initialData]);
 
+  useEffect(() => {
     if (
       (!vendor || !name || !date || !address || !taxId || !phone) &&
       isRedirecting == false
     ) {
-      router.push("/order/quotation");
+      router.push(
+        `/order/quotation/${
+          initialData && initialData.length !== 0
+            ? initialData[0].orderId
+            : "new"
+        }`,
+      );
     } else if (isRedirecting == true) {
       router.push("/order");
     }
   }, [name, date, address, taxId, phone, note, isRedirecting, router]);
 
-  const handleCreateOrder = async () => {
+  const handleSubmit = async () => {
     try {
-      const body = {
-        vendor,
-        name,
-        date,
-        address,
-        taxId,
-        phone,
-        note,
-        price: sumsPrice,
-        cart: cart.items,
-      };
-      const response = await axios.post("/api/orders/", body);
+      if (initialData && initialData.length !== 0) {
+        const originalCart = initialData;
+        const newCart = cart.items;
+
+        const addedItems = newCart.filter(
+          (item) => !originalCart.some((orig) => orig.productId === item.id),
+        );
+
+        const removedItems = originalCart
+          .filter((orig) => !newCart.some((item) => item.id === orig.productId))
+          .map((item) => item.id);
+
+        const updatedItems = newCart.filter((item) =>
+          originalCart.some(
+            (orig) =>
+              orig.productId === item.id &&
+              orig.amount !== item.amount &&
+              JSON.stringify(orig),
+          ),
+        );
+
+        const stockUpdates = updatedItems.map((item) => {
+          const originalItem = originalCart.find(
+            (orig) => orig.productId === item.id,
+          );
+
+          if (!originalItem) {
+            // This is a newly added item, decrease stock by new quantity
+            return {
+              id: item.id,
+              newAmount: item.amount,
+              stockChange: -item.amount,
+            };
+          }
+
+          // Calculate difference in quantity
+          const quantityDifference = item.amount - originalItem.amount;
+
+          return {
+            id: item.id,
+            newAmount: item.amount,
+            stockChange: -quantityDifference,
+          };
+        });
+
+        const body = {
+          id: initialData[0].orderId,
+          vendor,
+          name,
+          date,
+          address,
+          taxId,
+          phone,
+          note,
+          price: sumsPrice,
+          addedItems,
+          removedItems,
+          stockUpdates,
+        };
+
+        console.log(stockUpdates);
+        const response = await axios.patch("/api/orders/", body);
+      } else {
+        const body = {
+          vendor,
+          name,
+          date,
+          address,
+          taxId,
+          phone,
+          note,
+          price: sumsPrice,
+          cart: cart.items,
+        };
+        const response = await axios.post("/api/orders/", body);
+        window.open(`/invoice/${response.data.id}`, "_blank");
+      }
       setIsRedirecting(true);
       toast.success("เพิ่มสินค้าสำเร็จ");
-      window.open(`/invoice/${response.data.id}`, "_blank");
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด");
     } finally {
@@ -125,7 +214,7 @@ const ProductCart = () => {
           </Button>
           <Button
             disabled={cart.items.length === 0}
-            onClick={() => handleCreateOrder()}
+            onClick={() => handleSubmit()}
           >
             สร้างใบกำกับภาษี
           </Button>

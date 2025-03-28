@@ -13,14 +13,30 @@ const select = {
   price: true,
 };
 
+const include = { products: true };
+
 export type CartProduct = Prisma.ProductGetPayload<{
   select: typeof select;
 }>;
 
-const CartPage = async () => {
+export type initialCart = Prisma.CartGetPayload<{
+  include: typeof include;
+}>;
+
+const CartPage = async ({
+  params,
+}: {
+  params: Promise<{ orderId: string }>;
+}) => {
+  const { orderId } = await params;
+
   const products = await prismadb.product.findMany({
     orderBy: { date: "desc" },
     select,
+  });
+  const initialCart = await prismadb.cart.findMany({
+    where: { orderId: orderId },
+    include,
   });
 
   return (
@@ -33,7 +49,7 @@ const CartPage = async () => {
       <Separator />
       <div className="grid grid-cols-12 gap-4">
         <ProductList data={products} />
-        <ProductCart />
+        <ProductCart initialData={initialCart} />
       </div>
     </div>
   );
