@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { priceFormatter } from "@/lib/utils";
+import { cn, priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { OrderTable } from "./page";
@@ -125,6 +125,23 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return (
+        <div
+          className={cn(
+            data.status === "รอการยืนยัน"
+              ? "text-blue-500"
+              : data.status === "ชำระเงินแล้ว"
+              ? "text-green-500"
+              : "text-red-500",
+          )}
+        >
+          {data.status}
+        </div>
+      );
+    },
   },
   {
     id: "actions",
@@ -156,7 +173,7 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
                 <DropdownMenuItem
                   onClick={() => router.push(`/order/quotation/${data.id}`)}
                 >
-                  แก้ไขข้อมูล
+                  แก้ไขคำสั่งซื้อ
                 </DropdownMenuItem>
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>

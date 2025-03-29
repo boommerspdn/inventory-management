@@ -140,8 +140,8 @@ const ProductCart = ({ initialData }: ProductCartProps) => {
           stockUpdates,
         };
 
-        console.log(stockUpdates);
         const response = await axios.patch("/api/orders/", body);
+        window.open(`/invoice/${initialData[0].orderId}`, "_blank");
       } else {
         const body = {
           vendor,

@@ -31,6 +31,7 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type StatusDialog = {
   id: string;
@@ -50,6 +51,8 @@ const StatusDialog = ({ children, id, currentStatus }: StatusDialog) => {
     defaultValues: { status: currentStatus },
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       const body = {
@@ -58,6 +61,7 @@ const StatusDialog = ({ children, id, currentStatus }: StatusDialog) => {
       };
       const response = await axios.patch("/api/status/", body);
       toast.success("เพิ่มสินค้าสำเร็จ");
+      router.refresh();
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");

@@ -166,7 +166,7 @@ export const productColumns: ColumnDef<Product>[] = [
               <DropdownMenuItem
                 onClick={() => router.push(`/product/${data.id}`)}
               >
-                แก้ไขข้อมูล
+                แก้ไขสินค้า
               </DropdownMenuItem>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>

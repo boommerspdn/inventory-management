@@ -2,6 +2,7 @@ import { vendorColumns } from "./vendor-columns";
 import prismadb from "@/lib/prismadb";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
+import { redirect } from "next/navigation";
 
 const VendorPage = async () => {
   const vendors = await prismadb.vendor.findMany({
