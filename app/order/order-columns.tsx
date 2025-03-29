@@ -15,6 +15,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { OrderTable } from "./page";
 import { useRouter } from "next/navigation";
+import StatusDialog from "@/components/status-dialog";
+import { DialogTrigger } from "@/components/ui/dialog";
 
 export const orderColumns: ColumnDef<OrderTable>[] = [
   {
@@ -132,24 +134,36 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
 
       return (
         <RemoveDialog ids={[data.id]} api="orders">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => router.push(`/order/quotation/${data.id}`)}
-              >
-                แก้ไขข้อมูล
-              </DropdownMenuItem>
-              <AlertDialogTrigger asChild>
-                <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
-              </AlertDialogTrigger>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <StatusDialog id={data.id} currentStatus={data.status}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => window.open(`/invoice/${data.id}`, "_blank")}
+                >
+                  ดูใบกำกับภาษี
+                </DropdownMenuItem>
+
+                <DialogTrigger asChild>
+                  <DropdownMenuItem>แก้ไขสถานะ</DropdownMenuItem>
+                </DialogTrigger>
+
+                <DropdownMenuItem
+                  onClick={() => router.push(`/order/quotation/${data.id}`)}
+                >
+                  แก้ไขข้อมูล
+                </DropdownMenuItem>
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
+                </AlertDialogTrigger>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </StatusDialog>
         </RemoveDialog>
       );
     },

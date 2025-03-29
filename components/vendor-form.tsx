@@ -45,8 +45,6 @@ const formSchema = z.object({
 });
 
 const VendorForm = ({ initialData }: VendorFormProps) => {
-  const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,7 +59,6 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setLoading(true);
       const response = await axios.post("/api/vendor", values);
 
       toast.success("เพิ่มสินค้าสำเร็จ");
@@ -69,7 +66,6 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
       toast.error("เกิดข้อผิดพลาด");
       console.log(error);
     } finally {
-      setLoading(false);
       router.refresh();
       router.push("/order/quotation/vendor");
     }
@@ -141,8 +137,12 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
           )}
         />
         <div className="col-start-1 col-span-full">
-          <Button type="submit" className="col-start-1" disabled={loading}>
-            {loading ? (
+          <Button
+            type="submit"
+            className="col-start-1"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? (
               <LoaderCircle className="animate-spin" />
             ) : (
               "สร้างผู้ออกใบกำกับภาษี"

@@ -31,7 +31,6 @@ type QuotationNumberSettingProps = {
 };
 
 const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
-  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -43,14 +42,12 @@ const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
-      setLoading(true);
       const response = await axios.post("/api/quotation-number", values);
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");
     } finally {
-      setLoading(false);
     }
   }
 
@@ -77,8 +74,8 @@ const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
             )}
           />
         </div>
-        <Button type="submit" disabled={loading}>
-          {loading ? (
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? (
             <LoaderCircle className="animate-spin" />
           ) : (
             "บันทึกตั้งค่า"

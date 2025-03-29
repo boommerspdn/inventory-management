@@ -51,7 +51,6 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
   const [imageUpload, setImageUpload] = useState<string | undefined>(
     initialData?.image,
   );
-  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -88,7 +87,6 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      setLoading(true);
       const filename = values.image[0].name;
       const extension = path.extname(filename);
       const newFileName = `${uuidv4()}${extension}`;
@@ -139,7 +137,6 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");
     } finally {
-      setLoading(false);
       router.push("/");
     }
   }
@@ -249,8 +246,16 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="col-start-1" disabled={loading}>
-          {loading ? <LoaderCircle className="animate-spin" /> : buttonLabel}
+        <Button
+          type="submit"
+          className="col-start-1"
+          disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? (
+            <LoaderCircle className="animate-spin" />
+          ) : (
+            buttonLabel
+          )}
         </Button>
       </form>
     </Form>
