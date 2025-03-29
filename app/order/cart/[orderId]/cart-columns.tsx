@@ -1,14 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { ColumnDef } from "@tanstack/react-table";
-import { useCart } from "@/hooks/use-cart";
-import { useProductList } from "@/hooks/use-product-list";
-import { priceFormatter } from "@/lib/utils";
-import { CartProduct } from "./page";
+import AddProductCart from "@/components/add-product-cart";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ArrowUpDown, PackagePlus } from "lucide-react";
+import { priceFormatter } from "@/lib/utils";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
+import { CartProduct } from "./page";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -81,59 +78,6 @@ export const cartColumns: ColumnDef<CartProduct>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const [value, setValue] = useState("");
-      const data = row.original;
-
-      const cart = useCart();
-
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
-
-        // Allow only numbers and restrict to max 3 digits
-        if (/^\d{0,3}$/.test(inputValue)) {
-          setValue(inputValue);
-        }
-      };
-
-      const addToCart = (cartItem: CartProduct) => {
-        const valueToAdd = parseInt(value);
-
-        if (value !== "" && value !== "0" && valueToAdd <= cartItem.amount) {
-          cart.addItem({
-            id: cartItem.id,
-            title: cartItem.title,
-            amount: valueToAdd,
-            number: cartItem.number,
-            price: cartItem.price,
-          });
-          useProductList.getState().decreaseAmount(cartItem.id, valueToAdd);
-          setValue("");
-        }
-      };
-
-      return (
-        <div className="flex">
-          <Input
-            type="text"
-            className="w-[60px] h-8"
-            value={value}
-            onChange={handleChange}
-            placeholder="0"
-            maxLength={3} // Extra security in case
-            inputMode="numeric" // Mobile keyboard optimization
-          />
-          <Button
-            className="rounded-s-none size-8"
-            onClick={() => addToCart(data)}
-            disabled={
-              value == "" || value == "0" || parseInt(value) > data.amount
-            }
-          >
-            <PackagePlus />
-          </Button>
-        </div>
-      );
-    },
+    cell: ({ row }) => <AddProductCart data={row.original} />,
   },
 ];

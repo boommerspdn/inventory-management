@@ -82,7 +82,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
       // Set the file in React Hook Form
       form.setValue("image", dataTransfer.files);
     }
-  }, [initialData, form.setValue]);
+  }, [initialData, form]);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -103,10 +103,10 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
               ? initialData.image
               : `/uploads/${newFileName}`,
         };
-        const response = await axios.patch("/api/products/", body);
+        await axios.patch("/api/products/", body);
 
         if (initialData?.image !== filename) {
-          const response = await axios.delete("/api/upload/", {
+          await axios.delete("/api/upload/", {
             data: { fileName: initialData?.image },
             headers: { "Content-Type": "application/json" },
           });
@@ -119,7 +119,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
           price: values.price,
           image: `/uploads/${newFileName}`,
         };
-        const response = await axios.post("/api/products/", body);
+        await axios.post("/api/products/", body);
       }
 
       if (!initialData || initialData.image !== filename) {
@@ -127,7 +127,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
         formData.append("file", values.image[0]);
         formData.append("fileName", newFileName);
 
-        const uploadResponse = await axios.post("/api/upload", formData, {
+        await axios.post("/api/upload", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }

@@ -1,8 +1,5 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Product } from "@prisma/client";
-import { priceFormatter } from "@/lib/utils";
 import RemoveDialog from "@/components/remove-dialog";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -13,9 +10,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { priceFormatter } from "@/lib/utils";
+import { Product } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -158,7 +158,6 @@ export const productColumns: ColumnDef<Product>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
-      const router = useRouter();
 
       return (
         <RemoveDialog ids={[data.id]} api="products">
@@ -170,11 +169,9 @@ export const productColumns: ColumnDef<Product>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => router.push(`/product/${data.id}`)}
-              >
-                แก้ไขข้อมูล
-              </DropdownMenuItem>
+              <Link href={`/product/${data.id}`}>
+                <DropdownMenuItem>แก้ไขข้อมูล</DropdownMenuItem>{" "}
+              </Link>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
               </AlertDialogTrigger>

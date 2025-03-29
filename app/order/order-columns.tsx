@@ -1,9 +1,11 @@
 "use client";
 
 import RemoveDialog from "@/components/remove-dialog";
+import StatusDialog from "@/components/status-dialog";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DialogTrigger } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,10 +15,8 @@ import {
 import { cn, priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 import { OrderTable } from "./page";
-import { useRouter } from "next/navigation";
-import StatusDialog from "@/components/status-dialog";
-import { DialogTrigger } from "@/components/ui/dialog";
 
 export const orderColumns: ColumnDef<OrderTable>[] = [
   {
@@ -147,7 +147,6 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
-      const router = useRouter();
 
       return (
         <RemoveDialog ids={[data.id]} api="orders">
@@ -169,12 +168,9 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
                 <DialogTrigger asChild>
                   <DropdownMenuItem>แก้ไขสถานะ</DropdownMenuItem>
                 </DialogTrigger>
-
-                <DropdownMenuItem
-                  onClick={() => router.push(`/order/quotation/${data.id}`)}
-                >
-                  แก้ไขคำสั่งซื้อ
-                </DropdownMenuItem>
+                <Link href={`/order/quotation/${data.id}`}>
+                  <DropdownMenuItem>แก้ไขคำสั่งซื้อ</DropdownMenuItem>
+                </Link>
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
                 </AlertDialogTrigger>

@@ -62,7 +62,7 @@ const ProductCart = ({
     } else {
       cart.removeAll();
     }
-  }, [initialData]);
+  }, [initialData, cart]);
 
   useEffect(() => {
     if (
@@ -79,7 +79,18 @@ const ProductCart = ({
     } else if (isRedirecting == true) {
       router.push("/order");
     }
-  }, [name, date, address, taxId, phone, note, isRedirecting, router]);
+  }, [
+    vendor,
+    name,
+    date,
+    address,
+    taxId,
+    phone,
+    note,
+    isRedirecting,
+    router,
+    initialData,
+  ]);
 
   const handleSubmit = async () => {
     try {
@@ -143,7 +154,7 @@ const ProductCart = ({
           stockUpdates,
         };
 
-        const response = await axios.patch("/api/orders/", body);
+        await axios.patch("/api/orders/", body);
         window.open(`/invoice/${initialData[0].orderId}`, "_blank");
       } else {
         const body = {
@@ -163,6 +174,7 @@ const ProductCart = ({
       setIsRedirecting(true);
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {
+      console.log(error);
       toast.error("เกิดข้อผิดพลาด");
     } finally {
       reset();
@@ -174,8 +186,9 @@ const ProductCart = ({
       <CardHeader>
         <CardTitle>ตะกร้าสินค้า</CardTitle>
         <CardDescription>
-          เลือกจำนวนสินค้าจากนั้นกด "
-          <ShoppingCart className="inline-block" size={16} />" เพื่อเพิ่มสินค้า
+          เลือกจำนวนสินค้าจากนั้นกด &quot;
+          <ShoppingCart className="inline-block" size={16} />
+          &quot; เพื่อเพิ่มสินค้า
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">

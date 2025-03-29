@@ -20,7 +20,7 @@ import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
-  disableDelete?: Boolean;
+  disableDelete?: boolean;
   api: "products" | "orders" | "vendor";
 }
 

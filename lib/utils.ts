@@ -1,5 +1,5 @@
-import { CartState, useCart } from "@/hooks/use-cart";
-import { ProductListState, useProductList } from "@/hooks/use-product-list";
+import { CartState } from "@/hooks/use-cart";
+import { ProductListState } from "@/hooks/use-product-list";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

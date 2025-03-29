@@ -151,48 +151,36 @@ export async function PATCH(req: Request) {
       },
     });
 
-    if (addedItems.length > 0) {
-      const createCart = await prismadb.cart.createMany({
-        data: addedItems.map((item: CartProduct) => ({
-          productId: item.id,
-          amount: item.amount,
-          orderId: id,
-        })),
-      });
-    }
+    const createCart = await prismadb.cart.createMany({
+      data: addedItems.map((item: CartProduct) => ({
+        productId: item.id,
+        amount: item.amount,
+        orderId: id,
+      })),
+    });
 
-    if (removedItems.length > 0) {
-      const removeCart = await prismadb.cart.deleteMany({
-        where: { id: { in: removedItems } },
-      });
-    }
+    const removeCart = await prismadb.cart.deleteMany({
+      where: { id: { in: removedItems } },
+    });
 
-    if (stockUpdates.length > 0) {
-      const updateCart = stockUpdates.map(
-        async (item: {
-          id: string;
-          newAmount: number;
-          stockChange: number;
-        }) => {
-          await prismadb.cart.updateMany({
-            where: { orderId: id, productId: item.id },
-            data: {
-              amount: item.newAmount,
-            },
-          });
+    const updateCart = stockUpdates.map(
+      async (item: { id: string; newAmount: number; stockChange: number }) => {
+        await prismadb.cart.updateMany({
+          where: { orderId: id, productId: item.id },
+          data: {
+            amount: item.newAmount,
+          },
+        });
 
-          await prismadb.product.update({
-            where: { id: item.id },
-            data: { amount: { increment: item.stockChange } },
-          });
-        },
-      );
-      Promise.all(updateCart);
-    }
+        await prismadb.product.update({
+          where: { id: item.id },
+          data: { amount: { increment: item.stockChange } },
+        });
+      },
+    );
+    Promise.all(updateCart);
 
-    console.log("stockupdate", stockUpdates);
-
-    return NextResponse.json(order);
+    return NextResponse.json({ order, createCart, removeCart, updateCart });
   } catch (error) {
     console.log(error);
     return new NextResponse("Internal error", { status: 500 });

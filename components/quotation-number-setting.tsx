@@ -41,7 +41,7 @@ const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
-      const response = await axios.post("/api/quotation-number", values);
+      await axios.post("/api/quotation-number", values);
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {
       console.log(error);

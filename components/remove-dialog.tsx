@@ -27,7 +27,7 @@ const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
         throw new Error("No IDs provided");
       }
 
-      const response = await axios.delete(`/api/${api}/`, {
+      await axios.delete(`/api/${api}/`, {
         data: { ids },
         headers: { "Content-Type": "application/json" },
       });
@@ -35,6 +35,7 @@ const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
       toast.success("ลบสินค้าสำเร็จ");
       router.refresh();
     } catch (error) {
+      console.log(error);
       toast.error("เกิดข้อผิดพลาด");
     }
   };
@@ -46,7 +47,7 @@ const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
           <AlertDialogTitle>คุณแน่ใจที่จะลบสินค้านี้หรือไม่</AlertDialogTitle>
           <AlertDialogDescription>
             หากลบสินค้าแล้วจะไม่สามารถนำกลับคืนมาได้
-            หากคุณแน่ใจแล้วที่จะลบสินค้าให้กด "ลบสินค้า"
+            หากคุณแน่ใจแล้วที่จะลบสินค้าให้กด &quot;ลบสินค้า&quot;
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

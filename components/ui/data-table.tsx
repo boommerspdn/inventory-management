@@ -36,7 +36,7 @@ interface DataTableProps<TData, TValue>
     label: string;
     href: string;
   };
-  disableDelete?: Boolean;
+  disableDelete?: boolean;
   api: "products" | "orders" | "vendor";
 }
 
@@ -50,7 +50,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [globalFilter, setGlobalFilter] = useState<any>([]);
+  const [globalFilter, setGlobalFilter] = useState([]);
 
   const table = useReactTable({
     data,

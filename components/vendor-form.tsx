@@ -58,7 +58,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post("/api/vendor", values);
+      await axios.post("/api/vendor", values);
 
       toast.success("เพิ่มสินค้าสำเร็จ");
     } catch (error) {

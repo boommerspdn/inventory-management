@@ -14,7 +14,7 @@ const ProductList = ({ data, className, ...props }: ProductListProps) => {
 
   useEffect(() => {
     setProducts(data);
-  }, []);
+  }, [setProducts, data]);
 
   return (
     <div className={className} {...props}>

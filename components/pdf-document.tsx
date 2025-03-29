@@ -10,8 +10,6 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import { Loader2 } from "lucide-react";
-import dynamic from "next/dynamic";
 import PDFWrapper from "./pdf-wrapper";
 
 Font.register({

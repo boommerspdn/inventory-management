@@ -58,7 +58,7 @@ const StatusDialog = ({ children, id, currentStatus }: StatusDialog) => {
         id,
         status: data.status,
       };
-      const response = await axios.patch("/api/status/", body);
+      await axios.patch("/api/status/", body);
       toast.success("เพิ่มสินค้าสำเร็จ");
       router.refresh();
     } catch (error) {

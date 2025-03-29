@@ -7,10 +7,6 @@ const ProductPage = async () => {
   const products = await prismadb.product.findMany({
     orderBy: { date: "desc" },
   });
-  const serializedProducts = products.map((product) => ({
-    ...product,
-    price: product.price.toString(),
-  }));
 
   return (
     <div className="space-y-6 w-full">

@@ -74,8 +74,6 @@ export const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 
 const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
-  const { vendor, name, date, address, taxId, phone, note } =
-    useMultiFormStore();
   const setData = useMultiFormStore((state) => state.setData);
   const router = useRouter();
 
