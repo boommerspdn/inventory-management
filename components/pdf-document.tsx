@@ -12,6 +12,7 @@ import {
 } from "@react-pdf/renderer";
 import { Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
+import PDFWrapper from "./pdf-wrapper";
 
 Font.register({
   family: "Sarabun",
@@ -26,18 +27,6 @@ Font.register({
     { src: "/fonts/Sarabun-ExtraBold.ttf", fontWeight: 800 },
   ],
 });
-
-const PDFViewer = dynamic(
-  () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="size-full flex justify-center items-center">
-        <Loader2 className="animate-spin" />
-      </div>
-    ),
-  },
-);
 
 const styles = StyleSheet.create({
   body: {
@@ -201,7 +190,7 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
     { title: "จำนวนเงินทั้งสิ้น ", value: priceFormatter(totalPrice) },
   ];
   return (
-    <PDFViewer className="size-full">
+    <PDFWrapper>
       <Document title={`${data?.name} ${data?.number}`}>
         <Page style={styles.body}>
           <View style={styles.vendorInfo}>
@@ -413,7 +402,7 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
           </View>
         </Page>
       </Document>
-    </PDFViewer>
+    </PDFWrapper>
   );
 };
 

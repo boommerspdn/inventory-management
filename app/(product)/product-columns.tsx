@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -142,7 +143,13 @@ export const productColumns: ColumnDef<Product>[] = [
 
       return (
         <a href={image} target="_blank">
-          <img src={image} alt={""} className="size-7 object-contain" />
+          <Image
+            src={image}
+            alt={""}
+            height={28}
+            width={28}
+            className="size-7 object-contain"
+          />
         </a>
       );
     },
@@ -166,7 +173,7 @@ export const productColumns: ColumnDef<Product>[] = [
               <DropdownMenuItem
                 onClick={() => router.push(`/product/${data.id}`)}
               >
-                แก้ไขสินค้า
+                แก้ไขข้อมูล
               </DropdownMenuItem>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
