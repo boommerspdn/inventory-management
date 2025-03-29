@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Anuphan, Sarabun } from "next/font/google";
+import { Anuphan } from "next/font/google";
 
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import "./globals.css";
 
 const anuphan = Anuphan({

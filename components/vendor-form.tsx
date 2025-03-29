@@ -11,15 +11,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Vendor } from "@prisma/client";
 import axios from "axios";
 import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import { Vendor } from "@prisma/client";
 import { Textarea } from "./ui/textarea";
-import { useRouter } from "next/navigation";
 
 type VendorFormProps = {
   initialData?: Vendor | null;

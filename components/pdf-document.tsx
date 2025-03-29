@@ -1,21 +1,17 @@
 "use client";
 
-import React from "react";
-import ReactDOM from "react-dom";
+import { Invoice } from "@/app/invoice/[orderId]/page";
+import { priceFormatter } from "@/lib/utils";
 import {
+  Document,
+  Font,
   Page,
+  StyleSheet,
   Text,
   View,
-  Document,
-  StyleSheet,
-  Font,
 } from "@react-pdf/renderer";
-import ReactPDF from "@react-pdf/renderer";
-import dynamic from "next/dynamic";
-import { Prisma } from "@prisma/client";
-import { Invoice } from "@/app/invoice/[orderId]/page";
 import { Loader2 } from "lucide-react";
-import { priceFormatter } from "@/lib/utils";
+import dynamic from "next/dynamic";
 
 Font.register({
   family: "Sarabun",
