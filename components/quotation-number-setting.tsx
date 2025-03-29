@@ -59,7 +59,7 @@ const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
             control={form.control}
             name="initial"
             render={({ field }) => (
-              <FormItem className="col-span-3">
+              <FormItem className="col-span-full sm:col-span-8 md:col-span-6 lg:col-span-4 xl:col-span-3">
                 <FormLabel>ขึ้นต้น (รหัสใบกำกับภาษี)</FormLabel>
                 <FormControl>
                   <Input placeholder="EXMP" {...field} />

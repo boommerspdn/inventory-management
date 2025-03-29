@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useCart } from "@/hooks/use-cart";
 import { useMultiFormStore } from "@/hooks/use-multi-form";
 import { useProductList } from "@/hooks/use-product-list";
-import { handleRemoveAll, priceFormatter } from "@/lib/utils";
+import { cn, handleRemoveAll, priceFormatter } from "@/lib/utils";
 
 import CartItem from "@/components/cart-item";
 import { Button } from "@/components/ui/button";
@@ -23,11 +23,15 @@ import { PackagePlus, ShoppingCart } from "lucide-react";
 import { Order } from "@prisma/client";
 import { CartProduct, initialCart } from "@/app/order/cart/[orderId]/page";
 
-type ProductCartProps = {
+type ProductCartProps = React.HTMLAttributes<HTMLDivElement> & {
   initialData?: initialCart[];
 };
 
-const ProductCart = ({ initialData }: ProductCartProps) => {
+const ProductCart = ({
+  initialData,
+  className,
+  ...props
+}: ProductCartProps) => {
   const cart = useCart();
   const productList = useProductList();
   const router = useRouter();
@@ -167,7 +171,7 @@ const ProductCart = ({ initialData }: ProductCartProps) => {
   };
 
   return (
-    <Card className="col-span-3 h-fit">
+    <Card className={cn("h-fit", className)} {...props}>
       <CardHeader>
         <CardTitle>ตะกร้าสินค้า</CardTitle>
         <CardDescription>
@@ -201,18 +205,24 @@ const ProductCart = ({ initialData }: ProductCartProps) => {
           </>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="md:grid md:grid-cols-12 lg:flex justify-between gap-4">
         <Button
+          className="md:col-span-full"
           variant={"destructive"}
           onClick={() => handleRemoveAll(cart, productList)}
         >
           ล้าง
         </Button>
-        <div className="flex gap-2">
-          <Button variant={"outline"} onClick={() => handleBack()}>
+        <div className="md:grid md:grid-cols-12 md:col-span-12 lg:flex flex gap-2">
+          <Button
+            className="md:col-span-full"
+            variant={"outline"}
+            onClick={() => handleBack()}
+          >
             ย้อนกลับ
           </Button>
           <Button
+            className="md:col-span-full"
             disabled={cart.items.length === 0}
             onClick={() => handleSubmit()}
           >

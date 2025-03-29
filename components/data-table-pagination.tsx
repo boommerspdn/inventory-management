@@ -53,7 +53,7 @@ export function DataTablePagination<TData>({
               </Button>
             </AlertDialogTrigger>
           </RemoveDialog>
-          <div className="flex-1 text-sm text-muted-foreground">
+          <div className="hidden sm:block flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} ใน{" "}
             {table.getFilteredRowModel().rows.length} แถวที่เลือก
           </div>
@@ -61,7 +61,7 @@ export function DataTablePagination<TData>({
       )}
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">แถวต่อหน้า</p>
+          <p className="hidden sm:block text-sm font-medium">แถวต่อหน้า</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {

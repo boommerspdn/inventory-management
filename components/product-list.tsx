@@ -5,11 +5,11 @@ import { cartColumns } from "@/app/order/cart/[orderId]/cart-columns";
 import { CartProduct } from "@/app/order/cart/[orderId]/page";
 import { DataTable } from "@/components/ui/data-table";
 
-type ProductListProps = {
+type ProductListProps = React.HTMLAttributes<HTMLDivElement> & {
   data: CartProduct[];
 };
 
-const ProductList = ({ data }: ProductListProps) => {
+const ProductList = ({ data, className, ...props }: ProductListProps) => {
   const { products, setProducts } = useProductList();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const ProductList = ({ data }: ProductListProps) => {
   }, []);
 
   return (
-    <div className="col-span-9">
+    <div className={className} {...props}>
       <DataTable
         data={products}
         columns={cartColumns}

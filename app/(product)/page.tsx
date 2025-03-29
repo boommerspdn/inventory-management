@@ -13,7 +13,7 @@ const ProductPage = async () => {
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <Header
         title="รายการสินค้า"
         description="สินค้าที่มีอยู่ในคลัง สามารถเพิ่ม ลบ หรือแก้ไขสถานะได้ที่นี่"

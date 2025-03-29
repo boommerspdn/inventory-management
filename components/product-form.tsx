@@ -150,7 +150,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem className="col-span-4">
+            <FormItem className="col-span-full sm:col-span-8 md:col-span-6 xl:col-span-4">
               <FormLabel>ชื่อสินค้า</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกชื่อสินค้า" {...field} />
@@ -163,7 +163,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
           control={form.control}
           name="number"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-3">
+            <FormItem className=" col-start-1 col-span-full sm:col-span-5 md:col-start-1 md:col-span-4 xl:col-start-1 xl:col-span-3">
               <FormLabel>รหัสสินค้า</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกรหัสสินค้า" {...field} />
@@ -176,7 +176,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
           control={form.control}
           name="price"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-1">
+            <FormItem className="col-start-1 col-span-6 sm:col-start-1 sm:col-span-3 md:col-start-1 md:col-span-2 xl:col-start-1 xl:col-span-1">
               <FormLabel>ราคา</FormLabel>
               <FormControl>
                 <Input
@@ -195,7 +195,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
           control={form.control}
           name="amount"
           render={({ field }) => (
-            <FormItem className="col-span-1">
+            <FormItem className="col-span-6 sm:col-span-3 md:col-span-2 xl:col-span-1">
               <FormLabel>จำนวน</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกราคาสินค้า" type="number" {...field} />
@@ -208,7 +208,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
           control={form.control}
           name="image"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-3">
+            <FormItem className="col-span-full col-start-1 sm:col-span-9 sm:col-start-1 xl:col-start-1 xl:col-span-3">
               <FormLabel>รูปภาพสินค้า</FormLabel>
               <div className="relative min-h-[300px] w-auto">
                 {imageUpload ? (
@@ -248,7 +248,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
         />
         <Button
           type="submit"
-          className="col-start-1"
+          className="col-start-1 col-span-full sm:col-span-4 md:col-start-1 md:col-span-3 xl:col-start-1 xl:col-span-2"
           disabled={form.formState.isSubmitting}
         >
           {form.formState.isSubmitting ? (

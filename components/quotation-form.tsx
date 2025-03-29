@@ -114,7 +114,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           control={form.control}
           name="vendor"
           render={({ field }) => (
-            <FormItem className="col-span-4">
+            <FormItem className="col-span-full sm:col-span-8 md:col-span-4 xl:col-span-4">
               <FormLabel>ข้อมูลผู้ออก</FormLabel>
               <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
@@ -153,7 +153,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-4">
+            <FormItem className="col-span-full sm:col-span-9 md:col-span-5 xl:col-start-1 xl:col-span-4">
               <FormLabel>ชื่อผู้ซื้อ</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกชื่อผู้ซื้อ" {...field} />
@@ -166,7 +166,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-2 flex flex-col">
+            <FormItem className="col-span-full sm:col-span-6 md:col-start-1 md:col-span-4 xl:col-start-1 xl:col-span-2 flex flex-col">
               <FormLabel>วันที่ออกใบสั่งซื่้อ</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -174,7 +174,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
+                        "pl-3 text-left font-normal",
                         !field.value && "text-muted-foreground",
                       )}
                     >
@@ -206,7 +206,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           control={form.control}
           name="address"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-5">
+            <FormItem className="col-span-full sm:col-span-10 md:col-start-1 md:col-span-7 xl:col-start-1 xl:col-span-5">
               <FormLabel>ที่อยู่ผู้ซื้อ</FormLabel>
               <FormControl>
                 <Textarea
@@ -223,7 +223,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           control={form.control}
           name="taxId"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-3">
+            <FormItem className="col-span-full sm:col-span-6 md:col-start-1 md:col-span-4 xl:col-start-1 xl:col-span-3">
               <FormLabel>เลขที่ผู้เสียภาษี</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกเลขที่ผู้เสียภาษี" {...field} />
@@ -236,7 +236,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           control={form.control}
           name="phone"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-2">
+            <FormItem className="col-span-full sm:col-start-1 sm:col-span-6 md:col-start-1 md:col-span-4  xl:col-start-1 xl:col-span-2">
               <FormLabel>เบอร์โทรศัพท์</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกเบอร์โทรศัพท์" {...field} />
@@ -250,7 +250,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           control={form.control}
           name="note"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-5">
+            <FormItem className="col-span-full sm:col-span-10 md:col-span-7 xl:col-start-1 xl:col-span-5">
               <FormLabel>หมายเหตุ</FormLabel>
               <FormControl>
                 <Textarea
@@ -264,8 +264,10 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
           )}
         />
 
-        <div className="col-start-1 col-span-full">
-          <Button type="submit">ต่อไป</Button>
+        <div className="col-span-full sm:col-start-1 sm:col-span-3 md:col-start-1 md:col-span-2 xl:col-start-1 xl:col-span-1">
+          <Button type="submit" className="w-full">
+            ต่อไป
+          </Button>
         </div>
       </form>
     </Form>

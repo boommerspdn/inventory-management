@@ -29,19 +29,19 @@ const formSchema = z.object({
   name: z
     .string()
     .min(1, { message: "ชื่อผู้ออกต้องมีมากกว่า 1 ตัวอักษร" })
-    .max(50),
+    .max(50, { message: "ชื่อสินค้าต้องไม่มากกว่า 50 ตัวอักษร" }),
   address: z
     .string()
     .min(1, { message: "เลขประจำตัวผู้เสียภาษีผู้ออกต้องมีมากกว่า 1 ตัวอักษร" })
-    .max(200),
+    .max(50, { message: "ชื่อสินค้าต้องไม่มากกว่า 200 ตัวอักษร" }),
   taxId: z
     .string()
     .min(1, { message: "ชื่อสินค้าต้องมีมากกว่า 1 ตัวอักษร" })
-    .max(50),
+    .max(50, { message: "ชื่อสินค้าต้องไม่มากกว่า 50 ตัวอักษร" }),
   phone: z
     .string()
     .min(1, { message: "เบอร์โทรศัพท์ผู้ออกต้องมีมากกว่า 1 ตัวอักษร" })
-    .max(50),
+    .max(50, { message: "ชื่อสินค้าต้องไม่มากกว่า 50 ตัวอักษร" }),
 });
 
 const VendorForm = ({ initialData }: VendorFormProps) => {
@@ -81,7 +81,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="col-span-3">
+            <FormItem className="col-span-full sm:col-span-8 md:col-span-6 xl:col-span-3">
               <FormLabel>ชื่อผู้ออก</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกชื่อผู้ออก" {...field} />
@@ -94,7 +94,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
           control={form.control}
           name="address"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-4">
+            <FormItem className="col-span-full sm:col-span-10 md:col-span-7 xl:col-start-1 xl:col-span-4">
               <FormLabel>ที่อยู่ผู้ออก</FormLabel>
               <FormControl>
                 <Textarea
@@ -111,7 +111,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
           control={form.control}
           name="taxId"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-2">
+            <FormItem className="col-span-full sm:col-span-6 md:col-start-1 md:col-span-4 xl:col-start-1 xl:col-span-2">
               <FormLabel>เลขประจำตัวผู้เสียภาษีผู้ออก</FormLabel>
               <FormControl>
                 <Input
@@ -127,7 +127,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
           control={form.control}
           name="phone"
           render={({ field }) => (
-            <FormItem className="col-start-1 col-span-2">
+            <FormItem className="col-span-full sm:col-start-1 sm:col-span-6 md:col-start-1 md:col-span-4 xl:col-start-1 xl:col-span-2">
               <FormLabel>เบอร์โทรศัพท์ผู้ออก</FormLabel>
               <FormControl>
                 <Input placeholder="กรอกเบอร์โทรศัพท์ผู้ออก" {...field} />
@@ -136,10 +136,10 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
             </FormItem>
           )}
         />
-        <div className="col-start-1 col-span-full">
+        <div className="col-span-full sm:col-start-1 sm:col-span-4 md:col-start-1 md:col-span-3 lg:col-start-1 lg:col-span-2">
           <Button
             type="submit"
-            className="col-start-1"
+            className="w-full"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? (

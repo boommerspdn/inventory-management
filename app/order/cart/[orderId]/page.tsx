@@ -40,16 +40,23 @@ const CartPage = async ({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       <Header
         title="ออกใบกำกับภาษี (เลือกสินค้า)"
         description="เลือกสินค้าที่ต้องการจะเพิ่มในใบกำกับภาษี จากนั้นกดสร้างใบกำกับภาษี"
         length={products.length}
       />
       <Separator />
-      <div className="grid grid-cols-12 gap-4">
-        <ProductList data={products} />
-        <ProductCart initialData={initialCart} />
+
+      <div className="grid grid-cols-12 col-span-full gap-4">
+        <ProductList
+          className="col-span-full order-2 md:order-1 md:col-span-7 2xl:col-span-9"
+          data={products}
+        />
+        <ProductCart
+          className="col-span-full order-1 md:order-2 md:col-span-5 2xl:col-span-3"
+          initialData={initialCart}
+        />
       </div>
     </div>
   );

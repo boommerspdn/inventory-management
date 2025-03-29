@@ -71,11 +71,11 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className={cn("space-y-4", className)}>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-4">
         <Input
           value={globalFilter}
           onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-          className="w-[450px]"
+          className="text-sm max-w-60 sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
           placeholder="ค้นหาสินค้า"
         />
         {buttonLink && (

@@ -32,9 +32,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ToasterProvider />
-          <SidebarProvider className="h-full">
+          <SidebarProvider className="size-full">
             <AppSidebar />
-            <main className="size-full">{children}</main>
+            <main className="size-full -ml-[3rem] pl-[3rem]">{children}</main>
           </SidebarProvider>
         </ThemeProvider>
       </body>
