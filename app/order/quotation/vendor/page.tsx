@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 import prismadb from "@/lib/prismadb";
 import { vendorColumns } from "./vendor-columns";
+
+export const metadata: Metadata = {
+  title: "ผู้ออกใบกำกับภาษี",
+};
 
 const VendorPage = async () => {
   const vendors = await prismadb.vendor.findMany({

@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import prismadb from "@/lib/prismadb";
 import Header from "@/components/header";
 import QuotationForm from "@/components/quotation-form";
 import { Separator } from "@/components/ui/separator";
 import { Prisma } from "@prisma/client";
+
+export const metadata: Metadata = {
+  title: "ออกใบกำกับภาษี",
+};
 
 const select = { id: true, name: true };
 

@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { Prisma } from "@prisma/client";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 import { orderColumns } from "./order-columns";
 import prismadb from "@/lib/prismadb";
+
+export const metadata: Metadata = {
+  title: "รายการสั่งซื้อ",
+};
 
 const select = {
   id: true,

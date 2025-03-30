@@ -1,9 +1,14 @@
+import type { Metadata } from "next";
 import Header from "@/components/header";
 import ProductCart from "@/components/product-cart";
 import ProductList from "@/components/product-list";
 import { Separator } from "@/components/ui/separator";
 import prismadb from "@/lib/prismadb";
 import { Prisma } from "@prisma/client";
+
+export const metadata: Metadata = {
+  title: "ออกใบกำกับภาษี (เลือกสินค้า)",
+};
 
 const select = {
   id: true,

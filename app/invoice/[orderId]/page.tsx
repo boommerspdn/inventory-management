@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import PDFDocument from "@/components/pdf-document";
 import prismadb from "@/lib/prismadb";
 import { Prisma } from "@prisma/client";
+
+export const metadata: Metadata = {
+  title: "ใบกำกับภาษี",
+};
 
 const include = {
   carts: {

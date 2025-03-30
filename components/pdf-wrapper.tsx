@@ -12,7 +12,7 @@ const PDFWrapper = ({ children }: PDFWrapperProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setIsLoading(false), 250); // Simulate loading
+    const timeout = setTimeout(() => setIsLoading(false), 50); // Simulate loading
     return () => clearTimeout(timeout);
   }, []);
 

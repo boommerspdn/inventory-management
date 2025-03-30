@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import ProductForm from "@/components/product-form";
 import Header from "@/components/header";
 import { Separator } from "@/components/ui/separator";
 import prismadb from "@/lib/prismadb";
+
+export const metadata: Metadata = {
+  title: "เพิ่มสินค้า",
+};
 
 const ProductPage = async ({
   params,

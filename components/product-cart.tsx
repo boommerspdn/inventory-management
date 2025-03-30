@@ -62,7 +62,7 @@ const ProductCart = ({
     } else {
       cart.removeAll();
     }
-  }, [initialData, cart]);
+  }, [initialData]);
 
   useEffect(() => {
     if (

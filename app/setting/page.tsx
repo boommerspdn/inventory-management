@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import Header from "@/components/header";
 import QuotationNumberSetting from "@/components/quotation-number-setting";
 import prismadb from "@/lib/prismadb";
+
+export const metadata: Metadata = {
+  title: "ตั้งค่า",
+};
 
 const SettingPage = async () => {
   const quotationNumber = await prismadb.quotationSetting.findUnique({
