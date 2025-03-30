@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return new NextResponse("Missing body", { status: 400 });
     }
 
-    const quotationNumber = await prismadb.quotationSetting.upsert({
+    const quotationNumber = await prisma.quotationSetting.upsert({
       where: { id: "global" },
       update: { initial },
       create: { id: "global", initial },

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 import { CartProduct } from "@/app/order/cart/[orderId]/page";
 
 export async function POST(req: Request) {
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     const generateOrderNumber = async () => {
       // Fetch quotation setting
-      const quotation = await prismadb.quotationSetting.findUnique({
+      const quotation = await prisma.quotationSetting.findUnique({
         where: { id: "global" },
       });
       const defaultInitial = "XXXX";
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59, 999); // Dec 31
 
       // Fetch the last order of the year
-      const lastOrder = await prismadb.order.findMany({
+      const lastOrder = await prisma.order.findMany({
         where: {
           date: { gte: startOfYear, lte: endOfYear },
           number: {
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       }-${bhuddistYear}-${paddedOrderNumber}`;
     };
 
-    const order = await prismadb.order.create({
+    const order = await prisma.order.create({
       data: {
         name,
         vendorId: vendor,
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
             data: await Promise.all(
               cart.map(async (item: CartProduct) => {
                 // Fetch old amount first
-                const product = await prismadb.product.findUnique({
+                const product = await prisma.product.findUnique({
                   where: { id: item.id },
                   select: { amount: true },
                 });
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
                 if (!product) throw new Error(`Product ${item.id} not found`);
 
                 // Update product stock
-                await prismadb.product.update({
+                await prisma.product.update({
                   where: { id: item.id },
                   data: {
                     amount: product.amount - item.amount,
@@ -137,7 +137,7 @@ export async function PATCH(req: Request) {
       return new NextResponse("Missing body", { status: 400 });
     }
 
-    const order = await prismadb.order.update({
+    const order = await prisma.order.update({
       where: { id },
       data: {
         vendorId: vendor,
@@ -151,7 +151,7 @@ export async function PATCH(req: Request) {
       },
     });
 
-    const createCart = await prismadb.cart.createMany({
+    const createCart = await prisma.cart.createMany({
       data: addedItems.map((item: CartProduct) => ({
         productId: item.id,
         amount: item.amount,
@@ -159,20 +159,20 @@ export async function PATCH(req: Request) {
       })),
     });
 
-    const removeCart = await prismadb.cart.deleteMany({
+    const removeCart = await prisma.cart.deleteMany({
       where: { id: { in: removedItems } },
     });
 
     const updateCart = stockUpdates.map(
       async (item: { id: string; newAmount: number; stockChange: number }) => {
-        await prismadb.cart.updateMany({
+        await prisma.cart.updateMany({
           where: { orderId: id, productId: item.id },
           data: {
             amount: item.newAmount,
           },
         });
 
-        await prismadb.product.update({
+        await prisma.product.update({
           where: { id: item.id },
           data: { amount: { increment: item.stockChange } },
         });
@@ -197,7 +197,7 @@ export async function DELETE(req: Request) {
       return new NextResponse("Id(s) must be an array", { status: 400 });
     }
 
-    const order = await prismadb.order.deleteMany({
+    const order = await prisma.order.deleteMany({
       where: {
         id: { in: ids },
       },

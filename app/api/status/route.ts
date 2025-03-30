@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 
 export async function PATCH(req: Request) {
   try {
@@ -11,7 +11,7 @@ export async function PATCH(req: Request) {
       return new NextResponse("Missing body", { status: 400 });
     }
 
-    const order = await prismadb.order.update({
+    const order = await prisma.order.update({
       where: { id },
       data: { status },
     });

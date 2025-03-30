@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
     const covertedPrice = Math.round(price * 100);
 
-    const product = await prismadb.product.create({
+    const product = await prisma.product.create({
       data: {
         title,
         number,
@@ -42,7 +42,7 @@ export async function PATCH(req: Request) {
 
     const covertedPrice = Math.round(price * 100);
 
-    const product = await prismadb.product.update({
+    const product = await prisma.product.update({
       where: {
         id,
       },
@@ -72,7 +72,7 @@ export async function DELETE(req: Request) {
       return new NextResponse("Id(s) must be an array", { status: 400 });
     }
 
-    const product = await prismadb.product.deleteMany({
+    const product = await prisma.product.deleteMany({
       where: {
         id: { in: ids },
       },

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 import Header from "@/components/header";
 import QuotationForm from "@/components/quotation-form";
 import { Separator } from "@/components/ui/separator";
@@ -21,11 +21,11 @@ const QuotationPage = async ({
   params: Promise<{ orderId: string }>;
 }) => {
   const { orderId } = await params;
-  const order = await prismadb.order.findFirst({
+  const order = await prisma.order.findFirst({
     where: { id: orderId },
   });
 
-  const vendors = await prismadb.vendor.findMany({
+  const vendors = await prisma.vendor.findMany({
     orderBy: { name: "desc" },
     select,
   });

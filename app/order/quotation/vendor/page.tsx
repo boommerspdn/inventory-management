@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 import { vendorColumns } from "./vendor-columns";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const VendorPage = async () => {
-  const vendors = await prismadb.vendor.findMany({
+  const vendors = await prisma.vendor.findMany({
     orderBy: { createdAt: "desc" },
   });
 

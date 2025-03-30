@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 import { orderColumns } from "./order-columns";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 
 export const metadata: Metadata = {
   title: "รายการสั่งซื้อ",
@@ -23,7 +23,7 @@ export type OrderTable = Prisma.OrderGetPayload<{
 }>;
 
 const OrderPage = async () => {
-  const orders = await prismadb.order.findMany({
+  const orders = await prisma.order.findMany({
     select,
     orderBy: { createdAt: "desc" },
   });

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 import { productColumns } from "./product-columns";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const ProductPage = async () => {
-  const products = await prismadb.product.findMany({
+  const products = await prisma.product.findMany({
     orderBy: { date: "desc" },
   });
 

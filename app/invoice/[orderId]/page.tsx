@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PDFDocument from "@/components/pdf-document";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 import { Prisma } from "@prisma/client";
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ const InvoicePage = async ({
 }) => {
   const { orderId } = await params;
 
-  const invoice = await prismadb.order.findUnique({
+  const invoice = await prisma.order.findUnique({
     where: { id: orderId },
     include,
   });

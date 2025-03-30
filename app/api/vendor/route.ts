@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return new NextResponse("Missing body", { status: 400 });
     }
 
-    const vendor = await prismadb.vendor.create({
+    const vendor = await prisma.vendor.create({
       data: {
         name,
         address,
@@ -37,7 +37,7 @@ export async function DELETE(req: Request) {
       return new NextResponse("Id(s) must be an array", { status: 400 });
     }
 
-    const vendor = await prismadb.vendor.deleteMany({
+    const vendor = await prisma.vendor.deleteMany({
       where: {
         id: { in: ids },
       },

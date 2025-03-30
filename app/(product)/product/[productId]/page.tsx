@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ProductForm from "@/components/product-form";
 import Header from "@/components/header";
 import { Separator } from "@/components/ui/separator";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 
 export const metadata: Metadata = {
   title: "เพิ่มสินค้า",
@@ -14,7 +14,7 @@ const ProductPage = async ({
   params: Promise<{ productId: string }>;
 }) => {
   const { productId } = await params;
-  const product = await prismadb.product.findFirst({
+  const product = await prisma.product.findFirst({
     where: { id: productId },
   });
 

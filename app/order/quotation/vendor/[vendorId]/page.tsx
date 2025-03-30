@@ -1,7 +1,7 @@
 import Header from "@/components/header";
 import { Separator } from "@/components/ui/separator";
 import VendorForm from "@/components/vendor-form";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 
 const VendorFormPage = async ({
   params,
@@ -9,7 +9,7 @@ const VendorFormPage = async ({
   params: Promise<{ vendorId: string }>;
 }) => {
   const { vendorId } = await params;
-  const vendor = await prismadb.vendor.findFirst({
+  const vendor = await prisma.vendor.findFirst({
     where: { id: vendorId },
   });
   const title = vendor ? "แก้ไขผู้ออกใบกำกับภาษี" : "สร้างผู้ออกใบกำกับภาษี";

@@ -3,7 +3,7 @@ import Header from "@/components/header";
 import ProductCart from "@/components/product-cart";
 import ProductList from "@/components/product-list";
 import { Separator } from "@/components/ui/separator";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prismadb";
 import { Prisma } from "@prisma/client";
 
 export const metadata: Metadata = {
@@ -35,11 +35,11 @@ const CartPage = async ({
 }) => {
   const { orderId } = await params;
 
-  const products = await prismadb.product.findMany({
+  const products = await prisma.product.findMany({
     orderBy: { date: "desc" },
     select,
   });
-  const initialCart = await prismadb.cart.findMany({
+  const initialCart = await prisma.cart.findMany({
     where: { orderId: orderId },
     include,
   });
