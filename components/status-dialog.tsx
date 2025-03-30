@@ -59,7 +59,7 @@ const StatusDialog = ({ children, id, currentStatus }: StatusDialog) => {
         status: data.status,
       };
       await axios.patch("/api/status/", body);
-      toast.success("เพิ่มสินค้าสำเร็จ");
+      toast.success("อัพเดทสถานะสำเร็จ");
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -72,7 +72,7 @@ const StatusDialog = ({ children, id, currentStatus }: StatusDialog) => {
       {children}
       <DialogContent className="gap-8">
         <DialogHeader>
-          <DialogTitle>แก้ไขสถานะ</DialogTitle>
+          <DialogTitle>อัพเดทสถานะ</DialogTitle>
           <DialogDescription>
             เลือกสถานะการชำระเงินของคำสั่งซื้อ
           </DialogDescription>

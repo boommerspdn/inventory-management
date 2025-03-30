@@ -139,7 +139,7 @@ export const productColumns: ColumnDef<Product>[] = [
       return <></>;
     },
     cell: ({ row }) => {
-      const image = row.original.image;
+      const image = `api/${row.original.image}`;
 
       return (
         <a href={image} target="_blank">

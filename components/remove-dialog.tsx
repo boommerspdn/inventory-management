@@ -32,7 +32,7 @@ const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
         headers: { "Content-Type": "application/json" },
       });
 
-      toast.success("ลบสินค้าสำเร็จ");
+      toast.success("ลบรายการสำเร็จ");
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -44,16 +44,16 @@ const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
       {children}
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>คุณแน่ใจที่จะลบสินค้านี้หรือไม่</AlertDialogTitle>
+          <AlertDialogTitle>คุณแน่ใจที่จะลบรายการนี้หรือไม่</AlertDialogTitle>
           <AlertDialogDescription>
-            หากลบสินค้าแล้วจะไม่สามารถนำกลับคืนมาได้
-            หากคุณแน่ใจแล้วที่จะลบสินค้าให้กด &quot;ลบสินค้า&quot;
+            หากลบรายการแล้วจะไม่สามารถนำกลับคืนมาได้
+            หากคุณแน่ใจแล้วที่จะลบรายการให้กด &quot;ลบรายการ&quot;
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
           <AlertDialogAction onClick={() => handleDelete(ids)}>
-            ลบสินค้า
+            ลบรายการ
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

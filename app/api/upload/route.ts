@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Define file path
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    const uploadDir = path.join(process.cwd(), "/public/uploads");
     const filePath = path.join(uploadDir, fileName);
 
     // Ensure uploads directory exists

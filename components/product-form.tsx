@@ -117,7 +117,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
           number: values.number,
           amount: values.amount,
           price: values.price,
-          image: `/uploads/${newFileName}`,
+          image: newFileName,
         };
         await axios.post("/api/products/", body);
       }

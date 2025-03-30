@@ -166,7 +166,7 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
                 </DropdownMenuItem>
 
                 <DialogTrigger asChild>
-                  <DropdownMenuItem>แก้ไขสถานะ</DropdownMenuItem>
+                  <DropdownMenuItem>อัพเดทสถานะ</DropdownMenuItem>
                 </DialogTrigger>
                 <Link href={`/order/quotation/${data.id}`}>
                   <DropdownMenuItem>แก้ไขคำสั่งซื้อ</DropdownMenuItem>

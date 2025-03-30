@@ -5,6 +5,8 @@ import QuotationForm from "@/components/quotation-form";
 import { Separator } from "@/components/ui/separator";
 import { Prisma } from "@prisma/client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "ออกใบกำกับภาษี",
 };

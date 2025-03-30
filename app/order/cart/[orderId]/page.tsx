@@ -6,6 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import { prisma } from "@/lib/prismadb";
 import { Prisma } from "@prisma/client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "ออกใบกำกับภาษี (เลือกสินค้า)",
 };

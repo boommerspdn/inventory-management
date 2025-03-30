@@ -5,6 +5,8 @@ import { DataTable } from "@/components/ui/data-table";
 import { orderColumns } from "./order-columns";
 import { prisma } from "@/lib/prismadb";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "รายการสั่งซื้อ",
 };

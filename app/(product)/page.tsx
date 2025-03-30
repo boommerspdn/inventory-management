@@ -4,6 +4,8 @@ import { productColumns } from "./product-columns";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "รายการสินค้า",
 };
@@ -17,7 +19,7 @@ const ProductPage = async () => {
     <div className="space-y-6 w-full">
       <Header
         title="รายการสินค้า"
-        description="สินค้าที่มีอยู่ในคลัง สามารถเพิ่ม ลบ หรือแก้ไขสถานะได้ที่นี่"
+        description="สินค้าที่มีอยู่ในคลัง สามารถเพิ่ม ลบ หรืออัพเดทสถานะได้ที่นี่"
         length={products.length}
       />
       <DataTable

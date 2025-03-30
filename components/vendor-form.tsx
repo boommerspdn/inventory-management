@@ -60,7 +60,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
     try {
       await axios.post("/api/vendor", values);
 
-      toast.success("เพิ่มสินค้าสำเร็จ");
+      toast.success("เพิ่มข้อมูลผู้ออกสำเร็จ");
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด");
       console.log(error);

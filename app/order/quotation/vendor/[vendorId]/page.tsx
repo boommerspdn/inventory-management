@@ -3,6 +3,8 @@ import { Separator } from "@/components/ui/separator";
 import VendorForm from "@/components/vendor-form";
 import { prisma } from "@/lib/prismadb";
 
+export const dynamic = "force-dynamic";
+
 const VendorFormPage = async ({
   params,
 }: {

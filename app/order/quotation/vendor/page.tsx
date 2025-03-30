@@ -4,6 +4,8 @@ import { DataTable } from "@/components/ui/data-table";
 import { prisma } from "@/lib/prismadb";
 import { vendorColumns } from "./vendor-columns";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "ผู้ออกใบกำกับภาษี",
 };

@@ -3,6 +3,8 @@ import PDFDocument from "@/components/pdf-document";
 import { prisma } from "@/lib/prismadb";
 import { Prisma } from "@prisma/client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "ใบกำกับภาษี",
 };

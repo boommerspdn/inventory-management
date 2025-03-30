@@ -84,7 +84,11 @@ export async function DELETE(req: Request) {
     });
 
     productImage.map(async (product) => {
-      const filePath = path.join(process.cwd(), "public", product.image);
+      const filePath = path.join(
+        process.cwd(),
+        "public/uploads",
+        product.image,
+      );
 
       await fs.access(filePath);
 

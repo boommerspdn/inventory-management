@@ -42,7 +42,7 @@ const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
       await axios.post("/api/quotation-number", values);
-      toast.success("เพิ่มสินค้าสำเร็จ");
+      toast.success("แก้ไขขึ้นต้น (ใบกำกับภาษี)สำเร็จ");
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");
