@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prismadb";
+import fs from "fs/promises";
+import path from "path";
 
 export async function POST(req: Request) {
   try {
@@ -71,6 +73,23 @@ export async function DELETE(req: Request) {
     if (!Array.isArray(ids)) {
       return new NextResponse("Id(s) must be an array", { status: 400 });
     }
+
+    const productImage = await prisma.product.findMany({
+      where: {
+        id: { in: ids },
+      },
+      select: {
+        image: true,
+      },
+    });
+
+    productImage.map(async (product) => {
+      const filePath = path.join(process.cwd(), "public", product.image);
+
+      await fs.access(filePath);
+
+      await fs.unlink(filePath);
+    });
 
     const product = await prisma.product.deleteMany({
       where: {
