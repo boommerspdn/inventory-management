@@ -172,7 +172,7 @@ const ProductCart = ({
         window.open(`/invoice/${response.data.id}`, "_blank");
       }
       setIsRedirecting(true);
-      toast.success("เพิ่มรายการสั่งซื้อสำเร็จ");
+      toast.success(`${initialData ? "เพิ่ม" : "แก้ไข"}รายการสั่งซื้อสำเร็จ`);
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");

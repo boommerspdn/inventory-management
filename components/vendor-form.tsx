@@ -60,7 +60,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
     try {
       await axios.post("/api/vendor", values);
 
-      toast.success("เพิ่มข้อมูลผู้ออกสำเร็จ");
+      toast.success(`${initialData ? "เพิ่ม" : "แก้ไข"}ข้อมูลผู้ออกสำเร็จ`);
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด");
       console.log(error);
@@ -144,7 +144,7 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
             {form.formState.isSubmitting ? (
               <LoaderCircle className="animate-spin" />
             ) : (
-              "สร้างผู้ออกใบกำกับภาษี"
+              `${initialData ? "เพิ่ม" : "แก้ไข"}ผู้ออกใบกำกับภาษี`
             )}
           </Button>
         </div>
