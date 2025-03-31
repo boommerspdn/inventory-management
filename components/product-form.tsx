@@ -132,7 +132,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
         });
       }
 
-      toast.success("เพิ่มสินค้าสำเร็จ");
+      toast.success(`${initialData ? "เพิ่ม" : "แก้ไข"}สินค้าสำเร็จ`);
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");
