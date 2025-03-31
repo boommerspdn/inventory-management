@@ -2,8 +2,13 @@ import Header from "@/components/header";
 import { Separator } from "@/components/ui/separator";
 import VendorForm from "@/components/vendor-form";
 import { prisma } from "@/lib/prismadb";
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "ผู้ออกใบกำกับภาษี",
+};
 
 const VendorFormPage = async ({
   params,
