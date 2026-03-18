@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { ImageOff, LoaderCircle } from "lucide-react";
-import { Product } from "@prisma/client";
+import { Product } from "@/app/types";
 import { priceFormatter } from "@/lib/utils";
 
 type ProductFormProps = {
@@ -52,6 +52,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
     initialData?.image,
   );
 
+  console.log(initialData);
   const router = useRouter();
 
   const convertedPrice = initialData
@@ -85,54 +86,9 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
   }, [initialData, form]);
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit() {
     try {
-      const filename = values.image[0].name;
-      const extension = path.extname(filename);
-      const newFileName = `${uuidv4()}${extension}`;
-
-      if (initialData) {
-        const body = {
-          id: initialData.id,
-          title: values.title,
-          number: values.number,
-          amount: values.amount,
-          price: values.price,
-          image:
-            initialData.image === filename
-              ? initialData.image
-              : `/uploads/${newFileName}`,
-        };
-        await axios.patch("/api/products/", body);
-
-        if (initialData?.image !== filename) {
-          await axios.delete("/api/upload/", {
-            data: { fileName: initialData?.image },
-            headers: { "Content-Type": "application/json" },
-          });
-        }
-      } else {
-        const body: z.infer<typeof formSchema> = {
-          title: values.title,
-          number: values.number,
-          amount: values.amount,
-          price: values.price,
-          image: newFileName,
-        };
-        await axios.post("/api/products/", body);
-      }
-
-      if (!initialData || initialData.image !== filename) {
-        const formData = new FormData();
-        formData.append("file", values.image[0]);
-        formData.append("fileName", newFileName);
-
-        await axios.post("/api/upload", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      }
-
-      toast.success(`${initialData ? "เพิ่ม" : "แก้ไข"}สินค้าสำเร็จ`);
+      toast.success(`${initialData === null ? "เพิ่ม" : "แก้ไข"}สินค้าสำเร็จ`);
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");

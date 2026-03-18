@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import RemoveDialog from "@/components/remove-dialog";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -11,14 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { priceFormatter } from "@/lib/utils";
-import { Product } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { Product } from "@/app/types";
 
 export const productColumns: ColumnDef<Product>[] = [
   {
@@ -139,7 +136,7 @@ export const productColumns: ColumnDef<Product>[] = [
       return <></>;
     },
     cell: ({ row }) => {
-      const image = `api/${row.original.image}`;
+      const image = `${row.original.image}`;
 
       return (
         <a href={image} target="_blank">

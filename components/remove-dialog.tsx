@@ -26,14 +26,7 @@ const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
       if (ids.length === 0) {
         throw new Error("No IDs provided");
       }
-
-      await axios.delete(`/api/${api}/`, {
-        data: { ids },
-        headers: { "Content-Type": "application/json" },
-      });
-
       toast.success("ลบรายการสำเร็จ");
-      router.refresh();
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");

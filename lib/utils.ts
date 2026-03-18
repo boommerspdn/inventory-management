@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const priceFormatter = (price: number) => {
-  const formatted = (price / 100).toFixed(2);
+  const formatted = price.toFixed(2);
 
   return formatted;
 };
