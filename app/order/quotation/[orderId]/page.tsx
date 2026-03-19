@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prismadb";
 import Header from "@/components/header";
 import QuotationForm from "@/components/quotation-form";
 import { Separator } from "@/components/ui/separator";
 import { Prisma } from "@prisma/client";
+import { generateMockOrder, generateMockVendors } from "@/lib/datas";
+import { faker } from "@faker-js/faker";
 
 export const dynamic = "force-dynamic";
 
@@ -13,9 +14,10 @@ export const metadata: Metadata = {
 
 const select = { id: true, name: true };
 
-export type VendorSelectBox = Prisma.VendorGetPayload<{
-  select: typeof select;
-}>;
+export type VendorSelectBox = {
+  id: string;
+  name: string;
+};
 
 const QuotationPage = async ({
   params,
@@ -23,14 +25,10 @@ const QuotationPage = async ({
   params: Promise<{ orderId: string }>;
 }) => {
   const { orderId } = await params;
-  const order = await prisma.order.findFirst({
-    where: { id: orderId },
-  });
+  const isNew = orderId === "new";
+  const order = isNew ? null : generateMockOrder();
 
-  const vendors = await prisma.vendor.findMany({
-    orderBy: { name: "desc" },
-    select,
-  });
+  const vendors = Array.from({ length: 7 }, generateMockVendors);
 
   const title = order ? "แก้ไขใบกำกับภาษี" : "ออกใบกำกับภาษี";
   const description = order

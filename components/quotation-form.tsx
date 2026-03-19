@@ -1,6 +1,7 @@
 "use client";
 
 import { VendorSelectBox } from "@/app/order/quotation/[orderId]/page";
+import { Order } from "@/app/types";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -29,7 +30,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useMultiFormStore } from "@/hooks/use-multi-form";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Order } from "@prisma/client";
 import { format } from "date-fns";
 import { th } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
@@ -40,7 +40,7 @@ import { z } from "zod";
 
 type QuotationFormProps = {
   vendors: VendorSelectBox[];
-  initialData?: Order | null;
+  initialData: Order | null;
 };
 
 export const formSchema = z.object({
@@ -78,7 +78,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
   const router = useRouter();
 
   const defaultValues = {
-    vendor: initialData?.vendorId || undefined,
+    vendor: initialData?.vendorId ? vendors[0].id : undefined,
     name: initialData?.name || "",
     date: initialData?.date ? new Date(initialData.date) : undefined,
     address: initialData?.address || "",
@@ -95,7 +95,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     setData(values);
-    if (initialData) {
+    if (initialData !== null) {
       router.push(`/order/cart/${initialData.id}`);
     } else {
       router.push("/order/cart/new");

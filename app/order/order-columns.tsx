@@ -16,9 +16,9 @@ import { cn, priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import { OrderTable } from "./page";
+import { Order } from "@/app/types";
 
-export const orderColumns: ColumnDef<OrderTable>[] = [
+export const orderColumns: ColumnDef<Order>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -134,8 +134,8 @@ export const orderColumns: ColumnDef<OrderTable>[] = [
             data.status === "รอการยืนยัน"
               ? "text-blue-500"
               : data.status === "ชำระเงินแล้ว"
-              ? "text-green-500"
-              : "text-red-500",
+                ? "text-green-500"
+                : "text-red-500",
           )}
         >
           {data.status}

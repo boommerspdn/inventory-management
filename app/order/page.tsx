@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Prisma } from "@prisma/client";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
 import { orderColumns } from "./order-columns";
-import { prisma } from "@/lib/prismadb";
+import { generateMockOrder } from "@/lib/datas";
 
 export const dynamic = "force-dynamic";
 
@@ -20,16 +19,8 @@ const select = {
   status: true,
 };
 
-export type OrderTable = Prisma.OrderGetPayload<{
-  select: typeof select;
-}>;
-
-const OrderPage = async () => {
-  const orders = await prisma.order.findMany({
-    select,
-    orderBy: { createdAt: "desc" },
-  });
-
+const OrderPage = () => {
+  const orders = Array.from({ length: 10 }, generateMockOrder);
   return (
     <div className="space-y-6">
       <Header

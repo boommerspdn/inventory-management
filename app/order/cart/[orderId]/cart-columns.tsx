@@ -1,11 +1,11 @@
 "use client";
 
+import { CartProduct } from "@/app/types";
 import AddProductCart from "@/components/add-product-cart";
 import { Button } from "@/components/ui/button";
 import { priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import { CartProduct } from "./page";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

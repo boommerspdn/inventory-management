@@ -1,20 +1,17 @@
-import type { Metadata } from "next";
-import { v4 as uuidv4 } from "uuid";
+"use client";
 
-import { productColumns } from "./product-columns";
+import { useEffect } from "react";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
-import { Product } from "@/app/types";
-import { generateMockProduct } from "@/lib/datas";
-
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "รายการสินค้า",
-};
+import { useProductStore } from "@/hooks/use-product-store";
+import { productColumns } from "./product-columns";
 
 const ProductPage = () => {
-  const products = Array.from({ length: 10 }, generateMockProduct);
+  const products = useProductStore((state) => state.products);
+
+  useEffect(() => {
+    document.title = "รายการสินค้า";
+  }, []);
 
   return (
     <div className="space-y-6 w-full">

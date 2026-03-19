@@ -1,9 +1,7 @@
-import { cache } from "react";
-import { VendorSelectBox } from "@/app/order/quotation/[orderId]/page";
-import { CartProduct, Order, Product } from "@/app/types";
-import { faker } from "@faker-js/faker";
+// lib/store/product-store.ts
+import { create } from "zustand";
+import { Product } from "@/app/types";
 
-// Product
 const MOCK_PRODUCTS: Product[] = [
   {
     id: "1",
@@ -105,65 +103,41 @@ const MOCK_PRODUCTS: Product[] = [
     createdAt: new Date("2024-02-25"),
     date: new Date("2024-03-16"),
   },
-];
+]; // your static array
 
-let products: Product[] = [...MOCK_PRODUCTS];
+interface ProductStore {
+  products: Product[];
+  createProduct: (data: Omit<Product, "id" | "createdAt" | "date">) => Product;
+  updateProduct: (
+    id: string,
+    data: Omit<Product, "id" | "createdAt" | "date">,
+  ) => void;
+  getProductById: (id: string) => Product | undefined;
+}
 
-export const getProducts = (): Product[] => products;
+export const useProductStore = create<ProductStore>((set, get) => ({
+  products: MOCK_PRODUCTS,
 
-export const getMockProductById = (id: string): Product | undefined => {
-  return products.find((p) => p.id === id);
-};
+  createProduct: (data) => {
+    const newProduct: Product = {
+      ...data,
+      id: crypto.randomUUID(),
+      createdAt: new Date(),
+      date: new Date(),
+    };
+    set((state) => ({ products: [newProduct, ...state.products] }));
+    return newProduct;
+  },
 
-export const createProduct = (
-  data: Omit<Product, "id" | "createdAt" | "date">,
-): Product => {
-  const newProduct: Product = {
-    ...data,
-    id: crypto.randomUUID(),
-    createdAt: new Date(),
-    date: new Date(),
-  };
+  updateProduct: (id, data) => {
+    set((state) => ({
+      products: state.products.map((p) =>
+        p.id === id ? { ...p, ...data, date: new Date() } : p,
+      ),
+    }));
+  },
 
-  products = [newProduct, ...products];
-  return newProduct;
-};
-
-export const updateProduct = (
-  id: string,
-  data: Omit<Product, "id" | "createdAt" | "date">,
-): Product | undefined => {
-  const index = products.findIndex((p) => p.id === id);
-  if (index === -1) return undefined;
-
-  products[index] = { ...products[index], ...data, date: new Date() };
-  return products[index];
-};
-// Order
-export const generateMockOrder = (): Order => ({
-  id: faker.string.uuid(),
-  date: faker.date.recent(),
-  number: faker.string.alphanumeric({ length: 10, casing: "upper" }),
-  price: faker.number.int({ min: 500, max: 5000, multipleOf: 100 }),
-  name: faker.person.fullName(),
-  status: faker.datatype.boolean() ? "รอการยืนยัน" : "ชำระเงินแล้ว",
-  address: faker.location.streetAddress(),
-  createdAt: faker.date.past(),
-  note: faker.lorem.sentence(),
-  phone: faker.phone.number(),
-  taxId: faker.string.alphanumeric({ length: 10, casing: "upper" }),
-  vendorId: faker.string.uuid(),
-});
-
-export const generateMockVendors = (): VendorSelectBox => ({
-  id: faker.string.uuid(),
-  name: faker.person.firstName(),
-});
-
-export const generateMockCart = (): CartProduct => ({
-  id: faker.string.uuid(),
-  amount: faker.number.int({ min: 1, max: 100 }),
-  number: faker.string.alphanumeric({ length: 10, casing: "upper" }),
-  price: faker.number.int({ min: 500, max: 5000, multipleOf: 100 }),
-  title: faker.commerce.productName(),
-});
+  getProductById: (id) => {
+    return get().products.find((p) => p.id === id);
+  },
+}));

@@ -3,32 +3,12 @@ import Header from "@/components/header";
 import ProductCart from "@/components/product-cart";
 import ProductList from "@/components/product-list";
 import { Separator } from "@/components/ui/separator";
-import { prisma } from "@/lib/prismadb";
-import { Prisma } from "@prisma/client";
-
+import { generateMockCart, generateMockProduct } from "@/lib/datas";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "ออกใบกำกับภาษี (เลือกสินค้า)",
 };
-
-const select = {
-  id: true,
-  title: true,
-  amount: true,
-  number: true,
-  price: true,
-};
-
-const include = { products: true };
-
-export type CartProduct = Prisma.ProductGetPayload<{
-  select: typeof select;
-}>;
-
-export type initialCart = Prisma.CartGetPayload<{
-  include: typeof include;
-}>;
 
 const CartPage = async ({
   params,
@@ -36,16 +16,12 @@ const CartPage = async ({
   params: Promise<{ orderId: string }>;
 }) => {
   const { orderId } = await params;
+  const isNew = orderId === "new";
+  const initialCart = isNew
+    ? null
+    : Array.from({ length: 10 }, generateMockCart);
 
-  const products = await prisma.product.findMany({
-    orderBy: { date: "desc" },
-    select,
-  });
-  const initialCart = await prisma.cart.findMany({
-    where: { orderId: orderId },
-    include,
-  });
-
+  const products = Array.from({ length: 10 }, generateMockProduct);
   return (
     <div className="space-y-4 ">
       <Header

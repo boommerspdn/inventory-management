@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { ImageOff, LoaderCircle } from "lucide-react";
 import { Product } from "@/app/types";
 import { priceFormatter } from "@/lib/utils";
+import { useProductStore } from "@/hooks/use-product-store";
 
 type ProductFormProps = {
   initialData?: Product | null;
@@ -51,6 +52,7 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
   const [imageUpload, setImageUpload] = useState<string | undefined>(
     initialData?.image,
   );
+  const { createProduct, updateProduct } = useProductStore();
 
   console.log(initialData);
   const router = useRouter();
@@ -73,29 +75,52 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
 
   useEffect(() => {
     if (initialData?.image) {
-      // Manually create a mock `File` object from the image path
       const file = new File([""], initialData.image, { type: "image/jpeg" }); // Adjust type as needed
 
-      // Use DataTransfer to create a FileList
       const dataTransfer = new DataTransfer();
       dataTransfer.items.add(file);
 
-      // Set the file in React Hook Form
       form.setValue("image", dataTransfer.files);
     }
   }, [initialData, form]);
 
   // 2. Define a submit handler.
-  async function onSubmit() {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // Handle image — only re-encode if a new file was actually picked
+      let imageUrl: string = initialData?.image ?? "";
+
+      const file = values.image?.[0];
+      if (file && file.size > 0) {
+        const buffer = await file.arrayBuffer();
+        const base64 = Buffer.from(buffer).toString("base64");
+        imageUrl = `data:${file.type};base64,${base64}`;
+      }
+
+      const productData = {
+        title: values.title,
+        amount: values.amount,
+        price: values.price,
+        number: values.number,
+        image: imageUrl,
+      };
+
+      if (initialData !== null && initialData) {
+        updateProduct(initialData.id, productData); // ← your existing edit fn
+      } else {
+        createProduct(productData); // ← your existing create fn
+      }
+
       toast.success(`${initialData === null ? "เพิ่ม" : "แก้ไข"}สินค้าสำเร็จ`);
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");
     } finally {
       router.push("/");
+      router.refresh();
     }
   }
+
   return (
     <Form {...form}>
       <form

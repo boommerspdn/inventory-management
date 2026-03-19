@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { CartProduct, initialCart } from "@/app/order/cart/[orderId]/page";
 import CartItem from "@/components/cart-item";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,9 +20,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PackagePlus, ShoppingCart } from "lucide-react";
+import { CartProduct } from "@/app/types";
 
 type ProductCartProps = React.HTMLAttributes<HTMLDivElement> & {
-  initialData?: initialCart[];
+  initialData?: CartProduct[] | null;
 };
 
 const ProductCart = ({
@@ -52,11 +52,11 @@ const ProductCart = ({
   useEffect(() => {
     if (initialData && initialData.length !== 0) {
       const initialCartItems: CartProduct[] = initialData.map((cartItem) => ({
-        id: cartItem.productId || "",
-        title: cartItem.products?.title || "",
+        id: cartItem.id || "",
+        title: cartItem.title || "",
         amount: cartItem.amount || 0,
-        number: cartItem.products?.number || "",
-        price: cartItem.products?.price || 0,
+        number: cartItem.number || "",
+        price: cartItem.price || 0,
       }));
       cart.items = initialCartItems;
     } else {
@@ -71,9 +71,7 @@ const ProductCart = ({
     ) {
       router.push(
         `/order/quotation/${
-          initialData && initialData.length !== 0
-            ? initialData[0].orderId
-            : "new"
+          initialData && initialData.length !== 0 ? initialData[0].id : "new"
         }`,
       );
     } else if (isRedirecting == true) {
@@ -99,26 +97,24 @@ const ProductCart = ({
         const newCart = cart.items;
 
         const addedItems = newCart.filter(
-          (item) => !originalCart.some((orig) => orig.productId === item.id),
+          (item) => !originalCart.some((orig) => orig.id === item.id),
         );
 
         const removedItems = originalCart
-          .filter((orig) => !newCart.some((item) => item.id === orig.productId))
+          .filter((orig) => !newCart.some((item) => item.id === orig.id))
           .map((item) => item.id);
 
         const updatedItems = newCart.filter((item) =>
           originalCart.some(
             (orig) =>
-              orig.productId === item.id &&
+              orig.id === item.id &&
               orig.amount !== item.amount &&
               JSON.stringify(orig),
           ),
         );
 
         const stockUpdates = updatedItems.map((item) => {
-          const originalItem = originalCart.find(
-            (orig) => orig.productId === item.id,
-          );
+          const originalItem = originalCart.find((orig) => orig.id === item.id);
 
           if (!originalItem) {
             // This is a newly added item, decrease stock by new quantity
@@ -139,23 +135,7 @@ const ProductCart = ({
           };
         });
 
-        const body = {
-          id: initialData[0].orderId,
-          vendor,
-          name,
-          date,
-          address,
-          taxId,
-          phone,
-          note,
-          price: sumsPrice,
-          addedItems,
-          removedItems,
-          stockUpdates,
-        };
-
-        await axios.patch("/api/orders/", body);
-        window.open(`/invoice/${initialData[0].orderId}`, "_blank");
+        window.open(`/invoice/${initialData[0].id}`, "_blank");
       } else {
         const body = {
           vendor,
