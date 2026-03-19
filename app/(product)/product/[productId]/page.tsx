@@ -17,7 +17,11 @@ const ProductPage = ({
   const product = isNew ? null : getProductById(productId);
 
   useEffect(() => {
-    document.title = isNew ? "เพิ่มสินค้า" : (product?.title ?? "ไม่พบสินค้า");
+    document.title = isNew
+      ? "เพิ่มสินค้า"
+      : product?.title
+        ? `แก้ไข ${product.title}`
+        : "ไม่พบสินค้า";
   }, [product, isNew]);
 
   const title = product ? "แก้ไขสินค้า" : "เพิ่มสินค้า";
