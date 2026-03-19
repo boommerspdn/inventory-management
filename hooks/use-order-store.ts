@@ -4,7 +4,7 @@ import { Order } from "@/app/types";
 const MOCK_ORDERS: Order[] = [
   {
     id: "1",
-    number: "ORD-0000001",
+    number: "ORD-7291846053712",
     name: "บริษัท ดิจิตอล โซลูชัน จำกัด",
     vendorId: "V001",
     date: new Date("2024-03-01"),
@@ -22,7 +22,7 @@ const MOCK_ORDERS: Order[] = [
   },
   {
     id: "2",
-    number: "ORD-0000002",
+    number: "ORD-4853920671348",
     name: "ร้าน ออฟฟิศ โปร",
     vendorId: "V002",
     date: new Date("2024-03-05"),
@@ -41,7 +41,7 @@ const MOCK_ORDERS: Order[] = [
   },
   {
     id: "3",
-    number: "ORD-0000003",
+    number: "ORD-9174628305491",
     name: "บริษัท ดิจิตอล โซลูชัน จำกัด",
     vendorId: "V001",
     date: new Date("2024-03-08"),
@@ -61,7 +61,7 @@ const MOCK_ORDERS: Order[] = [
   },
   {
     id: "4",
-    number: "ORD-0000004",
+    number: "ORD-3062759184726",
     name: "บริษัท อินโนเวท เทรดดิ้ง จำกัด",
     vendorId: "V003",
     date: new Date("2024-03-10"),
@@ -79,7 +79,7 @@ const MOCK_ORDERS: Order[] = [
   },
   {
     id: "5",
-    number: "ORD-0000005",
+    number: "ORD-8519374062815",
     name: "บริษัท อินโนเวท เทรดดิ้ง จำกัด",
     vendorId: "V002",
     date: new Date("2024-03-12"),
@@ -104,7 +104,10 @@ interface OrderStore {
   orders: Order[];
   getOrderById: (id: string) => Order | undefined;
   createOrder: (data: Omit<Order, "id" | "createdAt">) => Order;
-  updateOrder: (id: string, data: Omit<Order, "id" | "createdAt">) => void;
+  updateOrder: (
+    id: string,
+    data: Partial<Omit<Order, "id" | "createdAt">>,
+  ) => Order | undefined;
   deleteOrder: (id: string | string[]) => void;
 }
 
@@ -126,9 +129,17 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
   },
 
   updateOrder: (id, data) => {
+    let updated: Order | undefined;
     set((state) => ({
-      orders: state.orders.map((o) => (o.id === id ? { ...o, ...data } : o)),
+      orders: state.orders.map((o) => {
+        if (o.id === id) {
+          updated = { ...o, ...data };
+          return updated;
+        }
+        return o;
+      }),
     }));
+    return updated;
   },
 
   deleteOrder: (id: string | string[]) => {

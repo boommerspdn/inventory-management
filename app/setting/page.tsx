@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
+"use client";
+
 import Header from "@/components/header";
 import QuotationNumberSetting from "@/components/quotation-number-setting";
-import { prisma } from "@/lib/prismadb";
+import { useQuotationSettingStore } from "@/hooks/use-quotation-setting-store";
 
-export const metadata: Metadata = {
-  title: "ตั้งค่า",
-};
+const SettingPage = () => {
+  const quotationNumber = useQuotationSettingStore((state) => state.setting);
 
-const SettingPage = async () => {
-  const quotationNumber = await prisma.quotationSetting.findUnique({
-    where: { id: "global" },
-  });
   return (
     <div className="space-y-6">
       <Header

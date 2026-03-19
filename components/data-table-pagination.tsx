@@ -22,12 +22,14 @@ interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   disableDelete?: boolean;
   api: "products" | "orders" | "vendor";
+  setSelection: (value: Record<string, boolean>) => void;
 }
 
 export function DataTablePagination<TData>({
   table,
   disableDelete,
   api,
+  setSelection,
 }: DataTablePaginationProps<TData>) {
   const arraySelectedUsersId = table
     .getSelectedRowModel()
@@ -42,7 +44,11 @@ export function DataTablePagination<TData>({
     >
       {!disableDelete && (
         <>
-          <RemoveDialog ids={arraySelectedUsersId} api={api}>
+          <RemoveDialog
+            ids={arraySelectedUsersId}
+            api={api}
+            setSelection={setSelection}
+          >
             <AlertDialogTrigger asChild>
               <Button
                 variant={"outline"}

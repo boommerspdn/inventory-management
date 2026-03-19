@@ -38,3 +38,8 @@ export type CartProduct = Pick<
   Product,
   "id" | "title" | "amount" | "number" | "price"
 >;
+
+export type QuotationSetting = {
+  id: string;
+  initial: string;
+};

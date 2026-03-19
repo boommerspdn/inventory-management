@@ -20,9 +20,16 @@ type RemoveDialog = {
   ids: string[];
   api?: "products" | "orders" | "vendor";
   fn?: () => void;
+  setSelection?: (value: Record<string, boolean>) => void;
 };
 
-const RemoveDialog = ({ children, ids, fn, api }: RemoveDialog) => {
+const RemoveDialog = ({
+  children,
+  ids,
+  fn,
+  api,
+  setSelection,
+}: RemoveDialog) => {
   const productDelete = useProductStore((state) => state.deleteProduct);
   const orderDelete = useOrderStore((state) => state.deleteOrder);
   const venderDelete = useVendorStore((state) => state.deleteVendor);
@@ -36,7 +43,7 @@ const RemoveDialog = ({ children, ids, fn, api }: RemoveDialog) => {
         fn();
       }
 
-      if (api) {
+      if (api && setSelection) {
         if (api === "products") {
           productDelete(ids);
         } else if (api === "orders") {
@@ -44,6 +51,8 @@ const RemoveDialog = ({ children, ids, fn, api }: RemoveDialog) => {
         } else if (api === "vendor") {
           venderDelete(ids);
         }
+
+        setSelection({});
       }
       toast.success("ลบรายการสำเร็จ");
     } catch (error) {

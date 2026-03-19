@@ -1,6 +1,8 @@
 "use client";
 
-import { Invoice } from "@/app/invoice/[orderId]/page";
+import { Order } from "@/app/types";
+import { useProductStore } from "@/hooks/use-product-store";
+import { useVendorStore } from "@/hooks/use-vendor-store";
 import { priceFormatter } from "@/lib/utils";
 import {
   Document,
@@ -28,7 +30,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   body: {
-    paddingVertical: 35,
+    paddingVertical: 15,
     paddingHorizontal: 35,
     height: "100%",
     fontFamily: "Sarabun",
@@ -86,7 +88,6 @@ const styles = StyleSheet.create({
   TaxTitle: {
     width: 110,
   },
-
   table: {
     display: "flex",
     flexDirection: "column",
@@ -111,26 +112,12 @@ const styles = StyleSheet.create({
     borderRight: "1px solid black",
     minHeight: 16,
   },
-  centerText: {
-    textAlign: "center",
-  },
-  rightText: {
-    textAlign: "right",
-  },
-  leftText: {
-    textAlign: "left",
-  },
-  headerText: {
-    textAlign: "center",
-  },
-  nameCell: {
-    flex: 5,
-  },
-  priceCell: {
-    flex: 2,
-    borderRight: "0px",
-  },
-
+  centerText: { textAlign: "center" },
+  rightText: { textAlign: "right" },
+  leftText: { textAlign: "left" },
+  headerText: { textAlign: "center" },
+  nameCell: { flex: 5 },
+  priceCell: { flex: 2, borderRight: "0px" },
   priceTable: {
     display: "flex",
     flexDirection: "column",
@@ -139,9 +126,7 @@ const styles = StyleSheet.create({
     borderRight: "1px solid black",
     borderTop: "0px",
   },
-  hiddenRightBorder: {
-    borderRight: "1px solid white",
-  },
+  hiddenRightBorder: { borderRight: "1px solid white" },
   signWrap: {
     display: "flex",
     flexDirection: "row",
@@ -168,35 +153,45 @@ const styles = StyleSheet.create({
 });
 
 type PDFDocumentProps = {
-  data: Invoice | null;
+  data: Order | null;
 };
 
 const PDFDocument = ({ data }: PDFDocumentProps) => {
-  const sumPrice = data?.carts.reduce(
-    (sum, item) => sum + (item.products?.price || 0) * (item.amount || 0),
+  const getProductById = useProductStore((state) => state.getProductById);
+  const getVendorById = useVendorStore((state) => state.getVendorById);
+
+  const vendor = getVendorById(data?.vendorId ?? "");
+
+  const cartItems =
+    data?.orderedItems.map((item) => ({
+      id: item.productId,
+      amount: item.amount,
+      product: getProductById(item.productId),
+    })) ?? [];
+
+  const sumPrice = cartItems.reduce(
+    (sum, item) => sum + (item.product?.price || 0) * item.amount,
     0,
   );
-  const taxPrice = (sumPrice || 0) * 0.07;
-  const totalPrice = (sumPrice || 0) + taxPrice;
+  const taxPrice = sumPrice * 0.07;
+  const totalPrice = sumPrice + taxPrice;
 
-  const pricesValue: { title: string; value: string }[] = [
-    {
-      title: "ราคารวมทั้งสิ้น ",
-      value: priceFormatter(sumPrice || 0),
-    },
+  const pricesValue = [
+    { title: "ราคารวมทั้งสิ้น ", value: priceFormatter(sumPrice) },
     { title: "จำนวนภาษีมูลค่าเพิ่ม 7% ", value: priceFormatter(taxPrice) },
     { title: "จำนวนเงินทั้งสิ้น ", value: priceFormatter(totalPrice) },
   ];
+
   return (
     <PDFWrapper>
       <Document title={`${data?.name} ${data?.number}`}>
         <Page style={styles.body}>
           <View style={styles.vendorInfo}>
-            <Text style={styles.vendorName}>{data?.vendor.name} </Text>
-            <Text>{data?.vendor.address} </Text>
+            <Text style={styles.vendorName}>{vendor?.name} </Text>
+            <Text>{vendor?.address} </Text>
             <View style={styles.vendorTaxPhone}>
-              <Text>โทร. {data?.vendor.phone}</Text>
-              <Text>เลขประจำตัวผู้เสียภาษี {data?.vendor.taxId} </Text>
+              <Text>โทร. {vendor?.phone}</Text>
+              <Text>เลขประจำตัวผู้เสียภาษี {vendor?.taxId} </Text>
             </View>
           </View>
           <View style={styles.title}>
@@ -210,7 +205,11 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
             </View>
             <View style={styles.between}>
               <Text style={styles.betweenTitle}>วันที่ </Text>
-              <Text>{data?.date.toLocaleDateString("th-TH")} </Text>
+              <Text>
+                {data?.date
+                  ? new Date(data.date).toLocaleDateString("th-TH")
+                  : ""}{" "}
+              </Text>
             </View>
           </View>
           <View style={styles.buyerInfo}>
@@ -236,76 +235,62 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
           {/* table */}
           <View>
             <View style={styles.table}>
-              <View style={[styles.row]}>
-                <Text
-                  style={[styles.headerText, styles.cell, styles.centerText]}
-                >
-                  ลำดับที่{" "}
-                </Text>
-                <Text style={[styles.headerText, styles.cell, styles.nameCell]}>
-                  รายการ{" "}
-                </Text>
-                <Text style={[styles.headerText, styles.cell]}>จำนวน </Text>
-                <Text style={[styles.headerText, styles.cell]}>
+              <View style={styles.row}>
+                <Text style={[styles.cell, styles.centerText]}>ลำดับที่ </Text>
+                <Text style={[styles.cell, styles.nameCell]}>รายการ </Text>
+                <Text style={[styles.cell, styles.centerText]}>จำนวน </Text>
+                <Text style={[styles.cell, styles.centerText]}>
                   ราคา (หน่วย){" "}
                 </Text>
-                <Text
-                  style={[
-                    styles.headerText,
-                    styles.cell,
-                    styles.rightText,
-                    styles.priceCell,
-                  ]}
-                >
+                <Text style={[styles.cell, styles.rightText, styles.priceCell]}>
                   จำนวนเงิน (ไม่รวมภาษี){" "}
                 </Text>
               </View>
               {Array.from({
-                length: Math.max(19, data?.carts?.length || 0),
+                length: Math.max(19, cartItems.length),
               }).map((_, index) => {
-                const cart = data?.carts[index];
-
+                const item = cartItems[index];
                 return (
                   <View
                     style={index === 18 ? styles.rowLastChild : styles.row}
-                    key={cart?.id || index}
+                    key={index}
                   >
                     <Text style={[styles.cell, styles.centerText]}>
-                      {cart ? index + 1 : ""}{" "}
+                      {item ? index + 1 : ""}{" "}
                     </Text>
                     <Text
                       style={[
                         styles.cell,
                         styles.nameCell,
-                        (cart?.products?.title.length || 0) > 40
+                        (item?.product?.title.length || 0) > 40
                           ? styles.fontSmall
                           : {},
                       ]}
                     >
-                      {cart?.products?.title || ""}{" "}
+                      {item?.product?.title || ""}{" "}
                     </Text>
                     <Text style={[styles.cell, styles.centerText]}>
-                      {cart?.amount || ""}{" "}
+                      {item?.amount || ""}{" "}
                     </Text>
                     <Text
                       style={[
                         styles.cell,
                         styles.centerText,
-                        (cart?.products?.price.toString().length ?? 0) > 6
+                        (item?.product?.price.toString().length ?? 0) > 6
                           ? styles.fontSmall
                           : {},
                       ]}
                     >
-                      {cart?.products
-                        ? priceFormatter(cart.products.price)
+                      {item?.product
+                        ? priceFormatter(item.product.price)
                         : ""}{" "}
                     </Text>
                     <Text
                       style={[styles.cell, styles.rightText, styles.priceCell]}
                     >
-                      {cart
+                      {item
                         ? priceFormatter(
-                            cart.amount * (cart.products?.price || 0),
+                            item.amount * (item.product?.price || 0),
                           )
                         : ""}{" "}
                     </Text>
@@ -313,27 +298,23 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                 );
               })}
             </View>
-            {/* priceTable */}
             {pricesValue.map((priceValue, index) => (
               <View style={styles.priceTable} key={index}>
-                <View style={[styles.rowLastChild]}>
+                <View style={styles.rowLastChild}>
                   <Text style={[styles.cell, styles.hiddenRightBorder]} />
                   <Text
                     style={[
                       styles.cell,
                       styles.hiddenRightBorder,
-
                       styles.centerText,
                     ]}
                   />
                   <Text
                     style={[
                       styles.cell,
-                      styles.centerText,
                       styles.hiddenRightBorder,
-                      {
-                        flex: 3,
-                      },
+                      styles.centerText,
+                      { flex: 3 },
                     ]}
                   />
                   <Text style={[styles.cell, styles.leftText, { flex: 3 }]}>
@@ -368,20 +349,8 @@ const PDFDocument = ({ data }: PDFDocumentProps) => {
                 <Text style={styles.signPlaceholder}>ผู้รับสินค้า</Text>
               </View>
             </View>
-            <View
-              style={[
-                styles.outerWrap,
-                {
-                  marginTop: "14.5px",
-                },
-              ]}
-            >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
+            <View style={[styles.outerWrap, { marginTop: "14.5px" }]}>
+              <View style={{ display: "flex", flexDirection: "column" }}>
                 <Text style={styles.signPlaceholder}>ผู้มีอำนาจอนุมัติ </Text>
                 <Text style={{ marginLeft: -30, marginTop: 10 }}>
                   วันที่ {"    "}..................... /.....................

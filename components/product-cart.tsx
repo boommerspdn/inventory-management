@@ -139,7 +139,10 @@ const ProductCart = ({
             amount: item.amount,
           })),
         });
-        window.open(`/invoice/${newOrder.id}`, "_blank");
+        const params = new URLSearchParams({
+          data: JSON.stringify(newOrder),
+        });
+        window.open(`/invoice/${newOrder.id}?${params.toString()}`, "_blank");
       }
 
       setIsRedirecting(true);

@@ -140,6 +140,7 @@ export function DataTable<TData, TValue>({
         table={table}
         disableDelete={disableDelete}
         api={api}
+        setSelection={setRowSelection}
       />
     </div>
   );

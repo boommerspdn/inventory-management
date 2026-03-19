@@ -19,9 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import axios from "axios";
+import { useOrderStore } from "@/hooks/use-order-store";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import {
   Dialog,
@@ -50,23 +49,17 @@ const StatusDialog = ({ children, id, currentStatus }: StatusDialog) => {
     defaultValues: { status: currentStatus },
   });
 
-  const router = useRouter();
+  const { updateOrder } = useOrderStore();
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
-      const body = {
-        id,
-        status: data.status,
-      };
-      await axios.patch("/api/status/", body);
+      updateOrder(id, { status: data.status });
       toast.success("อัพเดทสถานะสำเร็จ");
-      router.refresh();
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");
     }
   };
-
   return (
     <Dialog>
       {children}

@@ -1,5 +1,6 @@
 "use client";
 
+import { QuotationSetting } from "@/app/types";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,9 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useQuotationSettingStore } from "@/hooks/use-quotation-setting-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QuotationSetting } from "@prisma/client";
-import axios from "axios";
 import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -36,17 +36,17 @@ const QuotationNumberSetting = ({ data }: QuotationNumberSettingProps) => {
       initial: data?.initial || "",
     },
   });
+  const { updateSetting } = useQuotationSettingStore();
 
   const year = new Date().getFullYear() + 543;
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
-      await axios.post("/api/quotation-number", values);
+      updateSetting(values);
       toast.success("แก้ไขขึ้นต้น (ใบกำกับภาษี)สำเร็จ");
     } catch (error) {
       console.log(error);
       toast.error("เกิดข้อผิดพลาด");
-    } finally {
     }
   }
 
