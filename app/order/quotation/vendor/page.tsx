@@ -1,19 +1,12 @@
-import type { Metadata } from "next";
+"use client";
+
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
-import { prisma } from "@/lib/prismadb";
 import { vendorColumns } from "./vendor-columns";
+import { useVendorStore } from "@/hooks/use-vendor-store";
 
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "ผู้ออกใบกำกับภาษี",
-};
-
-const VendorPage = async () => {
-  const vendors = await prisma.vendor.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+const VendorPage = () => {
+  const vendors = useVendorStore((state) => state.vendors);
 
   return (
     <div className="space-y-6">
@@ -24,11 +17,12 @@ const VendorPage = async () => {
       <DataTable
         data={vendors}
         columns={vendorColumns}
-        api="vendor"
         buttonLink={{
           label: "สร้างผู้ออกใบกำกับภาษี",
           href: "/order/quotation/vendor/new",
         }}
+        api="vendor"
+        disableDelete={false}
       />
     </div>
   );

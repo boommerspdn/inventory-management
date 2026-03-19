@@ -17,6 +17,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Order } from "@/app/types";
+import { useOrderStore } from "@/hooks/use-order-store";
 
 export const orderColumns: ColumnDef<Order>[] = [
   {
@@ -112,6 +113,21 @@ export const orderColumns: ColumnDef<Order>[] = [
     },
   },
   {
+    accessorKey: "note",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="-ml-4"
+        >
+          หมายเหตุ
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => {
       return (
@@ -147,9 +163,10 @@ export const orderColumns: ColumnDef<Order>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const deleteOrder = useOrderStore((state) => state.deleteOrder);
 
       return (
-        <RemoveDialog ids={[data.id]} api="orders">
+        <RemoveDialog ids={[data.id]} fn={() => deleteOrder(data.id)}>
           <StatusDialog id={data.id} currentStatus={data.status}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

@@ -22,12 +22,19 @@ export type Order = {
   note: string | null;
   status: string;
   createdAt: Date;
+  orderedItems: { productId: string; amount: number }[];
 };
 
-export type CartProduct = {
+export type Vendor = {
   id: string;
-  title: string;
-  amount: number;
-  number: string;
-  price: number;
+  createdAt: Date;
+  name: string;
+  address: string;
+  taxId: string;
+  phone: string;
 };
+
+export type CartProduct = Pick<
+  Product,
+  "id" | "title" | "amount" | "number" | "price"
+>;

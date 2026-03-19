@@ -3,18 +3,42 @@
 import RemoveDialog from "@/components/remove-dialog";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useVendorStore } from "@/hooks/use-vendor-store";
 import { Vendor } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
 export const vendorColumns: ColumnDef<Vendor>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     header: "ชื่อผู้ออก",
@@ -35,9 +59,10 @@ export const vendorColumns: ColumnDef<Vendor>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const deleteVendor = useVendorStore((state) => state.deleteVendor);
 
       return (
-        <RemoveDialog ids={[data.id]} api="vendor">
+        <RemoveDialog ids={[data.id]} fn={() => deleteVendor(data.id)}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">

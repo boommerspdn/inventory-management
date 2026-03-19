@@ -1,26 +1,19 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useEffect } from "react";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
-import { orderColumns } from "./order-columns";
 import { generateMockOrder } from "@/lib/datas";
-
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "รายการสั่งซื้อ",
-};
-
-const select = {
-  id: true,
-  name: true,
-  date: true,
-  number: true,
-  price: true,
-  status: true,
-};
+import { orderColumns } from "./order-columns";
+import { useOrderStore } from "@/hooks/use-order-store";
 
 const OrderPage = () => {
-  const orders = Array.from({ length: 10 }, generateMockOrder);
+  const orders = useOrderStore((state) => state.orders);
+
+  useEffect(() => {
+    document.title = "รายการสั่งซื้อ";
+  }, []);
+
   return (
     <div className="space-y-6">
       <Header

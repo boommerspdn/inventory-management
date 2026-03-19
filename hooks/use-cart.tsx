@@ -1,4 +1,4 @@
-import { CartProduct } from "@/app/order/cart/[orderId]/page";
+import { CartProduct } from "@/app/types";
 import { create } from "zustand";
 
 export interface CartState {
@@ -6,6 +6,7 @@ export interface CartState {
   addItem: (item: CartProduct) => void;
   removeItem: (itemId: string) => void;
   removeAll: () => void;
+  setItems: (items: CartProduct[]) => void;
 }
 
 export const useCart = create<CartState>((set) => ({
@@ -32,4 +33,5 @@ export const useCart = create<CartState>((set) => ({
       items: state.items.filter((item) => item.id !== itemId),
     })),
   removeAll: () => set({ items: [] }),
+  setItems: (items) => set({ items }),
 }));

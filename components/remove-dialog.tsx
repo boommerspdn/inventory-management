@@ -11,20 +11,39 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useProductStore } from "@/hooks/use-product-store";
+import { useOrderStore } from "@/hooks/use-order-store";
+import { useVendorStore } from "@/hooks/use-vendor-store";
 
 type RemoveDialog = {
   children: React.ReactNode;
   ids: string[];
-  api: "products" | "orders" | "vendor";
+  api?: "products" | "orders" | "vendor";
+  fn?: () => void;
 };
 
-const RemoveDialog = ({ children, ids, api }: RemoveDialog) => {
-  const router = useRouter();
+const RemoveDialog = ({ children, ids, fn, api }: RemoveDialog) => {
+  const productDelete = useProductStore((state) => state.deleteProduct);
+  const orderDelete = useOrderStore((state) => state.deleteOrder);
+  const venderDelete = useVendorStore((state) => state.deleteVendor);
 
   const handleDelete = async (ids: string[]) => {
     try {
       if (ids.length === 0) {
         throw new Error("No IDs provided");
+      }
+      if (fn) {
+        fn();
+      }
+
+      if (api) {
+        if (api === "products") {
+          productDelete(ids);
+        } else if (api === "orders") {
+          orderDelete(ids);
+        } else if (api === "vendor") {
+          venderDelete(ids);
+        }
       }
       toast.success("ลบรายการสำเร็จ");
     } catch (error) {

@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { Textarea } from "./ui/textarea";
+import { useVendorStore } from "@/hooks/use-vendor-store";
 
 type VendorFormProps = {
   initialData?: Vendor | null;
@@ -45,6 +46,7 @@ const formSchema = z.object({
 
 const VendorForm = ({ initialData }: VendorFormProps) => {
   const router = useRouter();
+  const { createVendor, updateVendor } = useVendorStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,7 +60,11 @@ const VendorForm = ({ initialData }: VendorFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/vendor", values);
+      if (initialData !== null && initialData) {
+        updateVendor(initialData.id, values);
+      } else {
+        createVendor(values);
+      }
 
       toast.success(`${initialData ? "เพิ่ม" : "แก้ไข"}ข้อมูลผู้ออกสำเร็จ`);
     } catch (error) {

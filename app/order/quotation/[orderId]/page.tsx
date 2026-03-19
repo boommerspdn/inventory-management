@@ -1,34 +1,27 @@
-import type { Metadata } from "next";
+"use client";
+
 import Header from "@/components/header";
 import QuotationForm from "@/components/quotation-form";
 import { Separator } from "@/components/ui/separator";
-import { Prisma } from "@prisma/client";
-import { generateMockOrder, generateMockVendors } from "@/lib/datas";
-import { faker } from "@faker-js/faker";
-
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "ออกใบกำกับภาษี",
-};
-
-const select = { id: true, name: true };
+import { useOrderStore } from "@/hooks/use-order-store";
+import { useVendorStore } from "@/hooks/use-vendor-store";
+import { use } from "react";
 
 export type VendorSelectBox = {
   id: string;
   name: string;
 };
 
-const QuotationPage = async ({
+const QuotationPage = ({
   params,
 }: {
   params: Promise<{ orderId: string }>;
 }) => {
-  const { orderId } = await params;
+  const { orderId } = use(params);
+  const getOrderById = useOrderStore((state) => state.getOrderById);
+  const vendors = useVendorStore((state) => state.vendors);
   const isNew = orderId === "new";
-  const order = isNew ? null : generateMockOrder();
-
-  const vendors = Array.from({ length: 7 }, generateMockVendors);
+  const order = isNew ? null : getOrderById(orderId);
 
   const title = order ? "แก้ไขใบกำกับภาษี" : "ออกใบกำกับภาษี";
   const description = order

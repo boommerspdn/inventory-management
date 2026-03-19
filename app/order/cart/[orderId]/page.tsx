@@ -1,27 +1,38 @@
-import type { Metadata } from "next";
+"use client";
+
+import { use } from "react";
 import Header from "@/components/header";
 import ProductCart from "@/components/product-cart";
 import ProductList from "@/components/product-list";
 import { Separator } from "@/components/ui/separator";
-import { generateMockCart, generateMockProduct } from "@/lib/datas";
-export const dynamic = "force-dynamic";
+import { useProductStore } from "@/hooks/use-product-store";
+import { useOrderStore } from "@/hooks/use-order-store";
+import { CartProduct } from "@/app/types";
 
-export const metadata: Metadata = {
-  title: "ออกใบกำกับภาษี (เลือกสินค้า)",
-};
+const CartPage = ({ params }: { params: Promise<{ orderId: string }> }) => {
+  const { orderId } = use(params);
+  const orderById = useOrderStore((state) =>
+    state.orders.find((order) => order.id === orderId),
+  );
+  const products = useProductStore((state) => state.products);
+  // const isNew = orderId === "new";
+  // const formattedCart: CartProduct[] | undefined = orderById?.orderedItems.map(
+  //   (item) => {
+  //     const findProduct = products.find(
+  //       (product) => product.id === item.productId,
+  //     );
 
-const CartPage = async ({
-  params,
-}: {
-  params: Promise<{ orderId: string }>;
-}) => {
-  const { orderId } = await params;
-  const isNew = orderId === "new";
-  const initialCart = isNew
-    ? null
-    : Array.from({ length: 10 }, generateMockCart);
+  //     return {
+  //       id: item.productId,
+  //       title: findProduct?.title || "",
+  //       amount: item.amount,
+  //       number: findProduct?.number || "",
+  //       price: findProduct?.price || 0,
+  //     };
+  //   },
+  // );
+  // const initialCart = isNew ? null : formattedCart;
 
-  const products = Array.from({ length: 10 }, generateMockProduct);
   return (
     <div className="space-y-4 ">
       <Header
@@ -38,7 +49,7 @@ const CartPage = async ({
         />
         <ProductCart
           className="col-span-full order-1 md:order-2 md:col-span-5 2xl:col-span-3"
-          initialData={initialCart}
+          initialData={orderById}
         />
       </div>
     </div>

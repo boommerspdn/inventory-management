@@ -1,24 +1,18 @@
+"use client";
+
+import { use } from "react";
 import Header from "@/components/header";
 import { Separator } from "@/components/ui/separator";
 import VendorForm from "@/components/vendor-form";
-import { prisma } from "@/lib/prismadb";
-import { Metadata } from "next";
+import { useVendorStore } from "@/hooks/use-vendor-store";
 
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "ผู้ออกใบกำกับภาษี",
-};
-
-const VendorFormPage = async ({
+const VendorFormPage = ({
   params,
 }: {
   params: Promise<{ vendorId: string }>;
 }) => {
-  const { vendorId } = await params;
-  const vendor = await prisma.vendor.findFirst({
-    where: { id: vendorId },
-  });
+  const { vendorId } = use(params);
+  const vendor = useVendorStore((state) => state.getVendorById(vendorId));
   const title = vendor ? "แก้ไขผู้ออกใบกำกับภาษี" : "สร้างผู้ออกใบกำกับภาษี";
 
   return (

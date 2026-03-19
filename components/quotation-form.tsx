@@ -40,7 +40,7 @@ import { z } from "zod";
 
 type QuotationFormProps = {
   vendors: VendorSelectBox[];
-  initialData: Order | null;
+  initialData?: Order | null;
 };
 
 export const formSchema = z.object({
@@ -95,7 +95,7 @@ const QuotationForm = ({ vendors, initialData }: QuotationFormProps) => {
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     setData(values);
-    if (initialData !== null) {
+    if (initialData !== null && initialData) {
       router.push(`/order/cart/${initialData.id}`);
     } else {
       router.push("/order/cart/new");

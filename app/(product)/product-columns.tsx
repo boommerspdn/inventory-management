@@ -16,6 +16,7 @@ import { priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Product } from "@/app/types";
+import { useProductStore } from "@/hooks/use-product-store";
 
 export const productColumns: ColumnDef<Product>[] = [
   {
@@ -155,9 +156,10 @@ export const productColumns: ColumnDef<Product>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const deleteProduct = useProductStore((state) => state.deleteProduct);
 
       return (
-        <RemoveDialog ids={[data.id]} api="products">
+        <RemoveDialog ids={[data.id]} fn={() => deleteProduct(data.id)}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">

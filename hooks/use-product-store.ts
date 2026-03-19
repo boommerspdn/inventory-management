@@ -113,10 +113,15 @@ interface ProductStore {
     data: Omit<Product, "id" | "createdAt" | "date">,
   ) => void;
   getProductById: (id: string) => Product | undefined;
+  deleteProduct: (id: string | string[]) => void;
 }
 
 export const useProductStore = create<ProductStore>((set, get) => ({
   products: MOCK_PRODUCTS,
+
+  getProductById: (id) => {
+    return get().products.find((p) => p.id === id);
+  },
 
   createProduct: (data) => {
     const newProduct: Product = {
@@ -137,7 +142,10 @@ export const useProductStore = create<ProductStore>((set, get) => ({
     }));
   },
 
-  getProductById: (id) => {
-    return get().products.find((p) => p.id === id);
+  deleteProduct: (id: string | string[]) => {
+    const ids = Array.isArray(id) ? id : [id];
+    set((state) => ({
+      products: state.products.filter((o) => !ids.includes(o.id)),
+    }));
   },
 }));

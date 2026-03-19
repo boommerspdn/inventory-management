@@ -28,8 +28,10 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-interface DataTableProps<TData, TValue>
-  extends React.HTMLAttributes<HTMLElement> {
+interface DataTableProps<
+  TData,
+  TValue,
+> extends React.HTMLAttributes<HTMLElement> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   buttonLink?: {
