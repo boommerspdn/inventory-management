@@ -1,30 +1,16 @@
-"use client";
+import type { Metadata } from "next";
+import VendorFormClient from "./vendor-form-client";
 
-import { use } from "react";
-import Header from "@/components/header";
-import { Separator } from "@/components/ui/separator";
-import VendorForm from "@/components/vendor-form";
-import { useVendorStore } from "@/hooks/use-vendor-store";
+export const metadata: Metadata = {
+  title: "ผู้ออกใบกำกับภาษี",
+  description: "สร้างหรือแก้ไขข้อมูลผู้ออกใบกำกับภาษี",
+};
 
-const VendorFormPage = ({
+export default async function VendorFormPage({
   params,
 }: {
   params: Promise<{ vendorId: string }>;
-}) => {
-  const { vendorId } = use(params);
-  const vendor = useVendorStore((state) => state.getVendorById(vendorId));
-  const title = vendor ? "แก้ไขผู้ออกใบกำกับภาษี" : "สร้างผู้ออกใบกำกับภาษี";
-
-  return (
-    <div className="space-y-6">
-      <Header
-        title={title}
-        description="สามารถสร้างผู้ออกใบกำกับภาษีได้ที่นี่ เพื่อนำไปใช้ในการสร้างใบกำกับภาษี"
-      />
-      <Separator />
-      <VendorForm initialData={vendor} />
-    </div>
-  );
-};
-
-export default VendorFormPage;
+}) {
+  const resolvedParams = await params;
+  return <VendorFormClient params={resolvedParams} />;
+}

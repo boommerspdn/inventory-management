@@ -1,41 +1,19 @@
-// invoice-client.tsx — read from search params first, fallback to store
-"use client";
+import type { Metadata } from "next";
+import InvoiceClient from "./invoice-client";
 
-import PDFDocument from "@/components/pdf-document";
-import { useOrderStore } from "@/hooks/use-order-store";
-import { Order } from "@/app/types";
-import { use, useEffect } from "react";
-import InvoiceNotFound from "@/components/invoice-not-found";
+export const metadata: Metadata = {
+  title: "ใบกำกับภาษี",
+  description: "แสดงใบกำกับภาษีสำหรับคำสั่งซื้อ",
+};
 
-const InvoicePage = ({
+export default async function InvoicePage({
   params,
   searchParams,
 }: {
   params: Promise<{ orderId: string }>;
   searchParams: Promise<{ data?: string }>;
-}) => {
-  const { orderId } = use(params);
-  const { data } = use(searchParams);
-  const getOrderById = useOrderStore((state) => state.getOrderById);
-
-  useEffect(() => {
-    document.title = `ใบกำกับภาษี ${invoice?.name ?? ""}`;
-  }, []);
-
-  // New tab won't have store state, so parse from search params
-  const invoice: Order | undefined = data
-    ? JSON.parse(data)
-    : getOrderById(orderId);
-
-  if (!invoice) {
-    return <InvoiceNotFound />;
-  }
-
-  return (
-    <div className="h-full">
-      <PDFDocument data={invoice} />
-    </div>
-  );
-};
-
-export default InvoicePage;
+}) {
+  const [resolvedParams, resolvedSearchParams] = await Promise.all([params, searchParams]);
+  
+  return <InvoiceClient params={resolvedParams} searchParams={resolvedSearchParams} />;
+}
