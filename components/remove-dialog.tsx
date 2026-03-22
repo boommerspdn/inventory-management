@@ -1,6 +1,3 @@
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,9 +8,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useProductStore } from "@/hooks/use-product-store";
 import { useOrderStore } from "@/hooks/use-order-store";
+import { useProductStore } from "@/hooks/use-product-store";
 import { useVendorStore } from "@/hooks/use-vendor-store";
+import toast from "react-hot-toast";
 
 type RemoveDialog = {
   children: React.ReactNode;

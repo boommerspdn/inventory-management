@@ -1,15 +1,5 @@
 "use client";
 
-import axios from "axios";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import path from "path";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,11 +10,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
 
-import { ImageOff, LoaderCircle } from "lucide-react";
 import { Product } from "@/app/types";
-import { priceFormatter } from "@/lib/utils";
 import { useProductStore } from "@/hooks/use-product-store";
+import { priceFormatter } from "@/lib/utils";
+import { ImageOff, LoaderCircle } from "lucide-react";
 
 type ProductFormProps = {
   initialData?: Product | null;

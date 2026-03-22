@@ -1,6 +1,6 @@
 "use client";
 
-import { VendorSelectBox } from "@/app/order/quotation/[orderId]/page";
+import { VendorSelectBox } from "@/app/order/quotation/[orderId]/quotation-client";
 import { Order } from "@/app/types";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";

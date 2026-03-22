@@ -1,20 +1,10 @@
 "use client";
 
-import RemoveDialog from "@/components/remove-dialog";
-import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useVendorStore } from "@/hooks/use-vendor-store";
+import { VendorCellActions } from "@/components/vendor-cell-actions";
+
 import { Vendor } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import Link from "next/link";
 
 export const vendorColumns: ColumnDef<Vendor>[] = [
   {
@@ -59,28 +49,8 @@ export const vendorColumns: ColumnDef<Vendor>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
-      const deleteVendor = useVendorStore((state) => state.deleteVendor);
 
-      return (
-        <RemoveDialog ids={[data.id]} fn={() => deleteVendor(data.id)}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <Link href={`/order/quotation/vendor/${data.id}`}>
-                <DropdownMenuItem>แก้ไขข้อมูล</DropdownMenuItem>
-              </Link>
-              <AlertDialogTrigger asChild>
-                <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
-              </AlertDialogTrigger>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </RemoveDialog>
-      );
+      return <VendorCellActions data={data} />;
     },
   },
 ];

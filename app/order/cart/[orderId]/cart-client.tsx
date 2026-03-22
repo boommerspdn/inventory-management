@@ -4,9 +4,8 @@ import Header from "@/components/header";
 import ProductCart from "@/components/product-cart";
 import ProductList from "@/components/product-list";
 import { Separator } from "@/components/ui/separator";
-import { useProductStore } from "@/hooks/use-product-store";
 import { useOrderStore } from "@/hooks/use-order-store";
-import { CartProduct } from "@/app/types";
+import { useProductStore } from "@/hooks/use-product-store";
 
 const CartClient = ({ params }: { params: { orderId: string } }) => {
   const { orderId } = params;
@@ -14,23 +13,6 @@ const CartClient = ({ params }: { params: { orderId: string } }) => {
     state.orders.find((order) => order.id === orderId),
   );
   const products = useProductStore((state) => state.products);
-  // const isNew = orderId === "new";
-  // const formattedCart: CartProduct[] | undefined = orderById?.orderedItems.map(
-  //   (item) => {
-  //     const findProduct = products.find(
-  //       (product) => product.id === item.productId,
-  //     );
-
-  //     return {
-  //       id: item.productId,
-  //       title: findProduct?.title || "",
-  //       amount: item.amount,
-  //       number: findProduct?.number || "",
-  //       price: findProduct?.price || 0,
-  //     };
-  //   },
-  // );
-  // const initialCart = isNew ? null : formattedCart;
 
   return (
     <div className="space-y-4 ">

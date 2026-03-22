@@ -1,10 +1,10 @@
-import { CartProduct } from "@/app/order/cart/[orderId]/page";
 import { useCart } from "@/hooks/use-cart";
 import { useProductList } from "@/hooks/use-product-list";
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { PackagePlus } from "lucide-react";
+import { CartProduct } from "@/app/types";
 
 type AddProductCartProps = {
   data: CartProduct;

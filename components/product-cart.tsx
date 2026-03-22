@@ -4,11 +4,11 @@ import { useCart } from "@/hooks/use-cart";
 import { useMultiFormStore } from "@/hooks/use-multi-form";
 import { useProductList } from "@/hooks/use-product-list";
 import { cn, handleRemoveAll, priceFormatter } from "@/lib/utils";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+import { CartProduct, Order } from "@/app/types";
 import CartItem from "@/components/cart-item";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +19,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PackagePlus, ShoppingCart } from "lucide-react";
-import { CartProduct, Order } from "@/app/types";
 import { useOrderStore } from "@/hooks/use-order-store";
 import { useProductStore } from "@/hooks/use-product-store";
+import { PackagePlus, ShoppingCart } from "lucide-react";
 
 type ProductCartProps = React.HTMLAttributes<HTMLDivElement> & {
   initialData?: Order | null;

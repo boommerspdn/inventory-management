@@ -1,23 +1,12 @@
 "use client";
 
-import RemoveDialog from "@/components/remove-dialog";
-import StatusDialog from "@/components/status-dialog";
-import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Order } from "@/app/types";
+import { OrderCellActions } from "@/components/order-cell-actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DialogTrigger } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { cn, priceFormatter } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import Link from "next/link";
-import { Order } from "@/app/types";
-import { useOrderStore } from "@/hooks/use-order-store";
+import { ArrowUpDown } from "lucide-react";
 
 export const orderColumns: ColumnDef<Order>[] = [
   {
@@ -163,39 +152,8 @@ export const orderColumns: ColumnDef<Order>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
-      const deleteOrder = useOrderStore((state) => state.deleteOrder);
 
-      return (
-        <RemoveDialog ids={[data.id]} fn={() => deleteOrder(data.id)}>
-          <StatusDialog id={data.id} currentStatus={data.status}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => window.open(`/invoice/${data.id}`, "_blank")}
-                >
-                  ดูใบกำกับภาษี
-                </DropdownMenuItem>
-
-                <DialogTrigger asChild>
-                  <DropdownMenuItem>อัพเดทสถานะ</DropdownMenuItem>
-                </DialogTrigger>
-                <Link href={`/order/quotation/${data.id}`}>
-                  <DropdownMenuItem>แก้ไขคำสั่งซื้อ</DropdownMenuItem>
-                </Link>
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem>ลบข้อมูล</DropdownMenuItem>
-                </AlertDialogTrigger>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </StatusDialog>
-        </RemoveDialog>
-      );
+      return <OrderCellActions data={data} />;
     },
   },
 ];

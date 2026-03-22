@@ -1,17 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import Header from "@/components/header";
 import { DataTable } from "@/components/ui/data-table";
-import { orderColumns } from "./order-columns";
 import { useOrderStore } from "@/hooks/use-order-store";
+import { orderColumns } from "./order-columns";
 
 const OrderClient = () => {
   const orders = useOrderStore((state) => state.orders);
-
-  useEffect(() => {
-    document.title = "รายการสั่งซื้อ";
-  }, []);
 
   return (
     <div className="space-y-6">
