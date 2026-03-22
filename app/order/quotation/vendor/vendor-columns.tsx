@@ -1,9 +1,9 @@
 "use client";
 
+import { Vendor } from "@/app/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { VendorCellActions } from "@/components/vendor-cell-actions";
 
-import { Vendor } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const vendorColumns: ColumnDef<Vendor>[] = [
